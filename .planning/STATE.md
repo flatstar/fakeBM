@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 1 Plan 03 complete (offline); design system ported, /home payoff shell live offline
-last_updated: "2026-06-08T13:08:00Z"
-last_activity: 2026-06-08 -- Completed 01-03-PLAN.md (coral design system port + D-10 home shell)
+stopped_at: Phase 1 Plan 04 — README (run/deploy/verify) shipped; AWAITING user Vercel deploy + real-device AUTH-04/05 human-verify (plan NOT complete)
+last_updated: "2026-06-08T14:12:00Z"
+last_activity: 2026-06-08 -- 01-04 README deliverable committed; paused at the blocking real-device session-persistence checkpoint
 progress:
   total_phases: 6
   completed_phases: 0
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 1 (기반 — 미니앱 셸 · 디자인 시스템 · 인증/DB 경계) — EXECUTING
-Plan: 3 of 4 — COMPLETE (offline); next is 01-04 (Vercel deploy + real-device SameSite check). Plan 01 still PAUSED at drizzle-kit push.
-Status: Plan 03 coral design system ported (13 primitives + catalog/formatters); D-10 home shell + 1회성 welcome intro live at /home behind the (mini) guard; vitest 36/1, next build + tsc clean
-Last activity: 2026-06-08 -- Completed 01-03-PLAN.md
+Plan: 4 of 4 — IN PROGRESS (README deliverable shipped; AWAITING user Vercel deploy + blocking real-device AUTH-04/05 human-verify). Plan 01 still PAUSED at drizzle-kit push.
+Status: 01-04 README.md (local run + Vercel deploy + server-only env matrix + BotFather root-/ URL + npx vitest run + real-device checklist) committed (ce5fa73); vercel.json omitted (standard Next.js). Deploy + real-device CHIPS-cookie reopen test are blocking human steps — NOT faked/auto-approved.
+Last activity: 2026-06-08 -- 01-04 README committed; paused at real-device session-persistence checkpoint
 
 Progress: [███░░░░░░░] 33%
 
@@ -84,7 +84,8 @@ None yet.
 
 - [Plan 01-01 CHECKPOINT]: `npx drizzle-kit push` blocked — needs user-provisioned Neon `DIRECT_URL` (+ `DATABASE_URL` pooled, `BOT_TOKEN`, `SESSION_SECRET`). Live `users` table required by plan 02 AUTH-01 DB smoke test. See 01-01-SUMMARY.md "Blocked — Human Action Required".
 - [Plan 01-01 FLAG]: npm reports `@telegram-apps/*` deprecated → `@tma.js/*`, contradicting RESEARCH (which locks `@telegram-apps/*` as current). Packages installed clean with full API. Reconcile namespace in plan 02.
-- [Phase 1]: SameSite=None 쿠키 iOS/안드로이드 텔레그램 인앱 브라우저 실기기 동작 (research confidence MEDIUM) — 페이즈 시작 시 실디바이스 검증
+- [Plan 01-04 CHECKPOINT]: BLOCKING human-verify — user must (1) deploy to Vercel (`vercel link` → set BOT_TOKEN/SESSION_SECRET/DATABASE_URL-pooled/DIRECT_URL-direct as server-only, none NEXT_PUBLIC_ → `vercel`) → register the deployment ROOT `/` URL with a dev BotFather bot, then (2) run the real-device AUTH-04/05 checklist (README / 01-04 Task 2). The critical gate = SameSite=None; Partitioned cookie surviving a real Telegram close/reopen. NOT auto-approved. See 01-04-SUMMARY.md.
+- [Phase 1]: SameSite=None 쿠키 iOS/안드로이드 텔레그램 인앱 브라우저 실기기 동작 (research confidence MEDIUM) — 페이즈 시작 시 실디바이스 검증 (now the active 01-04 checkpoint above)
 - [Phase 1]: Neon serverless 드라이버(HTTP) vs pooler 선택 확정 (되돌리기 비쌈), `DIRECT_URL` 마이그레이션 분리
 - [Phase 6]: OG 한글 subset 500KB 내 구성 가능 여부 — 페이즈 시작 시 확인 (research flag)
 - [Phase 5]: 스트릭 "끊김" 정의(자정 기준/타임존) 결정 필요 (리텐션 직결)
@@ -101,5 +102,5 @@ Items acknowledged and carried forward from previous milestone close:
 ## Session Continuity
 
 Last session: 2026-06-08
-Stopped at: Completed 01-03-PLAN.md (coral design system port + D-10 home shell, offline). Next: 01-04 (Vercel dev deploy + real-device SameSite session check). Plan 01-01 drizzle-kit push still blocked on Neon credentials.
-Resume file: .planning/phases/01-db/01-03-SUMMARY.md
+Stopped at: 01-04 README (run/deploy/verify) shipped (ce5fa73); PAUSED at the blocking real-device human-verify. To complete: user deploys to Vercel (server-only env, none NEXT_PUBLIC_) + registers the root `/` BotFather URL + runs the real-device AUTH-04/05 checklist (CHIPS cookie reopen). Plan 01-01 drizzle-kit push still blocked on Neon credentials.
+Resume file: .planning/phases/01-db/01-04-SUMMARY.md

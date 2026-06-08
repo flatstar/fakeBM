@@ -144,7 +144,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 기반 — 미니앱 셸·디자인·인증/DB | 2/4 | In progress (02·03 done offline; 01 paused: Neon push blocked) | - |
+| 1. 기반 — 미니앱 셸·디자인·인증/DB | 2/4 | In progress (02·03 done offline; 04 README shipped, awaiting user deploy + real-device AUTH-04/05; 01 paused: Neon push blocked) | - |
 | 2. 가짜 주문 루프 | 0/TBD | Not started | - |
 | 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |
