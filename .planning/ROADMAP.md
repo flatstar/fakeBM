@@ -71,7 +71,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 **Wave 1**
 
-- [ ] 02-01-home-browse-cart-PLAN.md — 홈 탐색·카테고리 필터·가게/메뉴 검색 + computeOrderTotals + localStorage 단일가게 장바구니 훅 (ORDER-01/02/04)
+- [x] 02-01-home-browse-cart-PLAN.md — 홈 탐색·카테고리 필터·가게/메뉴 검색 + computeOrderTotals + localStorage 단일가게 장바구니 훅 (ORDER-01/02/04)
 
 **Wave 2** *(blocked on Wave 1; 02-02 and 02-03 run in parallel — disjoint files)*
 
@@ -81,6 +81,7 @@ Plans:
 **Wave 3** *(blocked on Waves 1–2)*
 
 - [ ] 02-04-cart-order-confirm-PLAN.md — 장바구니 payoff + 서버 권위 POST /api/orders + /order/[id] 소유검증 확정 화면 (ORDER-04/05, T-02/T-03)
+
 **UI hint**: yes
 
 ### Phase 3: 대기 → 인증 (코어 루프 완성)
@@ -158,7 +159,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. 기반 — 미니앱 셸·디자인·인증/DB | 4/4 | Complete    | 2026-06-08 |
-| 2. 가짜 주문 루프 | 0/TBD | Not started | - |
+| 2. 가짜 주문 루프 | 1/4 | In Progress|  |
 | 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |
 | 5. 통계 & MY | 0/TBD | Not started | - |

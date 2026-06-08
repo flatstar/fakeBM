@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: 01-04 README.md (local run + Vercel deploy + server-only env matrix + BotFather root-/ URL + npx vitest run + real-device checklist) committed (ce5fa73); vercel.json omitted (standard Next.js). Deploy + real-device CHIPS-cookie reopen test are blocking human steps — NOT faked/auto-approved.
-stopped_at: Phase 2 context gathered
-last_updated: "2026-06-08T15:06:46.467Z"
-last_activity: 2026-06-08
+status: executing
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-06-08T15:47:53.068Z"
+last_activity: 2026-06-08 -- Phase 02 execution started
 progress:
   total_phases: 6
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 8
+  completed_plans: 5
   percent: 17
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-08)
 
 **Core value:** 가짜 주문→대기→인증 루프의 재미와 누적되는 절약/칼로리 통계·공유가 한 몸으로 작동한다.
-**Current focus:** Phase 1 — 기반 — 미니앱 셸 · 디자인 시스템 · 인증/DB 경계
+**Current focus:** Phase 02 — order-loop
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: 01-04 README.md (local run + Vercel deploy + server-only env matrix + BotFather root-/ URL + npx vitest run + real-device checklist) committed (ce5fa73); vercel.json omitted (standard Next.js). Deploy + real-device CHIPS-cookie reopen test are blocking human steps — NOT faked/auto-approved.
-Last activity: 2026-06-08
+Phase: 02 (order-loop) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-06-08 -- Phase 02 execution started
 
 Progress: [███░░░░░░░] 33%
 
@@ -52,6 +52,7 @@ Progress: [███░░░░░░░] 33%
 - Trend: steady (~7–8 min/plan, design-system port slightly faster than the auth slice)
 
 *Updated after each plan completion*
+| Phase 02 P01 | 5 min | 3 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,8 @@ Recent decisions affecting current work:
 - [01-03]: WelcomeIntro 배경은 다크 웜 그라데이션 (플랫 코럴 X) — 잠금된 `TgMainButton`(흰 라벨 고정)을 안 건드리고 코럴 CTA 대비 확보
 - [01-03]: 프로토타입 토큰 `var(--surface)/--primary/--shadow` → Tailwind v4 키 `var(--color-surface)/--color-primary/--shadow-card`로 1:1 포트 (plan 01 @theme)
 - [01-03]: home-shell RTL 테스트는 async RSC 레이아웃 대신 셸 조합(TgHeader+HomePage+BottomNav)을 직접 렌더 — requireSession 가드는 plan-02 auth suite가 이미 커버
+- [Phase ?]: computeOrderTotals (lib/order.ts) is the shared display/authority totals fn; plan-04 API reuses it with strict rejection — Single source of truth so client display and server-persisted totals are identical (D-04)
+- [Phase ?]: Single-store cart never silently resets; needsClear()/replaceCart() expose the D-09 confirm contract (lib/cart.tsx) — Avoid Pitfall 4 silent data loss; store page gates a confirm modal before swap
 
 ### Pending Todos
 
@@ -101,6 +104,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-08T15:06:46.463Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-order-loop/02-CONTEXT.md
+Last session: 2026-06-08T15:47:35.962Z
+Stopped at: Completed 02-01-PLAN.md
+Resume file: None
