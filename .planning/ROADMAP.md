@@ -67,7 +67,20 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. 장바구니가 "원래 낼 돈(메뉴 합계+배달팁)"과 "참으면 아끼는 돈/덜 먹는 kcal"를 함께 보여준다
   4. 사용자가 가상 주문을 확정하면 실결제 ₩0으로 주문이 서버에 기록되며, total·kcal은 서버가 시드 카탈로그로 권위 계산한다(클라 값 불신)
 
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+**Wave 1**
+
+- [ ] 02-01-home-browse-cart-PLAN.md — 홈 탐색·카테고리 필터·가게/메뉴 검색 + computeOrderTotals + localStorage 단일가게 장바구니 훅 (ORDER-01/02/04)
+
+**Wave 2** *(blocked on Wave 1; 02-02 and 02-03 run in parallel — disjoint files)*
+
+- [ ] 02-02-store-detail-add-PLAN.md — /store/[id] 메뉴·담기·수량 + 가게전환 확인 모달 (ORDER-03, D-09)
+- [ ] 02-03-orders-schema-PLAN.md — orders 테이블 (seed-snapshot) + [BLOCKING] db:push (ORDER-05 영속 substrate)
+
+**Wave 3** *(blocked on Waves 1–2)*
+
+- [ ] 02-04-cart-order-confirm-PLAN.md — 장바구니 payoff + 서버 권위 POST /api/orders + /order/[id] 소유검증 확정 화면 (ORDER-04/05, T-02/T-03)
 **UI hint**: yes
 
 ### Phase 3: 대기 → 인증 (코어 루프 완성)
