@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: 01-04 README.md (local run + Vercel deploy + server-only env matrix + BotFather root-/ URL + npx vitest run + real-device checklist) committed (ce5fa73); vercel.json omitted (standard Next.js). Deploy + real-device CHIPS-cookie reopen test are blocking human steps — NOT faked/auto-approved.
-stopped_at: "01-04 README (run/deploy/verify) shipped (ce5fa73); PAUSED at the blocking real-device human-verify. To complete: user deploys to Vercel (server-only env, none NEXT_PUBLIC_) + registers the root `/` BotFather URL + runs the real-device AUTH-04/05 checklist (CHIPS cookie reopen). Plan 01-01 drizzle-kit push still blocked on Neon credentials."
-last_updated: "2026-06-08T14:46:47.827Z"
+stopped_at: Phase 2 context gathered
+last_updated: "2026-06-08T15:06:46.467Z"
 last_activity: 2026-06-08
 progress:
   total_phases: 6
@@ -101,6 +101,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-08
-Stopped at: 01-04 README (run/deploy/verify) shipped (ce5fa73); PAUSED at the blocking real-device human-verify. To complete: user deploys to Vercel (server-only env, none NEXT_PUBLIC_) + registers the root `/` BotFather URL + runs the real-device AUTH-04/05 checklist (CHIPS cookie reopen). Plan 01-01 drizzle-kit push still blocked on Neon credentials.
-Resume file: .planning/phases/01-db/01-04-SUMMARY.md
+Last session: 2026-06-08T15:06:46.463Z
+Stopped at: Phase 2 context gathered
+Resume file: .planning/phases/02-order-loop/02-CONTEXT.md
