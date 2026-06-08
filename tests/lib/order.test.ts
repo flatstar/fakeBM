@@ -46,7 +46,8 @@ describe('lib/order computeOrderTotals (ORDER-04 basis, D-04)', () => {
   });
 
   it('savedAmount always equals total (D-04: 아낀 돈 = subtotal + tip)', () => {
-    for (const items of [{ m1: 1 }, { m1: 2, m3: 1 }, {}, { m2: 1, m4: 3 }]) {
+    const cases: Record<string, number>[] = [{ m1: 1 }, { m1: 2, m3: 1 }, {}, { m2: 1, m4: 3 }];
+    for (const items of cases) {
       const t = computeOrderTotals(r1, items);
       expect(t.savedAmount).toBe(t.total);
     }

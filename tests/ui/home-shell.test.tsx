@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 
 import { TgHeader } from '@/components/TgHeader';
 import { BottomNav } from '@/components/BottomNav';
+import { CartProvider } from '@/lib/cart';
 import HomePage from '@/app/(mini)/home/page';
 
 // BottomNav uses next/navigation usePathname for route-based active state; pin a
@@ -34,18 +35,22 @@ function installLocalStorage() {
 }
 
 /**
- * Mirrors the authenticated (mini)/layout.tsx shell composition (TgHeader +
- * HomePage + BottomNav) without the async requireSession() guard, which is an
- * RSC server boundary covered by the plan-02 auth suite. This is the offline
- * D-10 payoff smoke: header title + search placeholder + ✋ FAB all present.
+ * Mirrors the authenticated (mini)/layout.tsx shell composition (CartProvider +
+ * TgHeader + HomePage + BottomNav) without the async requireSession() guard,
+ * which is an RSC server boundary covered by the plan-02 auth suite. The
+ * CartProvider wrap matches the real layout (Phase 2: HomeClient consumes
+ * useCart for the cart badge). This is the offline D-10 payoff smoke: header
+ * title + search pill + ✋ FAB all present.
  */
 function HomeShell() {
   return (
-    <div>
-      <TgHeader title="배달의 만족" />
-      <HomePage />
-      <BottomNav />
-    </div>
+    <CartProvider>
+      <div>
+        <TgHeader title="배달의 만족" />
+        <HomePage />
+        <BottomNav />
+      </div>
+    </CartProvider>
   );
 }
 
@@ -62,9 +67,11 @@ describe('home shell (D-10 payoff surface)', () => {
     expect(screen.getByText('배달의 만족')).toBeDefined();
   });
 
-  it('renders the search pill placeholder', () => {
+  it('renders the live search pill (placeholder on the search input)', () => {
     render(<HomeShell />);
-    expect(screen.getByText('오늘은 뭘 참아볼까? 🤤')).toBeDefined();
+    // Phase 2 converts the static span to a live search input (D-10); the
+    // copy is preserved as the placeholder.
+    expect(screen.getByPlaceholderText('오늘은 뭘 참아볼까? 🤤')).toBeDefined();
   });
 
   it('renders the willpower hero amount through the Pretendard money wrapper', () => {
