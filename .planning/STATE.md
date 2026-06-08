@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 1 Plan 02 complete (offline); AUTH-01 live-DB smoke deferred
-last_updated: "2026-06-08T12:54:35Z"
-last_activity: 2026-06-08 -- Completed 01-02-PLAN.md (auth vertical slice, offline)
+stopped_at: Phase 1 Plan 03 complete (offline); design system ported, /home payoff shell live offline
+last_updated: "2026-06-08T13:08:00Z"
+last_activity: 2026-06-08 -- Completed 01-03-PLAN.md (coral design system port + D-10 home shell)
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 4
-  completed_plans: 1
-  percent: 17
+  completed_plans: 2
+  percent: 33
 ---
 
 # Project State
@@ -26,30 +26,30 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 1 (기반 — 미니앱 셸 · 디자인 시스템 · 인증/DB 경계) — EXECUTING
-Plan: 2 of 4 — COMPLETE (offline); next is 01-03 (design system port). Plan 01 still PAUSED at drizzle-kit push.
-Status: Plan 02 auth vertical slice done offline (28/1 suite, both HIGH gates, build clean); AUTH-01 live-DB smoke deferred pending Neon push
-Last activity: 2026-06-08 -- Completed 01-02-PLAN.md
+Plan: 3 of 4 — COMPLETE (offline); next is 01-04 (Vercel deploy + real-device SameSite check). Plan 01 still PAUSED at drizzle-kit push.
+Status: Plan 03 coral design system ported (13 primitives + catalog/formatters); D-10 home shell + 1회성 welcome intro live at /home behind the (mini) guard; vitest 36/1, next build + tsc clean
+Last activity: 2026-06-08 -- Completed 01-03-PLAN.md
 
-Progress: [██░░░░░░░░] 17%
+Progress: [███░░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 1
-- Average duration: 8 min
-- Total execution time: ~0.1 hours
+- Total plans completed: 2
+- Average duration: 7.5 min
+- Total execution time: ~0.25 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1 | 1 | 8 min | 8 min |
+| 1 | 2 | 15 min | 7.5 min |
 
 **Recent Trend:**
 
-- Last 5 plans: 01-02 (8 min, 3 tasks, 21 files)
-- Trend: —
+- Last 5 plans: 01-03 (7 min, 3 tasks, 19 files), 01-02 (8 min, 3 tasks, 21 files)
+- Trend: steady (~7–8 min/plan, design-system port slightly faster than the auth slice)
 
 *Updated after each plan completion*
 
@@ -69,6 +69,10 @@ Recent decisions affecting current work:
 - [01-02]: `@telegram-apps/*` 유지(`@tma.js/*` 미전환) — npm deprecation 알림은 research lock과 모순이나 설치본이 전체 API 노출. 네임스페이스 재조정 차후 플랜
 - [01-02]: window 의존 SDK는 `initTelegram()`/SessionBoot 내 dynamic import로 격리 → SSR/prerender 크래시 회피
 - [01-02]: 서버측 auth/db/api 테스트는 `@vitest-environment node` (jose webapi Uint8Array realm)
+- [01-03]: 히어로 절약 금액은 BMDohyeon 숫자 분리 대신 Pretendard `Won` 래퍼로 통째 렌더 — ₩ HARD RULE(Pitfall 7)이 chunky digit 스타일보다 우선
+- [01-03]: WelcomeIntro 배경은 다크 웜 그라데이션 (플랫 코럴 X) — 잠금된 `TgMainButton`(흰 라벨 고정)을 안 건드리고 코럴 CTA 대비 확보
+- [01-03]: 프로토타입 토큰 `var(--surface)/--primary/--shadow` → Tailwind v4 키 `var(--color-surface)/--color-primary/--shadow-card`로 1:1 포트 (plan 01 @theme)
+- [01-03]: home-shell RTL 테스트는 async RSC 레이아웃 대신 셸 조합(TgHeader+HomePage+BottomNav)을 직접 렌더 — requireSession 가드는 plan-02 auth suite가 이미 커버
 
 ### Pending Todos
 
@@ -97,5 +101,5 @@ Items acknowledged and carried forward from previous milestone close:
 ## Session Continuity
 
 Last session: 2026-06-08
-Stopped at: Completed 01-02-PLAN.md (auth vertical slice, offline). Next: 01-03 (design system port). Plan 01-01 drizzle-kit push still blocked on Neon credentials.
-Resume file: .planning/phases/01-db/01-02-SUMMARY.md
+Stopped at: Completed 01-03-PLAN.md (coral design system port + D-10 home shell, offline). Next: 01-04 (Vercel dev deploy + real-device SameSite session check). Plan 01-01 drizzle-kit push still blocked on Neon credentials.
+Resume file: .planning/phases/01-db/01-03-SUMMARY.md

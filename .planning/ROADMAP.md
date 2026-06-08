@@ -46,7 +46,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 01-03-PLAN.md — Design system port: shell primitives + catalog/formatters + welcome intro + home shell placeholder (D-10 payoff)
+- [x] 01-03-PLAN.md — Design system port: shell primitives + catalog/formatters + welcome intro + home shell placeholder (D-10 payoff) (DONE — 13 primitives + lib/catalog + lib/format ported; /home shell + 1회성 welcome intro behind the (mini) guard; vitest 36/1, next build + tsc clean — see 01-03-SUMMARY.md)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -144,7 +144,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 기반 — 미니앱 셸·디자인·인증/DB | 1/4 | In progress (02 done offline; 01 paused: Neon push blocked) | - |
+| 1. 기반 — 미니앱 셸·디자인·인증/DB | 2/4 | In progress (02·03 done offline; 01 paused: Neon push blocked) | - |
 | 2. 가짜 주문 루프 | 0/TBD | Not started | - |
 | 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |
