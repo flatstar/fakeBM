@@ -31,7 +31,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. 위조된/만료된(`auth_date` 초과) `initData` 요청은 서버에서 거부되고, 정상 서명만 사용자로 식별된다
   3. 검증된 세션이 미니앱 재방문·새로고침에서 유지되고, 무인증으로 보호 라우트 접근 시 차단된다(공유 라우트는 무인증 허용)
   4. 홈/가게/장바구니 등 화면이 코랄 정체성·BM/Pretendard 폰트 역할 분리(금액·숫자는 Pretendard)로 일관되게 렌더되고, ₩ 글리프·이모지·줄바꿈 함정이 없다
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Next 16 + Tailwind v4, Vitest + initData fixtures, coral tokens/fonts, Drizzle users schema + push to Neon
+- [ ] 01-02-PLAN.md — Auth vertical slice: initData validate → users upsert → jose session cookie → (mini) guard vs public share (AUTH-01..05)
+- [ ] 01-03-PLAN.md — Design system port: shell primitives + catalog/formatters + welcome intro + home shell placeholder (D-10 payoff)
+- [ ] 01-04-PLAN.md — Deploy walking skeleton to Vercel dev + real-device SameSite session persistence check (AUTH-04)
 **UI hint**: yes
 
 ### Phase 2: 가짜 주문 루프 (홈 → 가게 → 장바구니 → 주문)
@@ -109,7 +114,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 기반 — 미니앱 셸·디자인·인증/DB | 0/TBD | Not started | - |
+| 1. 기반 — 미니앱 셸·디자인·인증/DB | 0/4 | Planned | - |
 | 2. 가짜 주문 루프 | 0/TBD | Not started | - |
 | 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |
