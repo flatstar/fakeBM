@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 4 plans
 Plans:
 - [ ] 01-01-PLAN.md — Scaffold Next 16 + Tailwind v4, Vitest + initData fixtures, coral tokens/fonts, Drizzle users schema + push to Neon
-- [ ] 01-02-PLAN.md — Auth vertical slice: initData validate → users upsert → jose session cookie → (mini) guard vs public share (AUTH-01..05)
+- [ ] 01-02-PLAN.md — Auth vertical slice: public (boot) bootstrap → initData validate → users upsert → jose session cookie → (mini) guard vs public share, no first-open redirect loop (AUTH-01..05)
 - [ ] 01-03-PLAN.md — Design system port: shell primitives + catalog/formatters + welcome intro + home shell placeholder (D-10 payoff)
 - [ ] 01-04-PLAN.md — Deploy walking skeleton to Vercel dev + real-device SameSite session persistence check (AUTH-04)
 **UI hint**: yes

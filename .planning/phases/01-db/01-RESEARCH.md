@@ -327,6 +327,8 @@ export default async function MiniLayout({ children }: { children: React.ReactNo
 ```
 **Why both:** Next 16 docs warn that **Server Functions / Server Actions are NOT separate routes in the proxy chain** — a matcher can silently skip them `[CITED: nextjs.org/docs/.../proxy]`. So the layout `requireSession()` (and per-handler guards for any mutating endpoint) is the authoritative boundary; `proxy.ts` is a fast outer redirect. `share/*` is matched-out → stays public (AUTH-05). Note `route.ts` API handlers also re-check the session themselves.
 
+**CRITICAL — unauthenticated bootstrap surface (fixes the first-open redirect loop):** The client trigger that establishes the cookie (`SessionBoot`: SDK boot → `POST /api/session`) **must NOT live inside the `(mini)` guard** — the guard `redirect()`s a cookieless user before its children render, so a brand-new first-open user could never reach `SessionBoot`. Compounding, the matcher `'/((?!api|_next/static|_next/image|share|favicon.ico).*)'` also matches `/`, so the redirect target `/?reauth=1` is itself trapped → **redirect loop / cookieless lockout**. The fix: serve a **PUBLIC bootstrap surface at `/`** (a `(boot)` route group, outside the `(mini)` guard) that is also the `/?reauth=1` landing; it mounts `SessionBoot`, runs the boot + `POST /api/session`, then forwards into the protected `/home`. Exclude the bare index `/` from the matcher by adding `$` to the negative lookahead: `matcher: ['/((?!api|_next/static|_next/image|share|favicon.ico|$).*)']` — so `/?reauth=1` is not re-trapped while `(mini)` sub-routes like `/home` are still guarded. The protected home shell therefore lives at **`/home`** (`app/(mini)/home/page.tsx`), NOT at `/`. Pin this with a `first-open-bootstrap` test: cookieless request → bootstrap surface renders & may POST → cookie set → `/home` reachable, asserting the matcher does NOT trap `/`.
+
 ### Pattern 4: Neon + Drizzle `users` (AUTH-01, D-06)
 ```ts
 // db/schema.ts — Source: drizzle-orm 0.45.2 pg-core (Context7-verified in project STACK.md)
@@ -494,14 +496,17 @@ All load-bearing examples are inline in **Architecture Patterns 1–5** above (S
 
 ## Open Questions
 
-1. **zod v3 vs v4** — What version does the project standardize on (v4.4.3 latest vs v3.24 per STACK.md)?
+1. **zod v3 vs v4** — What version does the project standardize on (v4.4.3 latest vs v3.24 per STACK.md)? **(RESOLVED)**
    - What we know: npm latest is v4.4.3; v4 has breaking changes; `drizzle-zod` must match.
    - Recommendation: Planner locks one; if uncertain, pin `zod@^3.24` (matches STACK.md, lower migration friction) for Phase 1.
-2. **SameSite=None real-device behavior** — Does the cookie persist in Telegram iOS + Android in-app WebView?
+   - **Resolution:** Locked to `zod@^3.24` in plan 01-01 Task 1 (STACK-aligned, lower migration friction); `drizzle-zod` pinned to a zod-v3-compatible version. Decision recorded in the 01-01 SUMMARY.
+2. **SameSite=None real-device behavior** — Does the cookie persist in Telegram iOS + Android in-app WebView? **(RESOLVED)**
    - What we know: CHIPS/`Partitioned` is the correct modern mechanism; still unverified on device.
    - Recommendation: Make a real-device check a Phase-1 verification gate; keep header-token fallback ready.
-3. **Exact `@telegram-apps/sdk-react@3.3.9` API surface** — confirm `useRawInitData` and mount/bindCssVars names.
+   - **Resolution:** Made the explicit real-device device gate in plan 01-04 Task 2 (blocking human-verify); `Partitioned` (CHIPS) set on the `__session` cookie in plan 01-02; documented header-token / per-reopen re-auth fallback (D-03) if the device check fails.
+3. **Exact `@telegram-apps/sdk-react@3.3.9` API surface** — confirm `useRawInitData` and mount/bindCssVars names. **(RESOLVED)**
    - Recommendation: Confirm against installed types in Wave 0 (Context7 unavailable this session).
+   - **Resolution:** Confirmed against the installed `@telegram-apps/sdk-react@3.3.9` `node_modules` types in plan 01-01 Task 1 (`useRawInitData`, `init`, `miniApp`, `viewport`, `themeParams`, `initData`, `mockTelegramEnv`); any drift noted in the 01-01 SUMMARY (Assumption A2).
 
 ## Environment Availability
 

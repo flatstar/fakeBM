@@ -49,6 +49,7 @@ created: 2026-06-08
 | AUTH-04 | session persists across reopen on **real Telegram device** | T-CHIPS | cross-site iframe cookie survives | manual | (device checklist) | ❌ manual-only | ⬜ pending |
 | AUTH-05 | no session → `(mini)` request redirects (proxy + layout guard) | T-V4 | authoritative layout `requireSession()` | integration | `npx vitest run tests/auth/protected-redirect.test.ts` | ❌ W0 | ⬜ pending |
 | AUTH-05 | `share/*` opens with **no** session | T-V4 | explicit public boundary | integration | `npx vitest run tests/auth/public-open.test.ts` | ❌ W0 | ⬜ pending |
+| AUTH-01/04/05 | **first-open (cookieless)**: proxy matcher does NOT trap `/` (no redirect loop); public `(boot)` surface may POST `/api/session`; cookie set → protected `/home` reachable | T-BOOT (availability) | public bootstrap surface outside the `(mini)` guard + matcher excludes the `/` landing | integration | `npx vitest run tests/auth/first-open-bootstrap.test.ts` | ❌ W0 | ⬜ pending |
 | AUTH-01 | session create upserts a `users` row (no signup); idempotent on repeat | — | no signup; verified TG identity | integration (DB smoke) | `npx vitest run tests/db/users-upsert.test.ts` | ❌ W0 | ⬜ pending |
 | D-06 | `users.theme` defaults to `coral`; accepts `mint` | — | schema constraint | unit (schema) | `npx vitest run tests/db/schema.test.ts` | ❌ W0 | ⬜ pending |
 | D-11/12 | dev-mock returns a user in `NODE_ENV=development`; returns **null** in `production` | T-V14 (EoP, HIGH) | hard env guard; dead in prod | unit | `npx vitest run tests/auth/dev-mock-guard.test.ts` | ❌ W0 | ⬜ pending |
@@ -63,7 +64,7 @@ created: 2026-06-08
 ## Wave 0 Requirements
 
 - [ ] `vitest.config.ts` + framework install (`npm i -D vitest @vitejs/plugin-react @testing-library/react jsdom`)
-- [ ] `tests/auth/*` — verify-initdata, expiry, session, dev-mock-guard, protected-redirect, public-open
+- [ ] `tests/auth/*` — verify-initdata, expiry, session, dev-mock-guard, protected-redirect, public-open, first-open-bootstrap (cookieless → bootstrap POST → cookie → /home reachable, matcher does NOT trap `/`)
 - [ ] `tests/db/*` — users-upsert smoke, schema (needs a Neon test DB or throwaway branch)
 - [ ] `tests/api/session.test.ts` — cookie attributes assertion
 - [ ] `tests/fixtures/initdata.ts` — signed + forged + expired initData fixtures

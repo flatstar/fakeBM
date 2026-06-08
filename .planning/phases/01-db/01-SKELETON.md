@@ -9,7 +9,7 @@
 
 A user opening the Telegram mini app is identified with **no signup** (initData → server HMAC validate → `users` upsert → session cookie), and lands on the coral home shell behind an authenticated route boundary — with the session persisting across reopen on a real device.
 
-This single path crosses every architectural seam the rest of the project builds on: client Telegram SDK boot → raw initData → server validation (forged/expired rejected) → one real Neon/Drizzle write (`users` upsert) → jose session cookie → `(mini)` protected boundary vs public `share` → one real UI interaction (welcome intro → home shell) → deployed and device-verified.
+This single path crosses every architectural seam the rest of the project builds on: public `(boot)` bootstrap at `/` → client Telegram SDK boot → raw initData → server validation (forged/expired rejected) → one real Neon/Drizzle write (`users` upsert) → jose session cookie → forward into the `(mini)` protected boundary (`/home`) vs public `share` → one real UI interaction (welcome intro → home shell) → deployed and device-verified (no first-open redirect loop).
 
 ## Architectural Decisions
 
@@ -19,13 +19,13 @@ This single path crosses every architectural seam the rest of the project builds
 | Styling | **Tailwind CSS v4.3.0** (`@theme` + `@theme inline`) | Maps the prototype's CSS-variable design tokens 1:1; `@theme inline` is load-bearing for the `next/font` var chain |
 | Data layer | **Neon Postgres + Drizzle 0.45.2** (`neon-http` driver) | Serverless connection-exhaustion-safe; pooled `DATABASE_URL` for runtime, **direct `DIRECT_URL`** for migrations/`drizzle-kit push` |
 | Auth | **Telegram `initData` HMAC** (`@telegram-apps/init-data-node` `validate`) → **jose JWT session cookie** | No signup; bot token server-only; cookie `HttpOnly; Secure; SameSite=None; Partitioned` (CHIPS) for the cross-site Telegram iframe; re-auth on reopen (D-01/02/03) |
-| Route protection | **`(mini)` layout `requireSession()` guard (authoritative) + `proxy.ts` (coarse)** | Defense-in-depth: Server Actions bypass proxy, so the layout/handler guard is authoritative; `share/*` is matched-out and public (AUTH-05) |
+| Route protection | **`(mini)` layout `requireSession()` guard (authoritative) + `proxy.ts` (coarse) + public `(boot)` bootstrap surface at `/`** | Defense-in-depth: Server Actions bypass proxy, so the layout/handler guard is authoritative; `share/*` is matched-out and public (AUTH-05). The session-establishing `SessionBoot` lives in the PUBLIC `(boot)` surface (outside the guard, `/` excluded from the matcher) so a cookieless first-open user can reach it then forward to the protected `/home` — no redirect loop |
 | Dev auth bypass | **Env-guarded `devMockUser()` in `lib/auth.ts`** | `NODE_ENV==='development'` only; returns null in production (D-11/12) — the single security-critical hand-rolled branch, unit-tested to be dead in prod |
 | Fonts | **BM 한나/도현/주아 self-hosted via `next/font/local`; Pretendard via subset CDN** | BM display fonts free-for-commercial; **all ₩/numbers/kcal/stats route through Pretendard `tabular-nums`** (BM ₩ glyph renders as a narrow `~`) |
 | Theme | **CSS-variable swap on root `data-theme` (coral default ↔ mint), persisted on `users.theme`** | Mechanism + both palettes only this phase; toggle UI exposed in Phase 5 (D-04/05/06). No localStorage for theme |
 | Deployment target | **Vercel (dev/preview)** + dev BotFather bot | Real-device SameSite=None cookie verification (MEDIUM-confidence project Blocker) requires a deployed URL registered with a bot |
 | Test runner | **Vitest + @testing-library/react + jsdom** | Fast, Next 16/ESM-friendly; offline initData fixtures (signed/forged/expired) avoid a live Telegram client |
-| Directory layout | `app/` (route groups `(mini)` protected / `share` public, `api/session`), `lib/` (auth, db, telegram, catalog, format), `db/` (schema), `components/` (ported primitives), `app/fonts/`, `proxy.ts` at root | Mirrors project ARCHITECTURE.md; `(mini)` vs `share` boundary established here, followed by every later phase |
+| Directory layout | `app/` (route groups `(boot)` public bootstrap at `/` / `(mini)` protected with `/home` / `share` public, `api/session`), `lib/` (auth, db, telegram, catalog, format), `db/` (schema), `components/` (ported primitives), `app/fonts/`, `proxy.ts` at root | Mirrors project ARCHITECTURE.md; `(boot)` bootstrap vs `(mini)` protected vs `share` public boundary established here, followed by every later phase. Home shell at `/home`; `/` is the public bootstrap |
 
 ## Stack Touched in Phase 1
 
