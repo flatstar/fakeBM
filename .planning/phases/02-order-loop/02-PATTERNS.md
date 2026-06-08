@@ -16,7 +16,7 @@
 | `app/(mini)/store/[id]/page.tsx` (new) | component (page) | request-response | `app/(mini)/home/page.tsx` (Body/Card layout) + `SubBar` | role-match |
 | `app/(mini)/cart/page.tsx` (new) | component (page) | transform (display totals) | `app/(mini)/home/page.tsx` + `TgMainButton` CTA | role-match |
 | `app/(mini)/order/[id]/page.tsx` (new) | component (page) | request-response (SSR + owner read) | `app/(mini)/layout.tsx` (`requireSession` guard) + `home/page.tsx` | role-match |
-| `app/(mini)/cart/_components/ClearCartModal.tsx` (new) | component | event-driven | `app/(mini)/_components/WelcomeIntro.tsx` (role=dialog overlay) | exact |
+| `app/(mini)/store/[id]/_components/ClearCartModal.tsx` (new) | component | event-driven | `app/(mini)/_components/WelcomeIntro.tsx` (role=dialog overlay) | exact |
 | Home search/filter CC (`_components/HomeClient.tsx`) | component | transform (client filter) | `components/BottomNav.tsx` (`'use client'` + usePathname) | role-match |
 | `tests/api/orders/route.test.ts` (new) | test | request-response | `tests/api/session.test.ts` | exact |
 | `tests/lib/order.test.ts` (new) | test | transform | `tests/lib/format.test.ts` / `tests/db/schema.test.ts` | role-match |
@@ -188,7 +188,7 @@ if (!order) notFound();
 
 ---
 
-### `app/(mini)/cart/_components/ClearCartModal.tsx` — store-switch confirm modal (component, event-driven)
+### `app/(mini)/store/[id]/_components/ClearCartModal.tsx` — store-switch confirm modal (component, event-driven)
 
 **Analog:** `app/(mini)/_components/WelcomeIntro.tsx` (lines 45-101) — exact overlay-dialog pattern.
 
