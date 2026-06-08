@@ -14,6 +14,8 @@
  */
 import { redirect } from 'next/navigation';
 import { requireSession } from '@/lib/auth';
+import { TgHeader } from '@/components/TgHeader';
+import { BottomNav } from '@/components/BottomNav';
 
 export default async function MiniLayout({
   children,
@@ -23,7 +25,32 @@ export default async function MiniLayout({
   const uid = await requireSession();
   if (!uid) redirect('/?reauth=1'); // AUTH-05: no session → bootstrap surface
 
-  // Minimal shell wrapper; the full TG chrome (TgHeader + BottomNav + safe-area)
-  // is populated in plan 03. data-theme is set on <html> in the root layout (D-05).
-  return <div data-mini-shell>{children}</div>;
+  // Authenticated TG shell chrome (plan 03): TgHeader pinned at top, BottomNav
+  // (5-slot + 참기 ✋ FAB) pinned at bottom, children in the scroll area between.
+  // The session-establishing SessionBoot is NOT mounted here — it lives in the
+  // public (boot) group (the guard above redirects cookieless users before any
+  // child renders). data-theme is set on <html> in the root layout (D-05).
+  // dvh/svh + env(safe-area-inset-*) keep the shell edge-to-edge inside the
+  // Telegram WebView (Pitfall 7); position:relative anchors absolute overlays
+  // (welcome intro / confetti).
+  return (
+    <div
+      data-mini-shell
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100dvh',
+        minHeight: '100svh',
+        position: 'relative',
+        overflow: 'hidden',
+        background: 'var(--color-bg)',
+      }}
+    >
+      <TgHeader title="배달의 만족" />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
+        {children}
+      </div>
+      <BottomNav />
+    </div>
+  );
 }
