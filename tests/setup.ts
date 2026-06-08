@@ -14,6 +14,17 @@
  */
 import { FIXTURE_BOT_TOKEN } from './fixtures/initdata';
 
+// Load .env.local locally (Node built-in; vitest, like drizzle-kit, does not
+// auto-load it) so the live-DB upsert smoke (skipIf(!DATABASE_URL)) activates
+// once Neon credentials exist. Guarded: absent in CI → the smoke stays skipped.
+// Loaded BEFORE the BOT_TOKEN override below so the offline auth suite still
+// keys its HMAC off FIXTURE_BOT_TOKEN, not any real BOT_TOKEN in .env.local.
+try {
+  process.loadEnvFile('.env.local');
+} catch {
+  // no .env.local (CI) — offline-only env
+}
+
 process.env.BOT_TOKEN = FIXTURE_BOT_TOKEN;
 process.env.SESSION_SECRET =
   process.env.SESSION_SECRET ?? 'test-session-secret-not-for-prod-0123456789';
