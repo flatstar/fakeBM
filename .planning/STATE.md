@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-06-08T15:47:53.068Z"
+last_updated: "2026-06-08T15:53:39.151Z"
 last_activity: 2026-06-08 -- Phase 02 execution started
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 8
-  completed_plans: 5
+  completed_plans: 6
   percent: 17
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 02 (order-loop) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 Status: Ready to execute
 Last activity: 2026-06-08 -- Phase 02 execution started
 
@@ -53,6 +53,7 @@ Progress: [███░░░░░░░] 33%
 
 *Updated after each plan completion*
 | Phase 02 P01 | 5 min | 3 tasks | 10 files |
+| Phase 02 P02 | ~3 min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -76,6 +77,7 @@ Recent decisions affecting current work:
 - [01-03]: home-shell RTL 테스트는 async RSC 레이아웃 대신 셸 조합(TgHeader+HomePage+BottomNav)을 직접 렌더 — requireSession 가드는 plan-02 auth suite가 이미 커버
 - [Phase ?]: computeOrderTotals (lib/order.ts) is the shared display/authority totals fn; plan-04 API reuses it with strict rejection — Single source of truth so client display and server-persisted totals are identical (D-04)
 - [Phase ?]: Single-store cart never silently resets; needsClear()/replaceCart() expose the D-09 confirm contract (lib/cart.tsx) — Avoid Pitfall 4 silent data loss; store page gates a confirm modal before swap
+- [Phase ?]: [02-02]: StoreMenu owns the D-09 gate (pendingId state) + renders ClearCartModal inline; modal is pure presentational with no cart authority
 
 ### Pending Todos
 
@@ -104,6 +106,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-08T15:47:35.962Z
+Last session: 2026-06-08T15:53:23.591Z
 Stopped at: Completed 02-01-PLAN.md
 Resume file: None
