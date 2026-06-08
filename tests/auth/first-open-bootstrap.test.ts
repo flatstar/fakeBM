@@ -24,8 +24,11 @@ import { config } from '@/proxy';
 import { issueSession, readSession } from '@/lib/auth';
 
 /**
- * Compile a Next.js matcher pattern to a RegExp the way Next does (anchored,
- * full path match). Next treats matcher entries as full-path regexes.
+ * Approximate Next's matcher compilation: anchor the pattern as a full-path
+ * regex (Next treats matcher entries as full-path regexes against the PATHNAME
+ * only). This is an approximation of Next's internal compilation, but it is
+ * exact enough to pin the segment-boundary semantics CR-01 hinges on (it would
+ * fail on the old prefix-based lookahead — see the prefix-collision cases below).
  */
 function compileMatcher(pattern: string): RegExp {
   return new RegExp(`^${pattern}$`);
