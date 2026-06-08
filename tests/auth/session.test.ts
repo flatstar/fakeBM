@@ -8,7 +8,23 @@
  * token cannot impersonate a uid).
  */
 import { describe, it, expect } from 'vitest';
+import { SignJWT } from 'jose';
 import { issueSession, readSession } from '@/lib/auth';
+
+/**
+ * Sign a session JWT off the SAME SESSION_SECRET the auth core uses (pinned by
+ * tests/setup.ts), with an arbitrary `uid` payload. This forges a token whose
+ * SIGNATURE is valid but whose uid violates the "positive integer" invariant —
+ * proving readSession rejects malformed identities at the trust boundary, not
+ * just bad signatures.
+ */
+async function signWithUid(uid: unknown): Promise<string> {
+  return new SignJWT({ uid: uid as number })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('1h')
+    .sign(new TextEncoder().encode(process.env.SESSION_SECRET!));
+}
 
 describe('session round-trip (AUTH-04)', () => {
   it('issueSession then readSession returns the same uid', async () => {
@@ -33,5 +49,16 @@ describe('session round-trip (AUTH-04)', () => {
 
   it('readSession returns null for a non-JWT garbage string', async () => {
     expect(await readSession('not-a-jwt')).toBeNull();
+  });
+
+  it('readSession rejects a validly-signed JWT with a non-Telegram uid (WR-01)', async () => {
+    // Telegram ids are positive integers; 0, negatives, floats, and non-finite
+    // uids must NOT be treated as valid sessions even with a good signature.
+    expect(await readSession(await signWithUid(0))).toBeNull();
+    expect(await readSession(await signWithUid(-1))).toBeNull();
+    expect(await readSession(await signWithUid(1.5))).toBeNull();
+    expect(await readSession(await signWithUid('99281932'))).toBeNull();
+    // Control: a valid positive integer uid still resolves.
+    expect(await readSession(await signWithUid(99281932))).toBe(99281932);
   });
 });

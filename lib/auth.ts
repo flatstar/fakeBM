@@ -70,7 +70,9 @@ export async function readSession(jwt?: string): Promise<number | null> {
   try {
     const { payload } = await jwtVerify(jwt, sessionSecret());
     const uid = payload.uid;
-    return typeof uid === 'number' ? uid : null;
+    // Enforce "valid session ⇒ valid Telegram uid": Telegram ids are positive
+    // integers, so reject 0, negatives, non-integers, and non-finite values.
+    return typeof uid === 'number' && Number.isInteger(uid) && uid > 0 ? uid : null;
   } catch {
     return null;
   }
