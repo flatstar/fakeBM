@@ -4,14 +4,14 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-06-09T00:56:30.000Z"
+last_updated: "2026-06-08T16:06:12.704Z"
 last_activity: 2026-06-09 -- 02-03 orders schema pushed to Neon
 progress:
   total_phases: 6
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 8
-  completed_plans: 7
-  percent: 19
+  completed_plans: 8
+  percent: 33
 ---
 
 # Project State
@@ -55,6 +55,7 @@ Progress: [████░░░░░░] 44%
 | Phase 02 P01 | 5 min | 3 tasks | 10 files |
 | Phase 02 P02 | ~3 min | 2 tasks | 5 files |
 | Phase 02 P03 | ~6 min | 2 tasks | 2 files |
+| Phase 02 P04 | 5m | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,8 @@ Recent decisions affecting current work:
 - [Phase ?]: [02-02]: StoreMenu owns the D-09 gate (pendingId state) + renders ClearCartModal inline; modal is pure presentational with no cart authority
 - [02-03]: orders = single jsonb items column + integer KRW columns + sequential identity PK (no normalized order_items table, no nanoid) — receipts read items whole + owner-scoped reads make the integer PK IDOR-safe (RESEARCH A2/A3)
 - [02-03]: Neon credentials now provisioned in .env.local — orders DDL PUSHED live over DIRECT_URL (12 cols + orders_tg_created_idx + users FK confirmed); the Phase 1 push blocker is resolved
+- [Phase ?]: 02-04: order API body schema has no money fields (D-06); server recomputes from RESTAURANTS whitelist — client money structurally untrusted (T-02)
+- [Phase ?]: 02-04: /order/[id] read is owner-scoped (and(eq id, eq tgId)) → notFound on mismatch — IDOR-safe (T-03)
 
 ### Pending Todos
 
@@ -109,6 +112,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T00:56:30.000Z
+Last session: 2026-06-08T16:05:59.382Z
 Stopped at: Completed 02-03-PLAN.md
 Resume file: None

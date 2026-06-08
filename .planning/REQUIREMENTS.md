@@ -21,7 +21,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ORDER-02**: 사용자는 카테고리로 가게를 필터링할 수 있다
 - [x] **ORDER-03**: 사용자는 가게 상세에서 메뉴(가격·kcal)를 보고 장바구니에 담고 수량을 조절할 수 있다
 - [x] **ORDER-04**: 장바구니는 "원래 낼 돈(메뉴 합계+배달팁)"과 "지금 참으면 아끼는 돈/덜 먹는 kcal"를 보여준다
-- [ ] **ORDER-05**: 사용자는 가상 주문을 확정하면 실제 결제 ₩0으로 주문이 서버에 기록된다 (total·kcal 서버 권위 계산)
+- [x] **ORDER-05**: 사용자는 가상 주문을 확정하면 실제 결제 ₩0으로 주문이 서버에 기록된다 (total·kcal 서버 권위 계산)
 
 ### Delivery Wait (WAIT)
 
@@ -112,7 +112,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ORDER-02 | Phase 2 | Complete |
 | ORDER-03 | Phase 2 | Complete |
 | ORDER-04 | Phase 2 | Complete |
-| ORDER-05 | Phase 2 | Pending |
+| ORDER-05 | Phase 2 | Complete |
 | WAIT-01 | Phase 3 | Pending |
 | WAIT-02 | Phase 3 | Pending |
 | WAIT-03 | Phase 3 | Pending |

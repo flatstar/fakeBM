@@ -14,7 +14,7 @@
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: 기반 — 미니앱 셸 · 디자인 시스템 · 인증/DB 경계** - 무가입 인증·세션·라우트 보호 + Neon/Drizzle 기반 + 디자인 토큰/폰트/공통 컴포넌트 (completed 2026-06-08)
-- [ ] **Phase 2: 가짜 주문 루프 (홈 → 가게 → 장바구니 → 주문)** - 시드 카탈로그 탐색·필터·장바구니·서버 권위 가상 주문(₩0)
+- [x] **Phase 2: 가짜 주문 루프 (홈 → 가게 → 장바구니 → 주문)** - 시드 카탈로그 탐색·필터·장바구니·서버 권위 가상 주문(₩0) (completed 2026-06-08)
 - [ ] **Phase 3: 대기 → 인증 (코어 루프 완성)** - 가짜 배달 대기 연출 + 듀얼 사진 업로드 + 가짜 영수증 + 인증 포스트 저장
 - [ ] **Phase 4: 명예의 전당 피드 (+ 좋아요 + 모더레이션)** - 공용 피드·커서 페이지네이션·멱등 좋아요 + 신고/숨김/검토 큐
 - [ ] **Phase 5: 통계 & MY** - 누적 절약/kcal/스트릭 실시간 집계 + 주간 차트 + 환산 비유 + 내 기록
@@ -80,7 +80,7 @@ Plans:
 
 **Wave 3** *(blocked on Waves 1–2)*
 
-- [ ] 02-04-cart-order-confirm-PLAN.md — 장바구니 payoff + 서버 권위 POST /api/orders + /order/[id] 소유검증 확정 화면 (ORDER-04/05, T-02/T-03)
+- [x] 02-04-cart-order-confirm-PLAN.md — 장바구니 payoff + 서버 권위 POST /api/orders + /order/[id] 소유검증 확정 화면 (ORDER-04/05, T-02/T-03)
 
 **UI hint**: yes
 
@@ -159,7 +159,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. 기반 — 미니앱 셸·디자인·인증/DB | 4/4 | Complete    | 2026-06-08 |
-| 2. 가짜 주문 루프 | 2/4 | In Progress|  |
+| 2. 가짜 주문 루프 | 4/4 | Complete   | 2026-06-08 |
 | 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |
 | 5. 통계 & MY | 0/TBD | Not started | - |
