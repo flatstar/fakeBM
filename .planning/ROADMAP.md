@@ -42,7 +42,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 01-02-PLAN.md — Auth vertical slice: public (boot) bootstrap → initData validate → users upsert → jose session cookie → (mini) guard vs public share, no first-open redirect loop (AUTH-01..05)
+- [x] 01-02-PLAN.md — Auth vertical slice: public (boot) bootstrap → initData validate → users upsert → jose session cookie → (mini) guard vs public share, no first-open redirect loop (AUTH-01..05) (DONE — offline suite 28/1; AUTH-01 live-DB smoke deferred pending Neon push — see 01-02-SUMMARY.md)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -144,7 +144,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 기반 — 미니앱 셸·디자인·인증/DB | 0/4 | In progress (01 paused: Neon push blocked) | - |
+| 1. 기반 — 미니앱 셸·디자인·인증/DB | 1/4 | In progress (02 done offline; 01 paused: Neon push blocked) | - |
 | 2. 가짜 주문 루프 | 0/TBD | Not started | - |
 | 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |

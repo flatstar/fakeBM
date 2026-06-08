@@ -9,11 +9,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Authentication (AUTH)
 
-- [ ] **AUTH-01**: 사용자는 텔레그램 미니앱으로 앱을 열면 별도 가입 없이 바로 사용할 수 있다
-- [ ] **AUTH-02**: 서버는 텔레그램 `initData`의 HMAC 서명을 봇 토큰으로 검증해 사용자를 식별한다 (위조 차단)
-- [ ] **AUTH-03**: 만료된/재사용된 `initData`(`auth_date` 초과)는 거부된다
-- [ ] **AUTH-04**: 검증된 사용자 세션이 미니앱 내 재방문/새로고침에서 유지된다
-- [ ] **AUTH-05**: 인증이 필요한 미니앱 라우트는 무인증 접근 시 차단되고, 공유 라우트는 무인증으로 열린다
+- [~] **AUTH-01**: 사용자는 텔레그램 미니앱으로 앱을 열면 별도 가입 없이 바로 사용할 수 있다 (upsert 와이어링 오프라인 검증; 라이브 Neon 멱등 스모크 보류 — Neon push 대기)
+- [x] **AUTH-02**: 서버는 텔레그램 `initData`의 HMAC 서명을 봇 토큰으로 검증해 사용자를 식별한다 (위조 차단)
+- [x] **AUTH-03**: 만료된/재사용된 `initData`(`auth_date` 초과)는 거부된다
+- [x] **AUTH-04**: 검증된 사용자 세션이 미니앱 내 재방문/새로고침에서 유지된다
+- [x] **AUTH-05**: 인증이 필요한 미니앱 라우트는 무인증 접근 시 차단되고, 공유 라우트는 무인증으로 열린다
 
 ### Ordering (ORDER)
 
@@ -103,11 +103,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
-| AUTH-05 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 (01-02) | Partial — offline upsert wiring proven; live Neon smoke deferred (Neon push) |
+| AUTH-02 | Phase 1 (01-02) | Complete (offline, HIGH gate) |
+| AUTH-03 | Phase 1 (01-02) | Complete (offline) |
+| AUTH-04 | Phase 1 (01-02) | Complete (offline; real-device CHIPS check deferred to plan 04) |
+| AUTH-05 | Phase 1 (01-02) | Complete (offline) |
 | ORDER-01 | Phase 2 | Pending |
 | ORDER-02 | Phase 2 | Pending |
 | ORDER-03 | Phase 2 | Pending |
