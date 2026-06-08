@@ -20,7 +20,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 // factories (hoisted above imports) can close over them.
 const { insertValues, returning, requireSession } = vi.hoisted(() => {
   const returning = vi.fn(async () => [{ id: 1 }]);
-  const values = vi.fn(() => ({ returning }));
+  const values = vi.fn((_v: Record<string, unknown>) => ({ returning }));
   return {
     insertValues: values,
     returning,
@@ -62,7 +62,10 @@ describe('POST /api/orders — server authority (T-02)', () => {
     expect(await res.json()).toEqual({ orderId: 1 });
 
     expect(insertValues).toHaveBeenCalledTimes(1);
-    const inserted = insertValues.mock.calls[0][0];
+    const inserted = insertValues.mock.calls[0]![0] as Record<string, number | string> & {
+      items: { id: string; name: string; emoji: string; price: number; kcal: number; qty: number }[];
+      orderNo: string;
+    };
     expect(inserted).toMatchObject({
       tgId: 99281932,
       restId: 'r1',
@@ -86,7 +89,10 @@ describe('POST /api/orders — server authority (T-02)', () => {
     // m1 x2 (40000 / 3280) + m3 치즈볼 6000 / 720; tip 3000.
     const res = await POST(postJson({ restId: 'r1', items: { m1: 2, m3: 1 } }));
     expect(res.status).toBe(200);
-    const inserted = insertValues.mock.calls[0][0];
+    const inserted = insertValues.mock.calls[0]![0] as Record<string, number | string> & {
+      items: { id: string; name: string; emoji: string; price: number; kcal: number; qty: number }[];
+      orderNo: string;
+    };
     expect(inserted).toMatchObject({
       subtotal: 46000, // 20000*2 + 6000
       tip: 3000,
@@ -109,7 +115,10 @@ describe('POST /api/orders — server authority (T-02)', () => {
       }),
     );
     expect(res.status).toBe(200);
-    const inserted = insertValues.mock.calls[0][0];
+    const inserted = insertValues.mock.calls[0]![0] as Record<string, number | string> & {
+      items: { id: string; name: string; emoji: string; price: number; kcal: number; qty: number }[];
+      orderNo: string;
+    };
     // server recompute wins over every forged value above.
     expect(inserted.total).toBe(23000);
     expect(inserted.subtotal).toBe(20000);
