@@ -38,7 +38,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 4 plansPlans:
 **Wave 1**
 
-- [ ] 01-01-PLAN.md — Scaffold Next 16 + Tailwind v4, Vitest + initData fixtures, coral tokens/fonts, Drizzle users schema + push to Neon
+- [~] 01-01-PLAN.md — Scaffold Next 16 + Tailwind v4, Vitest + initData fixtures, coral tokens/fonts, Drizzle users schema + push to Neon (Tasks 1–3 + fixtures DONE; drizzle-kit push BLOCKED on user Neon credentials — see 01-01-SUMMARY.md)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -144,7 +144,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 기반 — 미니앱 셸·디자인·인증/DB | 0/4 | Planned | - |
+| 1. 기반 — 미니앱 셸·디자인·인증/DB | 0/4 | In progress (01 paused: Neon push blocked) | - |
 | 2. 가짜 주문 루프 | 0/TBD | Not started | - |
 | 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |

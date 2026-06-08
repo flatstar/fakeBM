@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 1 (기반 — 미니앱 셸 · 디자인 시스템 · 인증/DB 경계) — EXECUTING
-Plan: 1 of 4
-Status: Executing Phase 1
-Last activity: 2026-06-08 -- Phase 1 execution started
+Plan: 1 of 4 — PAUSED at Task 4 [BLOCKING] drizzle-kit push (awaiting Neon credentials)
+Status: Executing Phase 1 — Plan 01 tasks 1–3 + Task 4 fixtures done; DB push blocked
+Last activity: 2026-06-08 -- Plan 01 offline scope complete; checkpoint: Neon DIRECT_URL required
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 6%
 
 ## Performance Metrics
 
@@ -73,6 +73,8 @@ None yet.
 
 [연구가 식별한 페이즈 진입 시 검증 항목]
 
+- [Plan 01-01 CHECKPOINT]: `npx drizzle-kit push` blocked — needs user-provisioned Neon `DIRECT_URL` (+ `DATABASE_URL` pooled, `BOT_TOKEN`, `SESSION_SECRET`). Live `users` table required by plan 02 AUTH-01 DB smoke test. See 01-01-SUMMARY.md "Blocked — Human Action Required".
+- [Plan 01-01 FLAG]: npm reports `@telegram-apps/*` deprecated → `@tma.js/*`, contradicting RESEARCH (which locks `@telegram-apps/*` as current). Packages installed clean with full API. Reconcile namespace in plan 02.
 - [Phase 1]: SameSite=None 쿠키 iOS/안드로이드 텔레그램 인앱 브라우저 실기기 동작 (research confidence MEDIUM) — 페이즈 시작 시 실디바이스 검증
 - [Phase 1]: Neon serverless 드라이버(HTTP) vs pooler 선택 확정 (되돌리기 비쌈), `DIRECT_URL` 마이그레이션 분리
 - [Phase 6]: OG 한글 subset 500KB 내 구성 가능 여부 — 페이즈 시작 시 확인 (research flag)
@@ -89,6 +91,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-08T11:24:40.361Z
-Stopped at: Phase 1 UI-SPEC approved
-Resume file: .planning/phases/01-db/01-UI-SPEC.md
+Last session: 2026-06-08
+Stopped at: Plan 01-01 Task 4 [BLOCKING] drizzle-kit push — awaiting user Neon/Telegram credentials
+Resume file: .planning/phases/01-db/01-01-SUMMARY.md
