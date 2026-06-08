@@ -1,10 +1,11 @@
 ---
 phase: 1
 slug: db
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-06-08
+reviewed_at: 2026-06-08
 ---
 
 # Phase 1 — UI Design Contract
@@ -132,6 +133,11 @@ Notes:
   (500)** for body/secondary and **bold (700–800)** for emphasis/headings. BM display fonts read as a
   single heavy weight.
 - All numeric content: `font-variant-numeric: tabular-nums` + Pretendard (see Font role contract).
+- **CLOSED, SOURCE-LOCKED SCALE (checker rec, Dim 4):** the size list above is a *faithful extraction from
+  a pixel-defined prototype*, not license to invent more sizes. Implement it as a fixed token set —
+  `--text-body 13`, `--text-label 14–15`, `--text-title 16–18`, `--text-display 20–22`, `--text-hero 24`,
+  `--text-micro 10–11` — and add NO sizes beyond these. Collapse near-neighbors (14–15, 20–22) to a single
+  token in the impl layer. Adding a new size requires updating this contract first.
 
 ---
 
@@ -198,7 +204,7 @@ State/spacing/typography contracts:
 
 | Component | Source | Contract |
 |-----------|--------|----------|
-| **TgHeader** | `ui.jsx` | 50px tall, `--tg-header` bg, 1px `--tg-header-line` bottom border. Center: title 16/700 + subtitle "mini app · bot" 11/400 `--tg-sub`. Right: minimize (chevDown) + close (x) icons, 18px, `--tg-icon`, 7px padding. Optional left back ("뒤로", `--tg-link`, only on subpages). |
+| **TgHeader** | `ui.jsx` | 50px tall, `--tg-header` bg, 1px `--tg-header-line` bottom border. Center: title 16/700 + subtitle "mini app · bot" 11/400 `--tg-sub`. Right: minimize (chevDown) + close (x) icons, 18px, `--tg-icon`, 7px padding. Optional left back ("뒤로", `--tg-link`, only on subpages). **A11y (checker rec, Dim 2):** icon-only buttons MUST carry `aria-label` — minimize → "최소화", close → "닫기", back → "뒤로". |
 | **TgMainButton** | `ui.jsx` | Pinned bottom CTA. Full-width, radius 16, min-height 54, coral fill (`--primary`) → white text. Label 17/800 BMHanna + optional sub 12/500 Pretendard. Disabled: bg `#E3D8CE`, no shadow. Press: `scale(.98)`. Safe-area bottom padding. Top gradient fade over `--bg`. |
 | **Card** | `ui.jsx` | `--surface` bg, radius 18, `--shadow`. Clickable variant gets `cursor: pointer`. |
 | **Body** | `ui.jsx` | Scroll container, `flex:1; overflow-y:auto`, hidden scrollbar (`.app-scroll`). |
@@ -312,11 +318,11 @@ No third-party registries declared; no `npx shadcn view` vetting required.
 
 ## Checker Sign-Off
 
-- [ ] Dimension 1 Copywriting: PASS
-- [ ] Dimension 2 Visuals: PASS
-- [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
-- [ ] Dimension 5 Spacing: PASS
-- [ ] Dimension 6 Registry Safety: PASS
+- [x] Dimension 1 Copywriting: PASS
+- [x] Dimension 2 Visuals: PASS (a11y aria-label rec applied to TgHeader)
+- [x] Dimension 3 Color: PASS
+- [x] Dimension 4 Typography: FLAG → resolved (closed source-locked scale documented)
+- [x] Dimension 5 Spacing: PASS
+- [x] Dimension 6 Registry Safety: PASS
 
-**Approval:** pending
+**Approval:** APPROVED (gsd-ui-checker, 2026-06-08) — 6/6 dimensions pass; 2 non-blocking recommendations applied.
