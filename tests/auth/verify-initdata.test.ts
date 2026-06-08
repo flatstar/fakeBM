@@ -7,6 +7,7 @@
  * block-on-high gate (threat T-01-V2): a tampered user.id must never validate.
  */
 import { describe, it, expect } from 'vitest';
+import { isSignatureInvalidError } from '@telegram-apps/init-data-node';
 import { verifyInitData } from '@/lib/auth';
 import { validInitData, forgedInitData } from '../fixtures/initdata';
 
@@ -19,7 +20,17 @@ describe('verifyInitData (AUTH-02)', () => {
     expect(parsed.user!.first_name).toBe('Test');
   });
 
-  it('throws on a forged signature (HIGH gate — forged identity rejected)', () => {
-    expect(() => verifyInitData(forgedInitData)).toThrow();
+  it('throws SignatureInvalidError on a forged signature (HIGH gate)', () => {
+    // WR-07: assert the *reason* it rejected — a bare .toThrow() would also be
+    // satisfied by an accidental crash (e.g. missing BOT_TOKEN), masking a
+    // broken signature gate. Pin the specific signature-rejection path.
+    let caught: unknown;
+    try {
+      verifyInitData(forgedInitData);
+    } catch (err) {
+      caught = err;
+    }
+    expect(caught).toBeDefined();
+    expect(isSignatureInvalidError(caught)).toBe(true);
   });
 });
