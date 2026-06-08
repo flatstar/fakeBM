@@ -16,6 +16,7 @@ import { redirect } from 'next/navigation';
 import { requireSession } from '@/lib/auth';
 import { TgHeader } from '@/components/TgHeader';
 import { BottomNav } from '@/components/BottomNav';
+import { CartProvider } from '@/lib/cart';
 
 export default async function MiniLayout({
   children,
@@ -46,11 +47,15 @@ export default async function MiniLayout({
         background: 'var(--color-bg)',
       }}
     >
-      <TgHeader title="배달의 만족" />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
-        {children}
-      </div>
-      <BottomNav />
+      {/* CartProvider wraps the whole authenticated shell so /home, /store and
+          /cart share one localStorage-backed cart instance (D-08). */}
+      <CartProvider>
+        <TgHeader title="배달의 만족" />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
+          {children}
+        </div>
+        <BottomNav />
+      </CartProvider>
     </div>
   );
 }
