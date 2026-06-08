@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-06-08T15:53:39.151Z"
-last_activity: 2026-06-08 -- Phase 02 execution started
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-06-09T00:56:30.000Z"
+last_activity: 2026-06-09 -- 02-03 orders schema pushed to Neon
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 8
-  completed_plans: 6
-  percent: 17
+  completed_plans: 7
+  percent: 19
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 02 (order-loop) — EXECUTING
-Plan: 3 of 4
-Status: Ready to execute
-Last activity: 2026-06-08 -- Phase 02 execution started
+Plan: 4 of 4
+Status: Ready to execute (Wave 3 — 02-04 cart/order confirm)
+Last activity: 2026-06-09 -- 02-03 orders schema pushed to Neon
 
-Progress: [███░░░░░░░] 33%
+Progress: [████░░░░░░] 44%
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Progress: [███░░░░░░░] 33%
 *Updated after each plan completion*
 | Phase 02 P01 | 5 min | 3 tasks | 10 files |
 | Phase 02 P02 | ~3 min | 2 tasks | 5 files |
+| Phase 02 P03 | ~6 min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,8 @@ Recent decisions affecting current work:
 - [Phase ?]: computeOrderTotals (lib/order.ts) is the shared display/authority totals fn; plan-04 API reuses it with strict rejection — Single source of truth so client display and server-persisted totals are identical (D-04)
 - [Phase ?]: Single-store cart never silently resets; needsClear()/replaceCart() expose the D-09 confirm contract (lib/cart.tsx) — Avoid Pitfall 4 silent data loss; store page gates a confirm modal before swap
 - [Phase ?]: [02-02]: StoreMenu owns the D-09 gate (pendingId state) + renders ClearCartModal inline; modal is pure presentational with no cart authority
+- [02-03]: orders = single jsonb items column + integer KRW columns + sequential identity PK (no normalized order_items table, no nanoid) — receipts read items whole + owner-scoped reads make the integer PK IDOR-safe (RESEARCH A2/A3)
+- [02-03]: Neon credentials now provisioned in .env.local — orders DDL PUSHED live over DIRECT_URL (12 cols + orders_tg_created_idx + users FK confirmed); the Phase 1 push blocker is resolved
 
 ### Pending Todos
 
@@ -87,7 +90,7 @@ None yet.
 
 [연구가 식별한 페이즈 진입 시 검증 항목]
 
-- [Plan 01-01 CHECKPOINT]: `npx drizzle-kit push` blocked — needs user-provisioned Neon `DIRECT_URL` (+ `DATABASE_URL` pooled, `BOT_TOKEN`, `SESSION_SECRET`). Live `users` table required by plan 02 AUTH-01 DB smoke test. See 01-01-SUMMARY.md "Blocked — Human Action Required".
+- [Plan 01-01 CHECKPOINT — RESOLVED 02-03]: ~~`npx drizzle-kit push` blocked — needs user-provisioned Neon credentials.~~ Credentials are now present in `.env.local` (DIRECT_URL direct + DATABASE_URL pooler); `npm run db:push` ran clean over DIRECT_URL in 02-03 and synced the full schema (both `users` and the new `orders` table are live on Neon). AUTH-01's DB smoke test is no longer credential-blocked.
 - [Plan 01-01 FLAG]: npm reports `@telegram-apps/*` deprecated → `@tma.js/*`, contradicting RESEARCH (which locks `@telegram-apps/*` as current). Packages installed clean with full API. Reconcile namespace in plan 02.
 - [Plan 01-04 CHECKPOINT]: BLOCKING human-verify — user must (1) deploy to Vercel (`vercel link` → set BOT_TOKEN/SESSION_SECRET/DATABASE_URL-pooled/DIRECT_URL-direct as server-only, none NEXT_PUBLIC_ → `vercel`) → register the deployment ROOT `/` URL with a dev BotFather bot, then (2) run the real-device AUTH-04/05 checklist (README / 01-04 Task 2). The critical gate = SameSite=None; Partitioned cookie surviving a real Telegram close/reopen. NOT auto-approved. See 01-04-SUMMARY.md.
 - [Phase 1]: SameSite=None 쿠키 iOS/안드로이드 텔레그램 인앱 브라우저 실기기 동작 (research confidence MEDIUM) — 페이즈 시작 시 실디바이스 검증 (now the active 01-04 checkpoint above)
@@ -106,6 +109,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-08T15:53:23.591Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-06-09T00:56:30.000Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None

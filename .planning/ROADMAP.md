@@ -76,7 +76,7 @@ Plans:
 **Wave 2** *(blocked on Wave 1; 02-02 and 02-03 run in parallel — disjoint files)*
 
 - [x] 02-02-store-detail-add-PLAN.md — /store/[id] 메뉴·담기·수량 + 가게전환 확인 모달 (ORDER-03, D-09)
-- [ ] 02-03-orders-schema-PLAN.md — orders 테이블 (seed-snapshot) + [BLOCKING] db:push (ORDER-05 영속 substrate)
+- [x] 02-03-orders-schema-PLAN.md — orders 테이블 (seed-snapshot) + [BLOCKING] db:push **PUSHED to Neon** (ORDER-05 영속 substrate)
 
 **Wave 3** *(blocked on Waves 1–2)*
 
