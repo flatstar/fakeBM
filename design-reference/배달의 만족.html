@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>배달의 만족 — Telegram Mini App</title>
+
+<!-- Pretendard (body/UI) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+
+<style>
+  /* BM fonts (free for commercial use) */
+  @font-face { font-family:'BMHanna'; src:url('fonts/BMHannaPro.ttf') format('truetype'); font-weight:400 800; font-display:swap; }
+  @font-face { font-family:'BMDohyeon'; src:url('fonts/BMDohyeon.ttf') format('truetype'); font-display:swap; }
+  @font-face { font-family:'BMJua'; src:url('fonts/BMJua.ttf') format('truetype'); font-display:swap; }
+
+  :root {
+    --bg:#FFF7F1; --surface:#FFFFFF;
+    --ink:#211A15; --ink2:#6B5D52; --ink3:#A1907F; --line:#F0E5DB;
+    --primary:#FF5A33; --primary-soft:#FFE9E1; --primary-ink:#D8431F;
+    --green:#15A24A; --green-soft:#E4F6EA;
+    --amber:#F2A11E; --amber-ink:#B5760A; --amber-soft:#FFF1D6;
+    --tg-header:#FFFFFF; --tg-header-line:#ECECF0; --tg-title:#1A1A1A; --tg-sub:#9A9AA0; --tg-icon:#8E8E93; --tg-link:#3390EC;
+    --font-body:'Pretendard','BMHanna',-apple-system,sans-serif;
+    --font-display:'BMHanna','Pretendard',sans-serif;
+    --font-chunky:'BMDohyeon','Pretendard',sans-serif;
+    --shadow:0 8px 22px -10px rgba(150,70,30,.18);
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; }
+  body { background:#EFE7DE; font-family:var(--font-body); -webkit-font-smoothing:antialiased; color:var(--ink); }
+  button { font-family:var(--font-body); }
+  input,textarea { font-family:var(--font-body); }
+  .app-scroll::-webkit-scrollbar { width:0; height:0; }
+  .app-scroll { scrollbar-width:none; }
+
+  @keyframes confFall { 0%{ opacity:1; transform:translateY(0) rotate(0); } 100%{ opacity:0; transform:translateY(420px) rotate(420deg); } }
+  @keyframes fadeUp { from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from{ opacity:0; } to{ opacity:1; } }
+
+  image-slot { --is-bg:var(--bg); }
+</style>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="22" fill="#FF5A33"/>
+    <text x="50" y="62" font-size="46" text-anchor="middle">🛵</text>
+  </svg>
+</template>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- React + Babel (pinned) -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- image-slot web component -->
+<script src="image-slot.js"></script>
+
+<!-- app -->
+<script type="text/babel" src="frames/ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="screens-order.jsx"></script>
+<script type="text/babel" src="screens-flow.jsx"></script>
+<script type="text/babel" src="screens-social.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+</body>
+</html>
