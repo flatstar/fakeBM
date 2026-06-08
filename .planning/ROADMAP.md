@@ -159,7 +159,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. 기반 — 미니앱 셸·디자인·인증/DB | 4/4 | Complete    | 2026-06-08 |
-| 2. 가짜 주문 루프 | 4/4 | Complete   | 2026-06-08 |
+| 2. 가짜 주문 루프 | 4/4 | Complete    | 2026-06-08 |
 | 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |
 | 5. 통계 & MY | 0/TBD | Not started | - |
