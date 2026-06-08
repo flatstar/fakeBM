@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * AUTH-04 — jose session JWT round-trip.
  *

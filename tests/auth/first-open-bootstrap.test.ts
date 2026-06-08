@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * AUTH-01/04/05 — first-open bootstrap (the redirect-loop regression gate).
  *

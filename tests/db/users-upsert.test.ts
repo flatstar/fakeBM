@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * AUTH-01 — live idempotent identity upsert (Neon smoke).
  *

@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * D-11/12 — dev-mock environment guard (HIGH security gate).
  *

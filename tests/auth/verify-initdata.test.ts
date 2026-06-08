@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * AUTH-02 — initData signature verification (HIGH security gate).
  *

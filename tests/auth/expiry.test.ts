@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * AUTH-03 — initData expiry (auth_date window).
  *
