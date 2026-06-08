@@ -33,7 +33,7 @@ key-decisions:
   - "vercel.json omitted — this is a standard Next.js app; Vercel auto-detects framework/build/output and no non-default setting is genuinely required (plan instruction: add only if needed)"
   - "The Mini App URL the user registers with BotFather is the app ROOT / (the public (boot) bootstrap), not /home — /home is behind the (mini) session guard and would loop a cookieless first open"
 
-requirements-completed: []  # AUTH-04 / AUTH-05 await the real-device human-verify; NOT marked complete here
+requirements-completed: [AUTH-04, AUTH-05]  # real-device human-verify PASSED 2026-06-08 (user approved)
 
 # Metrics
 duration: 5min
@@ -104,8 +104,17 @@ mirror in the other direction once the project is linked. No real secrets were c
 
 | Req | Status |
 |-----|--------|
-| AUTH-04 (SameSite=None; Partitioned session survives real-device reopen) | **PENDING real-device human-verify** (offline jose round-trip + CHIPS cookie attrs already proven in plan 02; the device gate is the only unverified behavior) |
-| AUTH-05 (public `share/*` opens with no auth on the deployed app) | **PENDING real-device confirm** (offline `public-open` + `protected-redirect` tests already pass) |
+| AUTH-04 (SameSite=None; Partitioned session survives real-device reopen) | **✅ VERIFIED on real device** (2026-06-08, user approved) — `__session` cookie honored in the Telegram cross-site WebView; first open lands on `/home` with no redirect loop and reopen stays authenticated. Resolves RESEARCH Open Question 2 (CHIPS cookie survives). Offline jose round-trip + CHIPS cookie attrs already proven in plan 02. |
+| AUTH-05 (public `share/*` opens with no auth on the deployed app) | **✅ VERIFIED on real device** (2026-06-08, user approved) — `share/*` opens publicly; offline `public-open` + `protected-redirect` tests already pass. |
+
+## Real-Device Verification Result (2026-06-08 — user "approved")
+
+The blocking human-verify (Task 2) **PASSED** on a real Telegram device:
+- First open → `(boot)` splash → forwarded to the coral `/home` shell with **no redirect loop** (T-01-BOOT confirmed live; the `SameSite=None; Partitioned` cookie is set AND read back by the `(mini)` guard).
+- No signup prompt (AUTH-01 identity), session honored across the cross-site WebView (AUTH-04 — RESEARCH Open Question 2 resolved: the CHIPS cookie works in Telegram's WebView; **header-token fallback not needed**).
+- `share/*` opens publicly with no auth (AUTH-05).
+
+Plan 04 is now COMPLETE.
 
 ## Deviations from Plan
 
