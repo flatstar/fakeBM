@@ -13,7 +13,7 @@
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: 기반 — 미니앱 셸 · 디자인 시스템 · 인증/DB 경계** - 무가입 인증·세션·라우트 보호 + Neon/Drizzle 기반 + 디자인 토큰/폰트/공통 컴포넌트
+- [x] **Phase 1: 기반 — 미니앱 셸 · 디자인 시스템 · 인증/DB 경계** - 무가입 인증·세션·라우트 보호 + Neon/Drizzle 기반 + 디자인 토큰/폰트/공통 컴포넌트 (completed 2026-06-08)
 - [ ] **Phase 2: 가짜 주문 루프 (홈 → 가게 → 장바구니 → 주문)** - 시드 카탈로그 탐색·필터·장바구니·서버 권위 가상 주문(₩0)
 - [ ] **Phase 3: 대기 → 인증 (코어 루프 완성)** - 가짜 배달 대기 연출 + 듀얼 사진 업로드 + 가짜 영수증 + 인증 포스트 저장
 - [ ] **Phase 4: 명예의 전당 피드 (+ 좋아요 + 모더레이션)** - 공용 피드·커서 페이지네이션·멱등 좋아요 + 신고/숨김/검토 큐
@@ -50,7 +50,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 01-04-PLAN.md — Deploy walking skeleton to Vercel dev + real-device SameSite session persistence check (AUTH-04)
+- [x] 01-04-PLAN.md — Deploy walking skeleton to Vercel dev + real-device SameSite session persistence check (AUTH-04)
 
 **UI hint**: yes
 
@@ -144,7 +144,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 기반 — 미니앱 셸·디자인·인증/DB | 2/4 | In progress (02·03 done offline; 04 README shipped, awaiting user deploy + real-device AUTH-04/05; 01 paused: Neon push blocked) | - |
+| 1. 기반 — 미니앱 셸·디자인·인증/DB | 4/4 | Complete    | 2026-06-08 |
 | 2. 가짜 주문 루프 | 0/TBD | Not started | - |
 | 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |

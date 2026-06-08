@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Phase 1 Plan 04 — README (run/deploy/verify) shipped; AWAITING user Vercel deploy + real-device AUTH-04/05 human-verify (plan NOT complete)
-last_updated: "2026-06-08T14:12:00Z"
-last_activity: 2026-06-08 -- 01-04 README deliverable committed; paused at the blocking real-device session-persistence checkpoint
+status: 01-04 README.md (local run + Vercel deploy + server-only env matrix + BotFather root-/ URL + npx vitest run + real-device checklist) committed (ce5fa73); vercel.json omitted (standard Next.js). Deploy + real-device CHIPS-cookie reopen test are blocking human steps — NOT faked/auto-approved.
+stopped_at: "01-04 README (run/deploy/verify) shipped (ce5fa73); PAUSED at the blocking real-device human-verify. To complete: user deploys to Vercel (server-only env, none NEXT_PUBLIC_) + registers the root `/` BotFather URL + runs the real-device AUTH-04/05 checklist (CHIPS cookie reopen). Plan 01-01 drizzle-kit push still blocked on Neon credentials."
+last_updated: "2026-06-08T14:46:47.827Z"
+last_activity: 2026-06-08
 progress:
   total_phases: 6
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 2
-  percent: 33
+  completed_plans: 4
+  percent: 17
 ---
 
 # Project State
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 
 ## Current Position
 
-Phase: 1 (기반 — 미니앱 셸 · 디자인 시스템 · 인증/DB 경계) — EXECUTING
-Plan: 4 of 4 — IN PROGRESS (README deliverable shipped; AWAITING user Vercel deploy + blocking real-device AUTH-04/05 human-verify). Plan 01 still PAUSED at drizzle-kit push.
+Phase: 2
+Plan: Not started
 Status: 01-04 README.md (local run + Vercel deploy + server-only env matrix + BotFather root-/ URL + npx vitest run + real-device checklist) committed (ce5fa73); vercel.json omitted (standard Next.js). Deploy + real-device CHIPS-cookie reopen test are blocking human steps — NOT faked/auto-approved.
-Last activity: 2026-06-08 -- 01-04 README committed; paused at real-device session-persistence checkpoint
+Last activity: 2026-06-08
 
 Progress: [███░░░░░░░] 33%
 
@@ -36,7 +36,7 @@ Progress: [███░░░░░░░] 33%
 
 **Velocity:**
 
-- Total plans completed: 2
+- Total plans completed: 6
 - Average duration: 7.5 min
 - Total execution time: ~0.25 hours
 
@@ -44,7 +44,7 @@ Progress: [███░░░░░░░] 33%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1 | 2 | 15 min | 7.5 min |
+| 1 | 4 | - | - |
 
 **Recent Trend:**
 
