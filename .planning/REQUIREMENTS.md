@@ -103,13 +103,45 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (roadmapper가 채움) | — | Pending |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| AUTH-04 | Phase 1 | Pending |
+| AUTH-05 | Phase 1 | Pending |
+| ORDER-01 | Phase 2 | Pending |
+| ORDER-02 | Phase 2 | Pending |
+| ORDER-03 | Phase 2 | Pending |
+| ORDER-04 | Phase 2 | Pending |
+| ORDER-05 | Phase 2 | Pending |
+| WAIT-01 | Phase 3 | Pending |
+| WAIT-02 | Phase 3 | Pending |
+| WAIT-03 | Phase 3 | Pending |
+| WAIT-04 | Phase 3 | Pending |
+| PROOF-01 | Phase 3 | Pending |
+| PROOF-02 | Phase 3 | Pending |
+| PROOF-03 | Phase 3 | Pending |
+| PROOF-04 | Phase 3 | Pending |
+| FEED-01 | Phase 4 | Pending |
+| FEED-02 | Phase 4 | Pending |
+| FEED-03 | Phase 4 | Pending |
+| FEED-04 | Phase 4 | Pending |
+| FEED-05 | Phase 4 | Pending |
+| FEED-06 | Phase 4 | Pending |
+| STATS-01 | Phase 5 | Pending |
+| STATS-02 | Phase 5 | Pending |
+| STATS-03 | Phase 5 | Pending |
+| STATS-04 | Phase 5 | Pending |
+| STATS-05 | Phase 5 | Pending |
+| SHARE-01 | Phase 6 | Pending |
+| SHARE-02 | Phase 6 | Pending |
+| SHARE-03 | Phase 6 | Pending |
+| SHARE-04 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 31 total
-- Mapped to phases: 0 (roadmap 생성 시 매핑)
-- Unmapped: 31 ⚠️
+- v1 requirements: 33 total (열거된 ID 기준; 초기 정의 노트의 "31"은 표기 오류로 정정)
+- Mapped to phases: 33 ✓
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-06-08*
-*Last updated: 2026-06-08 after initial definition*
+*Last updated: 2026-06-08 after roadmap traceability mapping*
