@@ -1,26 +1,110 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Pretendard (body/UI/numbers) — dynamic-subset CDN, same source as the prototype.
+   Exposes the `Pretendard` family; we alias it to --font-pretendard for the @theme
+   inline font chain below (BM display fonts are self-hosted via app/fonts.ts). */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ---------------------------------------------------------------------------
+   Coral design tokens (LOCKED — ported 1:1 from design-reference/배달의 만족.html
+   :root, mapped to Tailwind v4 --color-* keys). Default theme = coral.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-bg: #FFF7F1;
+  --color-surface: #FFFFFF;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-ink: #211A15;
+  --color-ink2: #6B5D52;
+  --color-ink3: #A1907F;
+  --color-line: #F0E5DB;
+
+  --color-primary: #FF5A33;
+  --color-primary-soft: #FFE9E1;
+  --color-primary-ink: #D8431F;
+
+  --color-green: #15A24A;
+  --color-green-soft: #E4F6EA;
+
+  --color-amber: #F2A11E;
+  --color-amber-ink: #B5760A;
+  --color-amber-soft: #FFF1D6;
+
+  --color-tg-header: #FFFFFF;
+  --color-tg-header-line: #ECECF0;
+  --color-tg-title: #1A1A1A;
+  --color-tg-sub: #9A9AA0;
+  --color-tg-icon: #8E8E93;
+  --color-tg-link: #3390EC;
+
+  /* Warm card shadow recipe (prototype --shadow). */
+  --shadow-card: 0 8px 22px -10px rgba(150, 70, 30, 0.18);
+
+  /* Animations ported verbatim from the prototype @keyframes block. */
+  --animate-fade-up: fadeUp 0.28s ease-out both;
+  --animate-fade-in: fadeIn 0.28s ease-out both;
+  --animate-conf-fall: confFall 1s ease-in forwards;
+
+  @keyframes confFall {
+    0% { opacity: 1; transform: translateY(0) rotate(0); }
+    100% { opacity: 0; transform: translateY(420px) rotate(420deg); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Font role chain. `@theme inline` is load-bearing: it resolves the BM/Pretendard
+   CSS variables (set by next/font/local + the Pretendard CDN) at use-time instead
+   of freezing the literal var() text. HARD RULE: money/numbers/kcal/stats render
+   in --font-body (Pretendard) tabular-nums, never a BM display font.
+   --------------------------------------------------------------------------- */
+@theme inline {
+  --font-body: var(--font-pretendard), "BMHanna", -apple-system, sans-serif;
+  --font-display: var(--font-bmhanna), var(--font-pretendard), sans-serif;
+  --font-chunky: var(--font-bmdohyeon), var(--font-pretendard), sans-serif;
+}
+
+/* Pretendard CDN registers the family under the name "Pretendard"; bridge it to
+   the --font-pretendard variable the @theme inline chain expects. */
+:root {
+  --font-pretendard: "Pretendard";
+}
+
+/* ---------------------------------------------------------------------------
+   Mint theme swap (D-05/06) — mechanism + LOCKED palette only, NO toggle UI.
+   Mint primary #13C5B8; soft/ink derived via color-mix (same recipe as the
+   prototype rootVars). Applied via <html data-theme="mint">.
+   --------------------------------------------------------------------------- */
+[data-theme="mint"] {
+  --color-primary: #13C5B8;
+  --color-primary-soft: color-mix(in srgb, #13C5B8 13%, white);
+  --color-primary-ink: color-mix(in srgb, #13C5B8 86%, black);
+}
+
+/* Base document — warm cream background, body font, ink text. */
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hidden-scrollbar utility (ported verbatim) — used by the scrollable Body. */
+.app-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.app-scroll {
+  scrollbar-width: none;
 }
