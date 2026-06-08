@@ -18,7 +18,13 @@
  */
 import { cookies } from 'next/headers';
 import { z } from 'zod';
-import { verifyInitData, issueSession, devMockUser, type TgUser } from '@/lib/auth';
+import {
+  verifyInitData,
+  issueSession,
+  devMockUser,
+  SESSION_TTL,
+  type TgUser,
+} from '@/lib/auth';
 import { upsertUser } from '@/lib/db';
 
 const bodySchema = z.object({ initDataRaw: z.string().min(1) }).partial();
@@ -69,7 +75,8 @@ export async function POST(req: Request) {
     sameSite: 'none',
     partitioned: true,
     path: '/',
-    maxAge: 60 * 60,
+    // Single source of truth: cookie lifetime tracks the JWT lifetime (WR-05).
+    maxAge: SESSION_TTL,
   });
 
   return Response.json({ ok: true });

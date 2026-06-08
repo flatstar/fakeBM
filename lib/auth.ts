@@ -15,8 +15,12 @@ import { validate, parse } from '@telegram-apps/init-data-node';
 import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify } from 'jose';
 
-/** Session lifetime. Claude's discretion per D-03; 1h + re-auth on reopen. */
-const SESSION_TTL = 60 * 60; // seconds
+/**
+ * Session lifetime (seconds). Claude's discretion per D-03; 1h + re-auth on
+ * reopen. Exported as the single source of truth for BOTH the JWT expiry and
+ * the __session cookie `maxAge` so the two can never silently desync (WR-05).
+ */
+export const SESSION_TTL = 60 * 60; // seconds
 
 /** initData freshness window — auth_date older than this is rejected (AUTH-03). */
 const INITDATA_EXPIRES_IN = 30 * 60; // seconds

@@ -25,6 +25,7 @@ vi.mock('next/headers', () => ({
 vi.mock('@/lib/db', () => ({ upsertUser }));
 
 import { POST } from '@/app/api/session/route';
+import { readSession, SESSION_TTL } from '@/lib/auth';
 import { validInitData, forgedInitData } from '../fixtures/initdata';
 
 function postWithHeader(raw: string): Request {
@@ -62,7 +63,16 @@ describe('POST /api/session', () => {
       sameSite: 'none',
       partitioned: true,
       path: '/',
+      // WR-05: cookie lifetime must equal the JWT lifetime source of truth —
+      // assert against the exported constant, not a magic number.
+      maxAge: SESSION_TTL,
     });
+
+    // WR-04: close the loop initData → cookie → recoverable session. The JWT
+    // actually written must decode back to the upserted Telegram uid, proving
+    // the issued cookie is the one that would authenticate THIS user — not just
+    // that *some* string with the right attributes was set.
+    expect(await readSession(value)).toBe(99281932);
   });
 
   it('forged identity → 401 generic, no cookie set (AUTH-02 HIGH gate)', async () => {
