@@ -27,6 +27,15 @@ describe('protected redirect (AUTH-05)', () => {
     expect(re.test('/home')).toBe(true);
   });
 
+  it('proxy matcher guards share/api prefix-collision routes (CR-01 — no auth widening)', () => {
+    const re = compileMatcher(config.matcher[0]);
+    // A future /share-admin or /api-internal must NOT escape the coarse
+    // redirect just because its path starts with an excluded segment.
+    expect(re.test('/sharexyz')).toBe(true);
+    expect(re.test('/shared')).toBe(true);
+    expect(re.test('/apixyz')).toBe(true);
+  });
+
   it('an invalid/forged session cookie also yields null (no bypass)', async () => {
     expect(await readSession('garbage.token.value')).toBeNull();
   });

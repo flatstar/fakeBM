@@ -3,13 +3,15 @@
  * AUTH-01/04/05 — first-open bootstrap (the redirect-loop regression gate).
  *
  * A brand-new, cookieless user must be able to reach the PUBLIC bootstrap
- * surface (`/`, also the `/?reauth=1` re-auth landing), run SessionBoot, POST
- * /api/session to set the cookie, then reach the protected `/home`. Three pins
- * (threat T-01-BOOT — cookieless lockout):
+ * surface, run SessionBoot, POST /api/session to set the cookie, then reach the
+ * protected `/home`. Three pins (threat T-01-BOOT — cookieless lockout):
  *
- *   1. The proxy matcher regex does NOT trap the bootstrap index `/` (so the
- *      redirect target `/?reauth=1` is not itself redirected → no loop), while
- *      it DOES still match a (mini) sub-route like `/home`.
+ *   1. The proxy matcher regex does NOT trap the bootstrap index `/`, while it
+ *      DOES still match a (mini) sub-route like `/home`. NOTE: Next matchers run
+ *      against the PATHNAME only — the re-auth redirect target `/?reauth=1`
+ *      reduces to pathname `/`, which is excluded, so it is not itself
+ *      redirected → no loop. The guarantee is about the pathname `/`, not the
+ *      `?reauth=1` query string (which the matcher never sees).
  *   2. SessionBoot lives OUTSIDE the (mini) guard (proven structurally below:
  *      it is in app/(boot)/, not app/(mini)/).
  *   3. The cookieless → cookie → protected sequence completes:
@@ -43,7 +45,17 @@ describe('first-open bootstrap — no redirect loop (AUTH-01/04/05)', () => {
   it('proxy matcher leaves /share and /api open (AUTH-05)', () => {
     const re = compileMatcher(config.matcher[0]);
     expect(re.test('/share')).toBe(false);
+    expect(re.test('/share/abc')).toBe(false);
     expect(re.test('/api/session')).toBe(false);
+  });
+
+  it('proxy matcher excludes ONLY the exact share/api segments, not prefixes (CR-01)', () => {
+    const re = compileMatcher(config.matcher[0]);
+    // Prefix-collision routes must be GUARDED (matched), not silently excluded.
+    // The old prefix-based lookahead let these escape the auth redirect.
+    expect(re.test('/sharexyz')).toBe(true);
+    expect(re.test('/shared')).toBe(true);
+    expect(re.test('/apixyz')).toBe(true);
   });
 
   it('SessionBoot is mounted OUTSIDE the (mini) guard (in (boot))', () => {

@@ -16,9 +16,18 @@ function compileMatcher(pattern: string): RegExp {
 }
 
 describe('public open (AUTH-05)', () => {
-  it('proxy matcher does NOT match /share (public — no redirect)', () => {
+  it('proxy matcher does NOT match /share or /share/* (public — no redirect)', () => {
     const re = compileMatcher(config.matcher[0]);
     expect(re.test('/share')).toBe(false);
+    expect(re.test('/share/gift')).toBe(false);
+  });
+
+  it('proxy matcher DOES match share/api prefix-collision routes (CR-01)', () => {
+    const re = compileMatcher(config.matcher[0]);
+    // Only the exact `share`/`api` segments are public; a route that merely
+    // starts with them (e.g. /share-config) must still be guarded.
+    expect(re.test('/sharexyz')).toBe(true);
+    expect(re.test('/apixyz')).toBe(true);
   });
 
   it('proxy matcher does NOT match the bootstrap index / (no loop)', () => {
