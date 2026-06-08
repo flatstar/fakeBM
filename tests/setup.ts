@@ -25,6 +25,11 @@ try {
   // no .env.local (CI) — offline-only env
 }
 
+// Hard-override BOTH secrets to deterministic throwaway fixtures, regardless of
+// any value loaded from .env.local above. Using `??` for SESSION_SECRET would
+// leak a real developer secret into the test JWT path; the offline auth suite
+// must key its JWTs off this fixed throwaway so tests are isolated and a real
+// production secret never reaches the test code. (.env.local is still loaded so
+// DATABASE_URL can activate the live-DB upsert smoke.)
 process.env.BOT_TOKEN = FIXTURE_BOT_TOKEN;
-process.env.SESSION_SECRET =
-  process.env.SESSION_SECRET ?? 'test-session-secret-not-for-prod-0123456789';
+process.env.SESSION_SECRET = 'test-session-secret-not-for-prod-0123456789';
