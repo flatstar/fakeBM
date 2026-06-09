@@ -29,6 +29,7 @@ vi.mock('@vercel/blob/client', () => ({
 
 const props = {
   orderId: 7,
+  tgId: 99281932,
   restName: '밤9시 후라이드',
   orderNo: 'No.1234567',
   createdAtISO: '2026-06-09T11:00:00.000Z',

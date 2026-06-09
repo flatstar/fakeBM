@@ -67,6 +67,7 @@ export default async function PostPage({
       <SubBar title="인증 올리기" />
       <PostClient
         orderId={order.id}
+        tgId={tgId}
         restName={order.restName}
         orderNo={order.orderNo}
         createdAtISO={order.createdAt.toISOString()}

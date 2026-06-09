@@ -26,6 +26,8 @@ export interface PhotoUploadSlotProps {
   label: string;
   /** Sub hint emoji line, e.g. "🤤 먹고 싶었던 것". */
   hint: string;
+  /** Server-verified Telegram user id — scopes the upload pathname (WR-03). */
+  tgId: number;
   /** The current uploaded URL (lifted state), or null when empty. */
   url: string | null;
   /** Called with the public Blob URL once an upload completes. */
@@ -37,6 +39,7 @@ type Status = 'idle' | 'uploading' | 'error';
 export function PhotoUploadSlot({
   label,
   hint,
+  tgId,
   url,
   onUploaded,
 }: PhotoUploadSlotProps): ReactElement {
@@ -48,8 +51,11 @@ export function PhotoUploadSlot({
     try {
       // D-12: clamp long edge to 1440px + re-encode WebP@0.8 (EXIF-upright).
       const scaled = await downscale(file, 1440, 0.8);
+      // WR-03: per-user pathname prefix. The token broker (/api/blob/upload)
+      // rejects any pathname outside `proof/${tgId}/`, so uploads are isolated
+      // per user (T-3-08/11). addRandomSuffix still de-dupes within the prefix.
       const result = await upload(
-        `proof/${crypto.randomUUID()}.webp`,
+        `proof/${tgId}/${crypto.randomUUID()}.webp`,
         scaled,
         {
           access: 'public',

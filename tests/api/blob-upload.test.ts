@@ -41,7 +41,10 @@ function tokenRequest(): Request {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
       type: 'blob.generate-client-token',
-      payload: { pathname: 'food.webp', callbackUrl: 'http://localhost/api/blob/upload' },
+      payload: {
+        pathname: 'proof/99281932/food.webp',
+        callbackUrl: 'http://localhost/api/blob/upload',
+      },
     }),
   });
 }
@@ -58,18 +61,21 @@ beforeEach(() => {
     async (opts: {
       onBeforeGenerateToken: (pathname: string, payload: unknown) => Promise<unknown>;
     }) => {
-      const config = await opts.onBeforeGenerateToken('food.webp', null);
+      // The client uploads to a per-user prefix (WR-03); mirror that here so the
+      // route's pathname-scope check passes for the happy-path config tests.
+      const config = await opts.onBeforeGenerateToken('proof/99281932/food.webp', null);
       return { type: 'blob.generate-client-token', __config: config };
     },
   );
 });
 
 describe('POST /api/blob/upload — auth gate (T-3-08)', () => {
-  it('no session → onBeforeGenerateToken throws → route returns generic 400', async () => {
+  it('no session → onBeforeGenerateToken throws → route returns generic 400 (no leak)', async () => {
     requireSession.mockResolvedValueOnce(null);
     const res = await POST(tokenRequest());
     expect(res.status).toBe(400);
-    expect(await res.json()).toEqual({ error: 'Not authenticated' });
+    // WR-02: the thrown message ('Not authenticated') must NOT reach the client.
+    expect(await res.json()).toEqual({ error: 'bad_request' });
   });
 
   it('requireSession is consulted before any token config is produced', async () => {
@@ -113,6 +119,22 @@ describe('POST /api/blob/upload — token config (T-3-09 / T-3-11)', () => {
     expect(JSON.parse(cfg.tokenPayload)).toEqual({ tgId: 99281932 });
   });
 
+  it('rejects a pathname outside the per-user prefix → generic 400 (WR-03)', async () => {
+    // A caller minting a token for someone else's (or an unscoped) path must fail
+    // before any token config is produced — uploads are isolated per user.
+    handleUpload.mockImplementationOnce(
+      async (opts: {
+        onBeforeGenerateToken: (pathname: string, payload: unknown) => Promise<unknown>;
+      }) => {
+        const config = await opts.onBeforeGenerateToken('proof/777/evil.webp', null);
+        return { type: 'blob.generate-client-token', __config: config };
+      },
+    );
+    const res = await POST(tokenRequest());
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: 'bad_request' });
+  });
+
   it('success returns the handleUpload JSON to the client', async () => {
     const res = await POST(tokenRequest());
     expect(res.status).toBe(200);
@@ -122,10 +144,11 @@ describe('POST /api/blob/upload — token config (T-3-09 / T-3-11)', () => {
 });
 
 describe('POST /api/blob/upload — failure shape (V7)', () => {
-  it('handleUpload throwing → generic 400 with the error message, never a secret', async () => {
+  it('handleUpload throwing → static generic 400, raw message never echoed (WR-02)', async () => {
     handleUpload.mockRejectedValueOnce(new Error('bad token request'));
     const res = await POST(tokenRequest());
     expect(res.status).toBe(400);
-    expect(await res.json()).toEqual({ error: 'bad token request' });
+    // The exception detail is logged server-side only — the body is static.
+    expect(await res.json()).toEqual({ error: 'bad_request' });
   });
 });

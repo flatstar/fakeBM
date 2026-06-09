@@ -30,10 +30,19 @@ export async function POST(request: Request): Promise<Response> {
     const json = await handleUpload({
       body,
       request,
-      onBeforeGenerateToken: async () => {
+      onBeforeGenerateToken: async (pathname: string) => {
         // Session gate (T-3-08) — block anonymous upload-token issuance.
         const tgId = await requireSession();
         if (!tgId) throw new Error('Not authenticated');
+        // T-3-08/11: per-user pathname scoping. The minted token is constrained
+        // to THIS user's prefix, so an authenticated caller can never write into
+        // another user's namespace (WR-03). The client uploads to
+        // `proof/${tgId}/${uuid}.webp`; any pathname outside that prefix is
+        // rejected before a token is issued. addRandomSuffix still prevents
+        // overwrite collisions within the prefix.
+        if (!pathname.startsWith(`proof/${tgId}/`)) {
+          throw new Error('pathname out of scope');
+        }
         return {
           // T-3-09: only the three image MIME types the dual-photo flow accepts.
           allowedContentTypes: ['image/jpeg', 'image/png', 'image/webp'],
@@ -52,7 +61,11 @@ export async function POST(request: Request): Promise<Response> {
     });
     return Response.json(json);
   } catch (e) {
-    // Generic 400 — no validator/secret leak (mirrors orders route, V7).
-    return Response.json({ error: (e as Error).message }, { status: 400 });
+    // Generic 400 — no validator/secret leak (mirrors orders/posts routes, V7).
+    // WR-02: the raw exception (handleUpload/token-broker internals, config or
+    // token errors) must NEVER be echoed to an untrusted caller — log the detail
+    // server-side only and return a static body.
+    console.error('[blob/upload] token broker error:', e);
+    return Response.json({ error: 'bad_request' }, { status: 400 });
   }
 }

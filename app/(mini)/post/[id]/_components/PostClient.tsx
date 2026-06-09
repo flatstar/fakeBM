@@ -31,6 +31,8 @@ import { PhotoUploadSlot } from './PhotoUploadSlot';
 
 export interface PostClientProps {
   orderId: number;
+  /** Server-verified Telegram user id — used to scope upload pathnames (WR-03). */
+  tgId: number;
   restName: string;
   orderNo: string;
   /** Order createdAt as an ISO string (serializable across the SC→CC boundary). */
@@ -57,6 +59,7 @@ const dashed = '2px dashed var(--color-line)';
 
 export function PostClient({
   orderId,
+  tgId,
   restName,
   orderNo,
   createdAtISO,
@@ -233,12 +236,14 @@ export function PostClient({
           <PhotoUploadSlot
             label="시킨 척한 음식 🤤"
             hint="🤤 먹고 싶었던 것"
+            tgId={tgId}
             url={foodPhotoUrl}
             onUploaded={setFoodPhotoUrl}
           />
           <PhotoUploadSlot
             label="실제 내 식단 🥗"
             hint="🥗 진짜 먹은 것"
+            tgId={tgId}
             url={dietPhotoUrl}
             onUploaded={setDietPhotoUrl}
           />
