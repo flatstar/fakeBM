@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-04-PLAN.md
-last_updated: "2026-06-09T15:00:00.000Z"
-last_activity: 2026-06-09 -- Phase 04 execution started
+stopped_at: Completed 04-05-PLAN.md
+last_updated: "2026-06-09T14:57:06.000Z"
+last_activity: 2026-06-09 -- Phase 04 complete (04-05 operator moderation)
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 17
-  completed_plans: 16
-  percent: 53
+  completed_plans: 17
+  percent: 59
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 
 ## Current Position
 
-Phase: 04 (feed) — EXECUTING
-Plan: 5 of 5
-Status: Ready to execute
-Last activity: 2026-06-09 -- Phase 04 execution started
+Phase: 04 (feed) — COMPLETE
+Plan: 5 of 5 (done)
+Status: Phase 04 complete — ready for end-of-phase human verification + deploy push
+Last activity: 2026-06-09 -- Phase 04 complete (04-05 operator moderation)
 
-Progress: [█████░░░░░] 53%
+Progress: [██████░░░░] 59%
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ Progress: [█████░░░░░] 53%
 | Phase 04 P02 | 7min | 3 tasks | 9 files |
 | Phase 04 P03 | 7min | 1 tasks | 3 files |
 | Phase 04 P04 | ~6 min | 1 tasks | 4 files |
+| Phase 04 P05 | 5 min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,8 @@ Recent decisions affecting current work:
 - [Phase ?]: [04-03]: live-Neon smoke split into tests/api/like-live.test.ts because the unit file file-level-mocks @/lib/db (the mock would intercept the real round-trip)
 - [04-04]: report→hide endpoint runs as sequential statements (neon-http has no db.transaction) — onConflictDoNothing insert + isNull(hiddenAt)-guarded UPDATE keep it idempotent; first report sets hiddenAt (D-10), dup is no-op (D-11) — no tx needed for correctness
 - [04-04]: self-report blocked via INVERTED owner check (target.tgId === reporter → 403, D-13); reason constrained to enum (D-12); reason parse precedes int-id guard so a bad reason 400s before the param check
+- [04-05]: /admin is a TOP-LEVEL route group (not under (mini)) — operator surface inherits no consumer shell; isAdmin re-checked at 3 layers (layout, page RSC, each /api/admin/* handler); non-admins get notFound() (404 not 403) everywhere — route/endpoint never confirms itself (D-14/15, Pitfall 4)
+- [04-05]: soft delete sets deletedAt; restore clears hiddenAt ONLY (does not touch deletedAt — un-hide ≠ un-delete, D-16); both single-row UPDATEs, no db.transaction (neon-http has none); report reasons aggregated via array_agg leftJoin subquery (no N+1)
 
 ### Pending Todos
 
@@ -134,6 +137,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T15:00:00.000Z
-Stopped at: Completed 04-04-PLAN.md
+Last session: 2026-06-09T14:57:06.000Z
+Stopped at: Completed 04-05-PLAN.md (Phase 04 complete)
 Resume file: None

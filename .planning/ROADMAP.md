@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: 기반 — 미니앱 셸 · 디자인 시스템 · 인증/DB 경계** - 무가입 인증·세션·라우트 보호 + Neon/Drizzle 기반 + 디자인 토큰/폰트/공통 컴포넌트 (completed 2026-06-08)
 - [x] **Phase 2: 가짜 주문 루프 (홈 → 가게 → 장바구니 → 주문)** - 시드 카탈로그 탐색·필터·장바구니·서버 권위 가상 주문(₩0) (completed 2026-06-08)
 - [x] **Phase 3: 대기 → 인증 (코어 루프 완성)** - 가짜 배달 대기 연출 + 듀얼 사진 업로드 + 가짜 영수증 + 인증 포스트 저장 (completed 2026-06-09)
-- [ ] **Phase 4: 명예의 전당 피드 (+ 좋아요 + 모더레이션)** - 공용 피드·커서 페이지네이션·멱등 좋아요 + 신고/숨김/검토 큐
+- [x] **Phase 4: 명예의 전당 피드 (+ 좋아요 + 모더레이션)** - 공용 피드·커서 페이지네이션·멱등 좋아요 + 신고/숨김/검토 큐
 - [ ] **Phase 5: 통계 & MY** - 누적 절약/kcal/스트릭 실시간 집계 + 주간 차트 + 환산 비유 + 내 기록
 - [ ] **Phase 6: 공유 카드 & OG 이미지** - 공개 SSR 공유 링크 + next/og 한글 카드 + 저장/복사/외부 공유
 
@@ -145,7 +145,7 @@ Plans:
 
 **Wave 4** *(blocked on 04-01 + 04-02 + 04-04)*
 
-- [ ] 04-05-PLAN.md — 운영자 모더레이션: /admin 가드 라우트 + /api/admin/delete·restore (isAdmin 재검증) (FEED-06)
+- [x] 04-05-PLAN.md — 운영자 모더레이션: /admin 가드 라우트 + /api/admin/delete·restore (isAdmin 재검증) (FEED-06) (DONE — /admin top-level route group, notFound() non-admin gate at layout/page/API; soft delete sets deletedAt, restore clears hiddenAt (D-16); per-handler isAdmin re-check; no db.transaction; vitest 212/0, build clean — see 04-05-SUMMARY.md)
 
 **UI hint**: yes
 
