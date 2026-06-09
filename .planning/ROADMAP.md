@@ -103,7 +103,7 @@ Plans:
 **Wave 1**
 
 - [x] 03-01-PLAN.md — orders 대기/도착 컬럼 + posts 테이블(order_id UNIQUE) + KST 스트릭 순수함수 + [BLOCKING] db:push (Wave 0 substrate)
-- [ ] 03-03-PLAN.md — @vercel/blob 설치 + Blob store 프로비저닝(checkpoint) + handleUpload 토큰 라우트 + canvas 다운스케일 (PROOF-02 plumbing)
+- [x] 03-03-PLAN.md — @vercel/blob 설치 + Blob store 프로비저닝(checkpoint) + handleUpload 토큰 라우트 + canvas 다운스케일 (PROOF-02 plumbing)
 
 **Wave 2** *(blocked on 03-01)*
 
@@ -174,7 +174,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. 기반 — 미니앱 셸·디자인·인증/DB | 4/4 | Complete    | 2026-06-08 |
 | 2. 가짜 주문 루프 | 4/4 | Complete    | 2026-06-08 |
-| 3. 대기 → 인증 (코어 루프) | 1/4 | In Progress|  |
+| 3. 대기 → 인증 (코어 루프) | 2/4 | In Progress|  |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |
 | 5. 통계 & MY | 0/TBD | Not started | - |
 | 6. 공유 카드 & OG | 0/TBD | Not started | - |
