@@ -174,7 +174,7 @@ Plans:
 
 **Wave 3** *(blocked on 05-01; 05-02와 병렬 가능 — disjoint 파일)*
 
-- [ ] 05-03-PLAN.md — /my 슬라이스: FeedCard readOnly prop + owner-scoped 내기록 쿼리 + 프로필(실명+익명핸들 병기) + 누적요약→/stats + read-only FeedCard 리스트 (STATS-05)
+- [x] 05-03-PLAN.md — /my 슬라이스: FeedCard readOnly prop + owner-scoped 내기록 쿼리 + 프로필(실명+익명핸들 병기) + 누적요약→/stats + read-only FeedCard 리스트 (STATS-05)
 
 **UI hint**: yes
 
@@ -207,5 +207,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. 가짜 주문 루프 | 4/4 | Complete    | 2026-06-08 |
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
 | 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
-| 5. 통계 & MY | 2/3 | In Progress|  |
+| 5. 통계 & MY | 3/3 | Complete    | 2026-06-10 |
 | 6. 공유 카드 & OG | 0/TBD | Not started | - |

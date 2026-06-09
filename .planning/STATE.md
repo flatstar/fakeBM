@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 5 UI-SPEC approved
-last_updated: "2026-06-09T18:01:21.356Z"
-last_activity: 2026-06-09 -- Phase 05 execution started
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-06-10T18:06:00.000Z"
+last_activity: 2026-06-10 -- Completed Phase 05 Plan 03 (/my self-view slice)
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 20
-  completed_plans: 19
-  percent: 67
+  completed_plans: 20
+  percent: 70
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 
 ## Current Position
 
-Phase: 05 (my) — EXECUTING
-Plan: 3 of 3
-Status: Ready to execute
-Last activity: 2026-06-09 -- Phase 05 execution started
+Phase: 05 (my) — COMPLETE (3/3 plans)
+Plan: 3 of 3 — done
+Status: Phase 05 complete; ready for Phase 06
+Last activity: 2026-06-10 -- Completed Phase 05 Plan 03 (/my self-view slice)
 
-Progress: [██████░░░░] 59%
+Progress: [███████░░░] 70%
 
 ## Performance Metrics
 
@@ -68,6 +68,7 @@ Progress: [██████░░░░] 59%
 | Phase 04 P05 | 5 min | 2 tasks | 7 files |
 | Phase 05 P01 | 4 min | 3 tasks | 4 files |
 | Phase 05-my P02 | 2m | 2 tasks | 3 files |
+| Phase 05-my P03 | 3m | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,8 @@ Recent decisions affecting current work:
 - [04-05]: soft delete sets deletedAt; restore clears hiddenAt ONLY (does not touch deletedAt — un-hide ≠ un-delete, D-16); both single-row UPDATEs, no db.transaction (neon-http has none); report reasons aggregated via array_agg leftJoin subquery (no N+1)
 - [Phase 05-01]: computeStreak lifted from posts route into lib/stats.ts — route re-imports; ONE streak definition shared by proof-write and live display (D-04)
 - [Phase 05-01]: live display streak = recomputeCurrentStreak — a chain 2+ KST days stale shows 0 (not the frozen streakDay); topMenuName counts items[].name not category (D-08); ONE centralized visibility predicate (exclude deletedAt, include hiddenAt) across all stats reads
+- [05-03]: FeedCard gains a backward-compatible readOnly prop (default falsy) — suppresses BOTH LikeButton + ReportMenu for the /my own-records list; feed/api surfaces unchanged (D-11)
+- [05-03]: ownerRecordsPage is a feedPage VARIANT — owner-scoped eq(posts.tgId,uid) + REUSES decodeCursor/encodeCursor from lib/feed (no duplicate codec); visibility matches userTotals (exclude deletedAt, INCLUDE hiddenAt) so a report-hidden post still shows on the owner's own /my (differs from public feed which also excludes hiddenAt)
 
 ### Pending Todos
 
