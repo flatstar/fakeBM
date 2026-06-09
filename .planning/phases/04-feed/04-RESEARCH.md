@@ -458,15 +458,17 @@ export const reports = pgTable('reports', {
 | A5 | PAGE_SIZE = 10 | lib/feed | LOW — Claude's discretion per CONTEXT; tune freely. |
 | A6 | `app/(mini)/post/[id]/page.tsx` is currently owner-scoped (author write-flow) and may need a separate public/gated read if reused for feed→detail | Pitfall 3 | MEDIUM — verify during planning whether tapping a feed card opens a public detail; if so it needs the visibility gate, which the current owner-scoped page does not apply. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Does tapping a feed card navigate to a public post detail, or is the card self-contained?**
    - What we know: `app/(mini)/post/[id]/page.tsx` exists but is the **owner-scoped author write-flow** (redirects non-owners via notFound). The feed card (`PostCard`) renders everything inline.
    - What's unclear: whether Phase 4 wants a public read-only `/post/[id]` detail for other users' posts.
    - Recommendation: keep the card self-contained for v1 (it already shows all fields). If a public detail is wanted, add a **separate** gated public read path (visibility gate, no owner scope) — do not loosen the existing owner-scoped write-flow page.
+   - **RESOLVED:** Plan 04-02 keeps `FeedCard` self-contained — no navigation to `/post/[id]`, no loosening of the owner-scoped write-flow page. Public detail deferred.
 
 2. **Cursor in `GET /api/feed` — query param vs header?**
    - Recommendation: `?cursor=<base64url>` query param (cacheable-shaped, simple). Decode defensively → 400 on malformed.
+   - **RESOLVED:** Plan 04-02 implements `?cursor=<base64url>` query param with defensive decode → 400 on malformed.
 
 ## Environment Availability
 
