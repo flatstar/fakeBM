@@ -25,17 +25,17 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Delivery Wait (WAIT)
 
-- [ ] **WAIT-01**: 주문 후 가짜 배달 대기 화면에서 접수→조리→배달→도착 스텝퍼가 진행된다
-- [ ] **WAIT-02**: 지도 위 라이더가 경로를 따라 이동하는 연출이 보인다
-- [ ] **WAIT-03**: 대기 중 식욕 게이지와 응원 메시지가 표시된다
-- [ ] **WAIT-04**: 대기가 끝나면 "참기 성공!"과 아낀 돈/덜 먹은 kcal 요약이 표시된다
+- [x] **WAIT-01**: 주문 후 가짜 배달 대기 화면에서 접수→조리→배달→도착 스텝퍼가 진행된다
+- [x] **WAIT-02**: 지도 위 라이더가 경로를 따라 이동하는 연출이 보인다
+- [x] **WAIT-03**: 대기 중 식욕 게이지와 응원 메시지가 표시된다
+- [x] **WAIT-04**: 대기가 끝나면 "참기 성공!"과 아낀 돈/덜 먹은 kcal 요약이 표시된다
 
 ### Proof / 인증 (PROOF)
 
-- [ ] **PROOF-01**: 인증 화면에 실제 결제 ₩0이 명확히 표기된 가짜 영수증이 주문 내역으로 생성된다
-- [ ] **PROOF-02**: 사용자는 "시킨 척한 음식" 사진과 "실제 내 식단" 사진을 각각 업로드할 수 있다 (Vercel Blob)
-- [ ] **PROOF-03**: 사용자는 실제 식단 텍스트와 한마디(캡션)를 입력할 수 있다
-- [ ] **PROOF-04**: 인증을 올리면 사진 URL·캡션·식단·아낀 돈·kcal·연속일이 포함된 포스트가 서버에 저장된다
+- [x] **PROOF-01**: 인증 화면에 실제 결제 ₩0이 명확히 표기된 가짜 영수증이 주문 내역으로 생성된다
+- [x] **PROOF-02**: 사용자는 "시킨 척한 음식" 사진과 "실제 내 식단" 사진을 각각 업로드할 수 있다 (Vercel Blob)
+- [x] **PROOF-03**: 사용자는 실제 식단 텍스트와 한마디(캡션)를 입력할 수 있다
+- [x] **PROOF-04**: 인증을 올리면 사진 URL·캡션·식단·아낀 돈·kcal·연속일이 포함된 포스트가 서버에 저장된다
 
 ### Social Feed (FEED)
 
@@ -113,14 +113,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ORDER-03 | Phase 2 | Complete |
 | ORDER-04 | Phase 2 | Complete |
 | ORDER-05 | Phase 2 | Complete |
-| WAIT-01 | Phase 3 | Pending |
-| WAIT-02 | Phase 3 | Pending |
-| WAIT-03 | Phase 3 | Pending |
-| WAIT-04 | Phase 3 | Pending |
-| PROOF-01 | Phase 3 | Pending |
-| PROOF-02 | Phase 3 | Pending |
-| PROOF-03 | Phase 3 | Pending |
-| PROOF-04 | Phase 3 | Pending |
+| WAIT-01 | Phase 3 | Complete |
+| WAIT-02 | Phase 3 | Complete |
+| WAIT-03 | Phase 3 | Complete |
+| WAIT-04 | Phase 3 | Complete |
+| PROOF-01 | Phase 3 | Complete |
+| PROOF-02 | Phase 3 | Complete |
+| PROOF-03 | Phase 3 | Complete |
+| PROOF-04 | Phase 3 | Complete |
 | FEED-01 | Phase 4 | Pending |
 | FEED-02 | Phase 4 | Pending |
 | FEED-03 | Phase 4 | Pending |

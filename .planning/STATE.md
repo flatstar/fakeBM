@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 context gathered
-last_updated: "2026-06-09T10:42:11.174Z"
-last_activity: 2026-06-09 -- Phase 3 planning complete
+stopped_at: "03-01 Task 1 committed (197a02d); paused at Task 2 [BLOCKING] checkpoint — db:push to live Neon awaits human approval"
+last_updated: "2026-06-09T11:07:45.210Z"
+last_activity: 2026-06-09 -- Phase 03 execution started
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 12
+  completed_plans: 9
   percent: 33
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-08)
 
 **Core value:** 가짜 주문→대기→인증 루프의 재미와 누적되는 절약/칼로리 통계·공유가 한 몸으로 작동한다.
-**Current focus:** Phase 02 — order-loop
+**Current focus:** Phase 03 — 대기 → 인증 (코어 루프 완성)
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
-Status: Ready to execute (Wave 3 — 02-04 cart/order confirm)
-Last activity: 2026-06-09 -- Phase 3 planning complete
+Phase: 03 (대기 → 인증 (코어 루프 완성)) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-06-09 -- Phase 03 execution started
 
 Progress: [████░░░░░░] 44%
 
@@ -57,6 +57,7 @@ Progress: [████░░░░░░] 44%
 | Phase 02 P02 | ~3 min | 2 tasks | 5 files |
 | Phase 02 P03 | ~6 min | 2 tasks | 2 files |
 | Phase 02 P04 | 5m | 2 tasks | 5 files |
+| Phase 03 P01 | 20 min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,8 @@ Recent decisions affecting current work:
 - [02-03]: Neon credentials now provisioned in .env.local — orders DDL PUSHED live over DIRECT_URL (12 cols + orders_tg_created_idx + users FK confirmed); the Phase 1 push blocker is resolved
 - [Phase ?]: 02-04: order API body schema has no money fields (D-06); server recomputes from RESTAURANTS whitelist — client money structurally untrusted (T-02)
 - [Phase ?]: 02-04: /order/[id] read is owner-scoped (and(eq id, eq tgId)) → notFound on mismatch — IDOR-safe (T-03)
+- [Phase ?]: [03-01]: orders +4 nullable 대기/도착 컬럼 + posts(order_id UNIQUE 멱등) 라이브 Neon push — Phase 3 두 슬라이스 공유 substrate
+- [Phase ?]: [03-01]: lib/streak는 순수함수만(import 0); DB 래퍼는 04 소유. KST +09:00 고정(DST 없음)
 
 ### Pending Todos
 
@@ -113,6 +116,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T08:32:47.225Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-wait-proof/03-CONTEXT.md
+Last session: 2026-06-09T11:07:21.684Z
+Stopped at: 03-01 Task 1 committed (197a02d); paused at Task 2 [BLOCKING] checkpoint — db:push to live Neon awaits human approval
+Resume file: .planning/phases/03-wait-proof/03-01-PLAN.md (Task 2 only)
