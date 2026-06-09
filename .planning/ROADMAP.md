@@ -140,7 +140,7 @@ Plans:
 
 **Wave 3** *(blocked on 04-01 + 04-02; 04-03·04-04 병렬 — disjoint 라우트 파일)*
 
-- [ ] 04-03-PLAN.md — 좋아요 토글 API: POST /api/posts/[id]/like 멱등 + 서버 권위 {liked,count} (FEED-03)
+- [x] 04-03-PLAN.md — 좋아요 토글 API: POST /api/posts/[id]/like 멱등 + 서버 권위 {liked,count} (FEED-03)
 - [ ] 04-04-PLAN.md — 신고 API: POST /api/posts/[id]/report 본인글 차단 + 멱등 + 즉시 숨김 (FEED-05)
 
 **Wave 4** *(blocked on 04-01 + 04-02 + 04-04)*
@@ -193,6 +193,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. 기반 — 미니앱 셸·디자인·인증/DB | 4/4 | Complete    | 2026-06-08 |
 | 2. 가짜 주문 루프 | 4/4 | Complete    | 2026-06-08 |
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
-| 4. 명예의 전당 피드 + 모더레이션 | 2/5 | In Progress|  |
+| 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
 | 5. 통계 & MY | 0/TBD | Not started | - |
 | 6. 공유 카드 & OG | 0/TBD | Not started | - |

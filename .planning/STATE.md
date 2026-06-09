@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 4 UI-SPEC approved
-last_updated: "2026-06-09T14:37:26.629Z"
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-06-09T14:45:40.151Z"
 last_activity: 2026-06-09 -- Phase 04 execution started
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 17
-  completed_plans: 14
+  completed_plans: 15
   percent: 50
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 04 (feed) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-06-09 -- Phase 04 execution started
 
@@ -63,6 +63,7 @@ Progress: [█████░░░░░] 50%
 | Phase 03 P04 | ~6 min | 2 tasks | 6 files |
 | Phase 04 P01 | 6 min | 3 tasks | 7 files |
 | Phase 04 P02 | 7min | 3 tasks | 9 files |
+| Phase 04 P03 | 7min | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -100,6 +101,8 @@ Recent decisions affecting current work:
 - [Phase ?]: [04-01]: lib/handle.ts pure (import 0) FNV-1a → 한글 형용사+명사+0..999 접미사, tgId만으로 결정론적 (D-01/02); lib/admin.ts isAdmin은 ADMIN_TG_IDS를 call-time에 읽음, server-only never NEXT_PUBLIC_ (D-14)
 - [Phase ?]: [04-02]: GET /api/feed rejects a present-but-malformed cursor with 400 (strict, RESEARCH Open Q2); absent cursor = first page. lib/feed.ts is the single shared query — RSC page + GET both call feedPage so the visibility gate (isNull hiddenAt/deletedAt) can never diverge
 - [Phase ?]: [04-02]: LikeButton reconciles to server {liked,count} (SET, never +1/-1, D-09); FeedCard server component with handleFor(tgId) anonymous author + LikeButton/ReportMenu client islands; report trigger hidden when own post (D-13)
+- [Phase ?]: [04-03]: neon-http has no db.transaction → like toggle runs as sequential insert(onConflictDoNothing)/delete/recount; composite PK keeps it idempotent + recount is committed-state authoritative {liked,count} (D-09)
+- [Phase ?]: [04-03]: live-Neon smoke split into tests/api/like-live.test.ts because the unit file file-level-mocks @/lib/db (the mock would intercept the real round-trip)
 
 ### Pending Todos
 
@@ -128,6 +131,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T14:37:06.810Z
-Stopped at: Phase 4 UI-SPEC approved
-Resume file: .planning/phases/04-feed/04-UI-SPEC.md
+Last session: 2026-06-09T14:45:40.147Z
+Stopped at: Completed 04-03-PLAN.md
+Resume file: None
