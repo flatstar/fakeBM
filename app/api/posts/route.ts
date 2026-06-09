@@ -93,10 +93,17 @@ export async function POST(req: Request): Promise<Response> {
 
   // T-3-13 arrive gate: server state, not a client claim (D-09). An order that
   // never arrived cannot be proven.
-  if (!o.arrivedAt) return badRequest();
+  //
+  // WR-04: arrivedAt ⇒ endured is set ONLY because /api/wait/[id]/arrive writes
+  // both together. We do not assume that invariant here — a broken row (manual
+  // edit, partial update, future code path) with arrivedAt set but endured NULL
+  // is rejected explicitly rather than asserted away with `!`, so a NULL can
+  // never reach the NOT NULL posts.endured column (no unhandled 500).
+  if (!o.arrivedAt || o.endured == null) return badRequest();
+  const endured = o.endured; // narrowed to boolean — no non-null assertion.
 
   // D-16/17: streak frozen at write time from this owner's endured history.
-  const streakDay = await computeStreak(tgId, o.endured!);
+  const streakDay = await computeStreak(tgId, endured);
 
   // D-15 reSnapshot: restName/items/total/kcal/savedAmount/endured come from the
   // ORDER row — the body's money/streak/endured are never trusted (T-3-16).
@@ -115,7 +122,7 @@ export async function POST(req: Request): Promise<Response> {
       diet: body.diet,
       caption: body.caption,
       streakDay,
-      endured: o.endured!,
+      endured,
     })
     .onConflictDoNothing({ target: posts.orderId })
     .returning({ id: posts.id });

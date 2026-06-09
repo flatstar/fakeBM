@@ -214,6 +214,17 @@ describe('POST /api/posts — gates + rejection (T-3-12/13/14/15/17)', () => {
     expect(insertValues).not.toHaveBeenCalled();
   });
 
+  it('arrived but endured NULL (broken invariant) → 400, never inserts NULL (WR-04)', async () => {
+    // A malformed row where arrivedAt is set but the server judgement is missing
+    // must be rejected — not asserted away with `!` and pushed into the NOT NULL
+    // posts.endured column (which would 500).
+    orderRow.current = arrivedOrder({ endured: null });
+    const res = await POST(postJson(validBody()));
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: 'bad_request' });
+    expect(insertValues).not.toHaveBeenCalled();
+  });
+
   it('duplicate post (onConflictDoNothing returns nothing) → 409 already_posted (D-10)', async () => {
     insertReturning.mockResolvedValueOnce([]); // UNIQUE conflict, no row inserted
     const res = await POST(postJson(validBody()));
