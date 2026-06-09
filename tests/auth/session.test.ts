@@ -41,9 +41,13 @@ describe('session round-trip (AUTH-04)', () => {
   it('readSession returns null for a tampered/forged JWT', async () => {
     const uid = 42;
     const jwt = await issueSession(uid);
-    // Flip a character in the signature segment so verification fails.
+    // Flip the FIRST signature char (always significant bits). Flipping the
+    // LAST base64url char is flaky: an HS256 sig is 32 bytes → 43 base64url
+    // chars where the last char's low 2 bits are padding (bits 256–257 don't
+    // exist), so e.g. 'A'→'B' toggles only a padding bit and decodes to the
+    // SAME signature bytes — verification would still pass intermittently.
     const parts = jwt.split('.');
-    parts[2] = parts[2].slice(0, -1) + (parts[2].slice(-1) === 'A' ? 'B' : 'A');
+    parts[2] = (parts[2][0] === 'A' ? 'B' : 'A') + parts[2].slice(1);
     expect(await readSession(parts.join('.'))).toBeNull();
   });
 
