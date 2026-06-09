@@ -95,15 +95,21 @@ export function DeliveryClient({
   const craving = Math.round((1 - p) * 100);
 
   // Tell the SERVER we reached the screen end; it decides endured (skip ⇒ false).
+  // Server-authority contract (D-09): the arrived UI must reflect a SUCCESSFUL
+  // arrive call (orders.arrivedAt set). Only flip to arrived on an HTTP-ok
+  // response — on failure keep the user on the wait screen so the deadline
+  // re-tick (or the skip button) can retry, instead of falsely showing
+  // "참기 성공!" while the server never recorded arrival (WR-01).
   async function callArrive(): Promise<void> {
     if (arrived || posting) return;
     setPosting(true);
     try {
-      await fetch(`/api/wait/${orderId}/arrive`, { method: 'POST' });
-    } catch {
-      // network failure: leave the screen as-is; re-tick will retry on deadline.
-    } finally {
+      const res = await fetch(`/api/wait/${orderId}/arrive`, { method: 'POST' });
+      if (!res.ok) return; // do NOT mark arrived; ticker / skip button will retry.
       setArrived(true);
+    } catch {
+      // network failure: leave the screen as-is; the deadline re-tick will retry.
+    } finally {
       setPosting(false);
     }
   }
