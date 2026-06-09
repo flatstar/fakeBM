@@ -48,10 +48,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Stats (STATS)
 
-- [ ] **STATS-01**: 통계 화면은 이번 달·누적 아낀 돈, 덜 먹은 kcal, 총 참은 횟수, 연속일(스트릭)을 보여준다
-- [ ] **STATS-02**: 통계는 사용자의 인증 포스트에서 실시간 집계된다
-- [ ] **STATS-03**: 주간 차트로 요일별 아낀 돈을 보여준다
-- [ ] **STATS-04**: "공깃밥 N개 / 영화 N편 / 최다 참은 메뉴" 같은 환산 비유를 보여준다
+- [x] **STATS-01**: 통계 화면은 이번 달·누적 아낀 돈, 덜 먹은 kcal, 총 참은 횟수, 연속일(스트릭)을 보여준다
+- [x] **STATS-02**: 통계는 사용자의 인증 포스트에서 실시간 집계된다
+- [x] **STATS-03**: 주간 차트로 요일별 아낀 돈을 보여준다
+- [x] **STATS-04**: "공깃밥 N개 / 영화 N편 / 최다 참은 메뉴" 같은 환산 비유를 보여준다
 - [ ] **STATS-05**: MY 화면에서 내 프로필·누적 통계·내 인증 기록을 본다
 
 ### Share (SHARE)
@@ -127,10 +127,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FEED-04 | Phase 4 | Complete |
 | FEED-05 | Phase 4 | Complete |
 | FEED-06 | Phase 4 | Complete |
-| STATS-01 | Phase 5 | Pending |
-| STATS-02 | Phase 5 | Pending |
-| STATS-03 | Phase 5 | Pending |
-| STATS-04 | Phase 5 | Pending |
+| STATS-01 | Phase 5 | Complete |
+| STATS-02 | Phase 5 | Complete |
+| STATS-03 | Phase 5 | Complete |
+| STATS-04 | Phase 5 | Complete |
 | STATS-05 | Phase 5 | Pending |
 | SHARE-01 | Phase 6 | Pending |
 | SHARE-02 | Phase 6 | Pending |

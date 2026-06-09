@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 5 UI-SPEC approved
-last_updated: "2026-06-09T17:48:54.409Z"
-last_activity: 2026-06-09 -- Phase 04 complete (04-05 operator moderation)
+last_updated: "2026-06-09T17:56:17.038Z"
+last_activity: 2026-06-09 -- Phase 05 execution started
 progress:
   total_phases: 6
   completed_phases: 4
-  total_plans: 17
-  completed_plans: 17
+  total_plans: 20
+  completed_plans: 18
   percent: 67
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-08)
 
 **Core value:** 가짜 주문→대기→인증 루프의 재미와 누적되는 절약/칼로리 통계·공유가 한 몸으로 작동한다.
-**Current focus:** Phase 04 — feed
+**Current focus:** Phase 05 — my
 
 ## Current Position
 
-Phase: 04 (feed) — COMPLETE
-Plan: 5 of 5 (done)
+Phase: 05 (my) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
-Last activity: 2026-06-09 -- Phase 04 complete (04-05 operator moderation)
+Last activity: 2026-06-09 -- Phase 05 execution started
 
 Progress: [██████░░░░] 59%
 
@@ -66,6 +66,7 @@ Progress: [██████░░░░] 59%
 | Phase 04 P03 | 7min | 1 tasks | 3 files |
 | Phase 04 P04 | ~6 min | 1 tasks | 4 files |
 | Phase 04 P05 | 5 min | 2 tasks | 7 files |
+| Phase 05 P01 | 4 min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -109,6 +110,8 @@ Recent decisions affecting current work:
 - [04-04]: self-report blocked via INVERTED owner check (target.tgId === reporter → 403, D-13); reason constrained to enum (D-12); reason parse precedes int-id guard so a bad reason 400s before the param check
 - [04-05]: /admin is a TOP-LEVEL route group (not under (mini)) — operator surface inherits no consumer shell; isAdmin re-checked at 3 layers (layout, page RSC, each /api/admin/* handler); non-admins get notFound() (404 not 403) everywhere — route/endpoint never confirms itself (D-14/15, Pitfall 4)
 - [04-05]: soft delete sets deletedAt; restore clears hiddenAt ONLY (does not touch deletedAt — un-hide ≠ un-delete, D-16); both single-row UPDATEs, no db.transaction (neon-http has none); report reasons aggregated via array_agg leftJoin subquery (no N+1)
+- [Phase 05-01]: computeStreak lifted from posts route into lib/stats.ts — route re-imports; ONE streak definition shared by proof-write and live display (D-04)
+- [Phase 05-01]: live display streak = recomputeCurrentStreak — a chain 2+ KST days stale shows 0 (not the frozen streakDay); topMenuName counts items[].name not category (D-08); ONE centralized visibility predicate (exclude deletedAt, include hiddenAt) across all stats reads
 
 ### Pending Todos
 
@@ -137,6 +140,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T17:37:10.649Z
+Last session: 2026-06-09T17:55:44.533Z
 Stopped at: Phase 5 UI-SPEC approved
 Resume file: .planning/phases/05-my/05-UI-SPEC.md

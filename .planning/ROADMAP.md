@@ -166,7 +166,7 @@ Plans:
 Plans:
 **Wave 1** *(aggregation core)*
 
-- [ ] 05-01-PLAN.md — lib/stats.ts 집계 코어(TDD): KST 월경계·월~일 주간버킷·topMenu 메뉴명 빈도·현재 스트릭 재계산 순수함수 + owner-scoped 스칼라 totals + computeStreak 공유화 + Wave-0 순수fn 스위트 + live-Neon 스모크 (STATS-01/02/03/04)
+- [x] 05-01-PLAN.md — lib/stats.ts 집계 코어(TDD): KST 월경계·월~일 주간버킷·topMenu 메뉴명 빈도·현재 스트릭 재계산 순수함수 + owner-scoped 스칼라 totals + computeStreak 공유화 + Wave-0 순수fn 스위트 + live-Neon 스모크 (STATS-01/02/03/04)
 
 **Wave 2** *(blocked on 05-01)*
 
@@ -207,5 +207,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. 가짜 주문 루프 | 4/4 | Complete    | 2026-06-08 |
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
 | 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
-| 5. 통계 & MY | 0/TBD | Not started | - |
+| 5. 통계 & MY | 1/3 | In Progress|  |
 | 6. 공유 카드 & OG | 0/TBD | Not started | - |
