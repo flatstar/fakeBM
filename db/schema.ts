@@ -7,6 +7,7 @@ import {
   jsonb,
   boolean,
   index,
+  primaryKey,
 } from 'drizzle-orm/pg-core';
 
 /**
@@ -134,12 +135,79 @@ export const posts = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true })
       .notNull()
       .defaultNow(),
+    // Phase 4 visibility columns — both nullable, default visible. Server-set
+    // only (report/admin handlers, Plans 04/05); no client body field maps here.
+    hiddenAt: timestamp('hidden_at', { withTimezone: true }), // D-10 set on first report
+    deletedAt: timestamp('deleted_at', { withTimezone: true }), // D-16 operator soft delete
   },
   (t) => [
-    index('posts_created_idx').on(t.createdAt), // Phase 4 feed cursor
+    // Composite (createdAt, id) keyset index — the feed cursor seeks on both
+    // columns (FEED-02) so same-tick ties never drop/duplicate a row.
+    index('posts_created_idx').on(t.createdAt, t.id), // Phase 4 feed keyset cursor
     index('posts_tg_created_idx').on(t.tgId, t.createdAt), // Phase 5 per-user
   ],
 );
 
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
+
+/**
+ * likes — one row per (post, user) like (FEED-03 / D-05/06).
+ *
+ * D-05 the composite PK (postId, tgId) is the onConflictDoNothing target: a
+ *   double-tap can never create a second row, so the like toggle is idempotent.
+ * D-06 no denormalized count column — the like count is a GROUP BY read at v1
+ *   (likes_post_idx serves it). Revisit only at scale.
+ */
+export const likes = pgTable(
+  'likes',
+  {
+    postId: integer('post_id')
+      .notNull()
+      .references(() => posts.id),
+    tgId: bigint('tg_id', { mode: 'number' })
+      .notNull()
+      .references(() => users.tgId),
+    createdAt: timestamp('created_at', { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.postId, t.tgId] }), // D-05 idempotency target
+    index('likes_post_idx').on(t.postId), // D-06 GROUP BY count index
+  ],
+);
+
+export type Like = typeof likes.$inferSelect;
+export type NewLike = typeof likes.$inferInsert;
+
+/**
+ * reports — one report per (post, user) with a reason (FEED-05 / D-11/12).
+ *
+ * D-11 the composite PK (postId, tgId) is the onConflictDoNothing target: a
+ *   user reporting the same post twice is a no-op (one report per user per post).
+ * D-12 reason is a text enum (mirrors users.theme) — spam|inappropriate|hate|other.
+ */
+export const reports = pgTable(
+  'reports',
+  {
+    postId: integer('post_id')
+      .notNull()
+      .references(() => posts.id),
+    tgId: bigint('tg_id', { mode: 'number' })
+      .notNull()
+      .references(() => users.tgId),
+    reason: text('reason', {
+      enum: ['spam', 'inappropriate', 'hate', 'other'],
+    }).notNull(), // D-12 (mirrors users.theme enum)
+    createdAt: timestamp('created_at', { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.postId, t.tgId] }), // D-11 one report per (post, user)
+  ],
+);
+
+export type Report = typeof reports.$inferSelect;
+export type NewReport = typeof reports.$inferInsert;
