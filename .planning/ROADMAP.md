@@ -170,7 +170,7 @@ Plans:
 
 **Wave 2** *(blocked on 05-01)*
 
-- [ ] 05-02-PLAN.md — /stats 대시보드 슬라이스: RSC hero+3타일 + 순수 SVG 주간차트 + 환산비유 3종 + 0-인증 empty CTA (공유버튼 생략 D-12) (STATS-01/02/03/04)
+- [x] 05-02-PLAN.md — /stats 대시보드 슬라이스: RSC hero+3타일 + 순수 SVG 주간차트 + 환산비유 3종 + 0-인증 empty CTA (공유버튼 생략 D-12) (STATS-01/02/03/04)
 
 **Wave 3** *(blocked on 05-01; 05-02와 병렬 가능 — disjoint 파일)*
 
@@ -207,5 +207,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. 가짜 주문 루프 | 4/4 | Complete    | 2026-06-08 |
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
 | 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
-| 5. 통계 & MY | 1/3 | In Progress|  |
+| 5. 통계 & MY | 2/3 | In Progress|  |
 | 6. 공유 카드 & OG | 0/TBD | Not started | - |
