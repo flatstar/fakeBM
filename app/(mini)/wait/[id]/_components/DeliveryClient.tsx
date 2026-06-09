@@ -145,7 +145,7 @@ export function DeliveryClient({
             overflow: 'hidden',
             marginBottom: 16,
             background: 'linear-gradient(160deg,#EAF3EE,#DCEAE0)',
-            boxShadow: 'var(--shadow)',
+            boxShadow: 'var(--shadow-card)',
           }}
         >
           <svg
@@ -282,7 +282,7 @@ export function DeliveryClient({
                         : active
                           ? 'var(--color-primary-soft)'
                           : 'var(--color-surface)',
-                      boxShadow: 'var(--shadow)',
+                      boxShadow: 'var(--shadow-card)',
                       border: active ? '2px solid var(--color-primary)' : 'none',
                       transition: 'all .2s',
                     }}

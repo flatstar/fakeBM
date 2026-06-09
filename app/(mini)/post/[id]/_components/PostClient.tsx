@@ -131,7 +131,7 @@ export function PostClient({
               background: 'var(--color-surface)',
               borderRadius: '14px 14px 4px 4px',
               padding: '18px 18px 8px',
-              boxShadow: 'var(--shadow)',
+              boxShadow: 'var(--shadow-card)',
               fontFamily: 'var(--font-body)',
             }}
           >
