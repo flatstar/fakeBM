@@ -1,9 +1,17 @@
 ---
 phase: 03-wait-proof
 verified: 2026-06-09T21:00:00Z
-status: human_needed
+status: passed
+resolved_via: 03-UAT.md
 score: 5/5 must-haves verified
 overrides_applied: 0
+human_verification_outcome: |
+  Resolved via /gsd-verify-work 3 (03-UAT.md: 3 pass, 2 skipped-with-reason, 0 issues)
+  after deploying main to Vercel (origin was stale at Phase 1). Live core loop
+  confirmed: dual Blob photo upload + caption/diet + post persisted (DB posts row
+  id=1, both photo URLs non-null), skip->endured=false/streak_day=0 correct. Wait-screen
+  persistence + visual fidelity skipped-with-reason (structure covered by arrive.test.ts /
+  wait-screen.test.tsx; live observation deferred). Security: 18/18 threats closed (03-SECURITY.md).
 human_verification:
   - test: "실기기에서 듀얼 사진(시킨 척 음식 / 실제 식단)을 각각 골라 업로드"
     expected: "두 사진 모두 Vercel Blob에 직접 업로드되어 public URL(https://*.public.blob.vercel-storage.com/proof/<tgId>/...) 반환, EXIF 방향 정상(세로 사진이 옆으로 눕지 않음), 인증 저장 후 posts 행에 두 URL 영속"
