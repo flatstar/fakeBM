@@ -98,7 +98,20 @@ Plans:
   4. 사용자가 음식·식단 사진을 각각 업로드(서버 검증 토큰 경유)하고 식단 텍스트·한마디를 입력할 수 있다
   5. 인증을 올리면 사진 URL·캡션·식단·아낀 돈·kcal·연속일이 포함된 포스트가 서버에 저장된다
 
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — orders 대기/도착 컬럼 + posts 테이블(order_id UNIQUE) + KST 스트릭 순수함수 + [BLOCKING] db:push (Wave 0 substrate)
+- [ ] 03-03-PLAN.md — @vercel/blob 설치 + Blob store 프로비저닝(checkpoint) + handleUpload 토큰 라우트 + canvas 다운스케일 (PROOF-02 plumbing)
+
+**Wave 2** *(blocked on 03-01)*
+
+- [ ] 03-02-PLAN.md — /wait/[id] 대기 슬라이스: server-deadline 스텝퍼·라이더·게이지·응원 + arrive 서버 판정 (WAIT-01~04)
+
+**Wave 3** *(blocked on 03-01 + 03-03)*
+
+- [ ] 03-04-PLAN.md — /post/[id] 인증 슬라이스: ₩0 가짜 영수증 + 듀얼 Blob 업로드 + diet/caption + posts 서버 권위 저장(소유자·도착·1회·스트릭) (PROOF-01~04)
 **UI hint**: yes
 
 ### Phase 4: 명예의 전당 피드 (+ 좋아요 + 모더레이션)
@@ -160,7 +173,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. 기반 — 미니앱 셸·디자인·인증/DB | 4/4 | Complete    | 2026-06-08 |
 | 2. 가짜 주문 루프 | 4/4 | Complete    | 2026-06-08 |
-| 3. 대기 → 인증 (코어 루프) | 0/TBD | Not started | - |
+| 3. 대기 → 인증 (코어 루프) | 0/4 | Planned | - |
 | 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |
 | 5. 통계 & MY | 0/TBD | Not started | - |
 | 6. 공유 카드 & OG | 0/TBD | Not started | - |
