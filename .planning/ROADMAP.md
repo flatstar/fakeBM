@@ -162,7 +162,20 @@ Plans:
   3. "공깃밥 N개 / 영화 N편 / 최다 참은 메뉴" 같은 환산 비유를 ("굶기"가 아닌 "절약/선택" 톤으로) 보여준다
   4. MY 화면에서 내 프로필·누적 통계·내 인증 기록을 본다
 
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+**Wave 1** *(aggregation core)*
+
+- [ ] 05-01-PLAN.md — lib/stats.ts 집계 코어(TDD): KST 월경계·월~일 주간버킷·topMenu 메뉴명 빈도·현재 스트릭 재계산 순수함수 + owner-scoped 스칼라 totals + computeStreak 공유화 + Wave-0 순수fn 스위트 + live-Neon 스모크 (STATS-01/02/03/04)
+
+**Wave 2** *(blocked on 05-01)*
+
+- [ ] 05-02-PLAN.md — /stats 대시보드 슬라이스: RSC hero+3타일 + 순수 SVG 주간차트 + 환산비유 3종 + 0-인증 empty CTA (공유버튼 생략 D-12) (STATS-01/02/03/04)
+
+**Wave 3** *(blocked on 05-01; 05-02와 병렬 가능 — disjoint 파일)*
+
+- [ ] 05-03-PLAN.md — /my 슬라이스: FeedCard readOnly prop + owner-scoped 내기록 쿼리 + 프로필(실명+익명핸들 병기) + 누적요약→/stats + read-only FeedCard 리스트 (STATS-05)
+
 **UI hint**: yes
 
 ### Phase 6: 공유 카드 & OG 이미지
