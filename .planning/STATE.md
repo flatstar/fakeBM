@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 4 UI-SPEC approved
-last_updated: "2026-06-09T14:19:38.988Z"
-last_activity: 2026-06-09 -- 03-04 인증 slice complete (POST /api/posts + /post/[id])
+last_updated: "2026-06-09T14:28:04.534Z"
+last_activity: 2026-06-09 -- Phase 04 execution started
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 17
+  completed_plans: 13
   percent: 50
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-08)
 
 **Core value:** 가짜 주문→대기→인증 루프의 재미와 누적되는 절약/칼로리 통계·공유가 한 몸으로 작동한다.
-**Current focus:** Phase 03 — 대기 → 인증 (코어 루프 완성)
+**Current focus:** Phase 04 — feed
 
 ## Current Position
 
-Phase: 03 (대기 → 인증 (코어 루프 완성)) — COMPLETE
-Plan: 4 of 4 (all complete)
+Phase: 04 (feed) — EXECUTING
+Plan: 2 of 5
 Status: Ready to execute
-Last activity: 2026-06-09 -- 03-04 인증 slice complete (POST /api/posts + /post/[id])
+Last activity: 2026-06-09 -- Phase 04 execution started
 
 Progress: [█████░░░░░] 50%
 
@@ -61,6 +61,7 @@ Progress: [█████░░░░░] 50%
 | Phase 03 P03-03 | 11 | 2 tasks | 5 files |
 | Phase 03 P02 | ~18 min | 2 tasks | 8 files |
 | Phase 03 P04 | ~6 min | 2 tasks | 6 files |
+| Phase 04 P01 | 6 min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,8 @@ Recent decisions affecting current work:
 - [03-02]: 대기 서버 권위 트라이어드 — SC가 deadline ensure(isNull 가드), CC는 deadlineMs prop으로 표시 전용 카운트다운, arrive 라우트가 now()>=deadline 재판정. 스킵=도착이되 endured=false (D-04/05/09)
 - [03-02]: arrive/start 라우트는 POST /api/orders 인증게이트+헬퍼 스켈레톤 복제, 모두 owner-scope and(eq id, eq tgId); arrive는 arrivedAt 멱등
 - [03-02]: Rider getPointAtLength 직접 사용(프로토타입 `getPointAt ? null` 오타 분기 제거, WAIT-02)
+- [Phase ?]: [04-01]: likes/reports composite PK (postId,tgId) = onConflictDoNothing idempotency target (D-05/D-11); reason enum mirrors users.theme; posts.hiddenAt/deletedAt nullable default-visible; posts_created_idx → composite (createdAt,id) keyset pushed live to Neon
+- [Phase ?]: [04-01]: lib/handle.ts pure (import 0) FNV-1a → 한글 형용사+명사+0..999 접미사, tgId만으로 결정론적 (D-01/02); lib/admin.ts isAdmin은 ADMIN_TG_IDS를 call-time에 읽음, server-only never NEXT_PUBLIC_ (D-14)
 
 ### Pending Todos
 
@@ -122,6 +125,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T14:00:20.538Z
+Last session: 2026-06-09T14:27:41.998Z
 Stopped at: Phase 4 UI-SPEC approved
 Resume file: .planning/phases/04-feed/04-UI-SPEC.md
