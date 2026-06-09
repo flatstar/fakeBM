@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-06-09T14:45:40.151Z"
+stopped_at: Completed 04-04-PLAN.md
+last_updated: "2026-06-09T15:00:00.000Z"
 last_activity: 2026-06-09 -- Phase 04 execution started
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 17
-  completed_plans: 15
-  percent: 50
+  completed_plans: 16
+  percent: 53
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 04 (feed) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-06-09 -- Phase 04 execution started
 
-Progress: [█████░░░░░] 50%
+Progress: [█████░░░░░] 53%
 
 ## Performance Metrics
 
@@ -64,6 +64,7 @@ Progress: [█████░░░░░] 50%
 | Phase 04 P01 | 6 min | 3 tasks | 7 files |
 | Phase 04 P02 | 7min | 3 tasks | 9 files |
 | Phase 04 P03 | 7min | 1 tasks | 3 files |
+| Phase 04 P04 | ~6 min | 1 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -103,6 +104,8 @@ Recent decisions affecting current work:
 - [Phase ?]: [04-02]: LikeButton reconciles to server {liked,count} (SET, never +1/-1, D-09); FeedCard server component with handleFor(tgId) anonymous author + LikeButton/ReportMenu client islands; report trigger hidden when own post (D-13)
 - [Phase ?]: [04-03]: neon-http has no db.transaction → like toggle runs as sequential insert(onConflictDoNothing)/delete/recount; composite PK keeps it idempotent + recount is committed-state authoritative {liked,count} (D-09)
 - [Phase ?]: [04-03]: live-Neon smoke split into tests/api/like-live.test.ts because the unit file file-level-mocks @/lib/db (the mock would intercept the real round-trip)
+- [04-04]: report→hide endpoint runs as sequential statements (neon-http has no db.transaction) — onConflictDoNothing insert + isNull(hiddenAt)-guarded UPDATE keep it idempotent; first report sets hiddenAt (D-10), dup is no-op (D-11) — no tx needed for correctness
+- [04-04]: self-report blocked via INVERTED owner check (target.tgId === reporter → 403, D-13); reason constrained to enum (D-12); reason parse precedes int-id guard so a bad reason 400s before the param check
 
 ### Pending Todos
 
@@ -131,6 +134,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T14:45:40.147Z
-Stopped at: Completed 04-03-PLAN.md
+Last session: 2026-06-09T15:00:00.000Z
+Stopped at: Completed 04-04-PLAN.md
 Resume file: None

@@ -16,3 +16,8 @@ None are in the like route/tests; the build still passes. React-Compiler-style r
 | lib/cart.tsx | setState synchronously within an effect | pre-existing |
 
 Recommend a dedicated lint-cleanup plan/quick before phase close.
+
+## 04-04 (report → hide)
+
+Same 8 pre-existing `npm run lint` errors persist (unchanged by this slice). None are in
+the report route/tests; `npm run build` passes clean. Still out of scope — see the 04-03 table above.

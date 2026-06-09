@@ -141,7 +141,7 @@ Plans:
 **Wave 3** *(blocked on 04-01 + 04-02; 04-03·04-04 병렬 — disjoint 라우트 파일)*
 
 - [x] 04-03-PLAN.md — 좋아요 토글 API: POST /api/posts/[id]/like 멱등 + 서버 권위 {liked,count} (FEED-03)
-- [ ] 04-04-PLAN.md — 신고 API: POST /api/posts/[id]/report 본인글 차단 + 멱등 + 즉시 숨김 (FEED-05)
+- [x] 04-04-PLAN.md — 신고 API: POST /api/posts/[id]/report 본인글 차단 + 멱등 + 즉시 숨김 (FEED-05)
 
 **Wave 4** *(blocked on 04-01 + 04-02 + 04-04)*
 
