@@ -8,19 +8,16 @@ updated: 2026-06-09
 
 ## Current Test
 
-number: 1
-name: 라이브 Vercel Blob 듀얼 사진 업로드 (실기기)
-expected: |
-  /post/[id] 인증 화면에서 "시킨 척한 음식" + "실제 내 식단" 사진을 각각 선택하면
-  클라에서 다운스케일 후 Blob(proof/{tgId}/...)에 업로드되고 public URL이 반환되며,
-  세로 폰 사진의 EXIF 방향이 올바르게 표시된다. 두 사진 없이는 제출 불가.
-awaiting: user response
+[blocked on deployment — see Test 1 / Gaps]
+awaiting: deploy latest main to Vercel (50 commits unpushed; origin/main stuck at Phase 1)
 
 ## Tests
 
 ### 1. 라이브 Vercel Blob 듀얼 사진 업로드 (실기기)
 expected: 듀얼 사진 선택 → 다운스케일 → proof/{tgId}/ 경로로 Blob 업로드 → public URL 반환, EXIF 방향 정상, 두 사진 필수 강제
-result: [pending]
+result: blocked
+blocked_by: release-build
+reason: "User: blob을 추가는 했는데 홈 말고는 어딜가도 404. 진단: origin/main이 Phase 1(b10442f)에 멈춰 50개 커밋 미푸시 — Vercel 배포본에 Phase 2·3 라우트(/store /cart /order /wait /post) 부재. 코드/로컬빌드는 정상(146 tests green). 배포 후 재테스트 필요."
 
 ### 2. 서버 고정 대기 마감의 지속성 (앱 닫기/재진입)
 expected: /wait/[id] 대기 중 앱을 닫았다 다시 열면 남은 시간이 서버 deadline 기준으로 이어지고, 임의로 앞당겨지지 않는다. 마감 도달 시 "참기 성공!" + 아낀 돈/덜 먹은 kcal 요약.
@@ -43,8 +40,10 @@ result: [pending]
 total: 5
 passed: 0
 issues: 0
-pending: 5
+pending: 4
 skipped: 0
-blocked: 0
+blocked: 1
 
 ## Gaps
+
+(no code gaps — Test 1 is blocked on a deployment prerequisite, not a code defect. origin/main is 50 commits behind HEAD; Vercel deploys Phase 1 only. Push main + confirm Vercel env vars, then re-run /gsd-verify-work 3.)
