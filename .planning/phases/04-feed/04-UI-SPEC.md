@@ -1,10 +1,11 @@
 ---
 phase: 4
 slug: feed
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-06-09
+reviewed_at: 2026-06-09
 ---
 
 # Phase 4 — UI Design Contract
@@ -122,6 +123,14 @@ feed reuses the body/label/display/micro tokens.
 
 **Two-weight rule:** treat **regular/medium (500–600)** for body/meta and **bold (700–800)** for
 emphasis/headings/handles. Numbers always Pretendard tabular-nums.
+
+**Value→token collapse (mirrors 01-UI-SPEC resolution — read literally these are NOT 9 new sizes):**
+The raw extracted pixel values map into the closed Phase-1 token buckets. An executor must collapse near-neighbors to the existing token, never introduce a new size:
+- **micro (10–11):** photo corner label 10.5, card meta / streak 11.5
+- **body (12–13.5):** receipt chip / diet pill 12, subtitle / empty-body / admin-meta / payoff / like-count 13, caption 13.5 (lh 1.55 is the only intentional body line-height)
+- **label (14–14.5):** CTA / reason-sheet / admin-title 14, author handle 14.5
+- **title (16):** empty-state heading 16
+- **display/hero (24):** screen title 24 (chunky)
 
 ---
 
