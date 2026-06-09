@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 4 UI-SPEC approved
-last_updated: "2026-06-09T14:28:04.534Z"
+last_updated: "2026-06-09T14:37:26.629Z"
 last_activity: 2026-06-09 -- Phase 04 execution started
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 17
-  completed_plans: 13
+  completed_plans: 14
   percent: 50
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 04 (feed) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-06-09 -- Phase 04 execution started
 
@@ -62,6 +62,7 @@ Progress: [█████░░░░░] 50%
 | Phase 03 P02 | ~18 min | 2 tasks | 8 files |
 | Phase 03 P04 | ~6 min | 2 tasks | 6 files |
 | Phase 04 P01 | 6 min | 3 tasks | 7 files |
+| Phase 04 P02 | 7min | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,8 @@ Recent decisions affecting current work:
 - [03-02]: Rider getPointAtLength 직접 사용(프로토타입 `getPointAt ? null` 오타 분기 제거, WAIT-02)
 - [Phase ?]: [04-01]: likes/reports composite PK (postId,tgId) = onConflictDoNothing idempotency target (D-05/D-11); reason enum mirrors users.theme; posts.hiddenAt/deletedAt nullable default-visible; posts_created_idx → composite (createdAt,id) keyset pushed live to Neon
 - [Phase ?]: [04-01]: lib/handle.ts pure (import 0) FNV-1a → 한글 형용사+명사+0..999 접미사, tgId만으로 결정론적 (D-01/02); lib/admin.ts isAdmin은 ADMIN_TG_IDS를 call-time에 읽음, server-only never NEXT_PUBLIC_ (D-14)
+- [Phase ?]: [04-02]: GET /api/feed rejects a present-but-malformed cursor with 400 (strict, RESEARCH Open Q2); absent cursor = first page. lib/feed.ts is the single shared query — RSC page + GET both call feedPage so the visibility gate (isNull hiddenAt/deletedAt) can never diverge
+- [Phase ?]: [04-02]: LikeButton reconciles to server {liked,count} (SET, never +1/-1, D-09); FeedCard server component with handleFor(tgId) anonymous author + LikeButton/ReportMenu client islands; report trigger hidden when own post (D-13)
 
 ### Pending Todos
 
@@ -125,6 +128,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T14:27:41.998Z
+Last session: 2026-06-09T14:37:06.810Z
 Stopped at: Phase 4 UI-SPEC approved
 Resume file: .planning/phases/04-feed/04-UI-SPEC.md

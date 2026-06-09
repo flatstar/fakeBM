@@ -42,7 +42,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **FEED-01**: 명예의 전당 피드에서 다른 사용자들의 인증 포스트가 실제로(공용 DB) 보인다
 - [x] **FEED-02**: 피드는 커서 기반 페이지네이션으로 추가 로드된다
 - [x] **FEED-03**: 사용자는 포스트에 좋아요를 토글할 수 있고, 좋아요 수가 공용 DB에 멱등하게 반영된다
-- [ ] **FEED-04**: 각 포스트는 듀얼 사진(시킨 척/실제 식단), 영수증 요약, 아낌 돈·kcal, 캡션·식단, 연속일을 표시한다
+- [x] **FEED-04**: 각 포스트는 듀얼 사진(시킨 척/실제 식단), 영수증 요약, 아낌 돈·kcal, 캡션·식단, 연속일을 표시한다
 - [x] **FEED-05**: 사용자는 부적절한 포스트를 신고할 수 있고, 신고된 포스트는 즉시 숨겨진다
 - [x] **FEED-06**: 운영자는 신고된/숨겨진 포스트를 검토하고 영구 삭제(soft delete)할 수 있다
 
@@ -124,7 +124,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FEED-01 | Phase 4 | Complete |
 | FEED-02 | Phase 4 | Complete |
 | FEED-03 | Phase 4 | Complete |
-| FEED-04 | Phase 4 | Pending |
+| FEED-04 | Phase 4 | Complete |
 | FEED-05 | Phase 4 | Complete |
 | FEED-06 | Phase 4 | Complete |
 | STATS-01 | Phase 5 | Pending |
