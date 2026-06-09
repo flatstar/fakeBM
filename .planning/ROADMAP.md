@@ -111,7 +111,7 @@ Plans:
 
 **Wave 3** *(blocked on 03-01 + 03-03)*
 
-- [ ] 03-04-PLAN.md — /post/[id] 인증 슬라이스: ₩0 가짜 영수증 + 듀얼 Blob 업로드 + diet/caption + posts 서버 권위 저장(소유자·도착·1회·스트릭) (PROOF-01~04)
+- [x] 03-04-PLAN.md — /post/[id] 인증 슬라이스: ₩0 가짜 영수증 + 듀얼 Blob 업로드 + diet/caption + posts 서버 권위 저장(소유자·도착·1회·스트릭) (PROOF-01~04) (DONE — POST /api/posts owner/arrive/once(409) + KST streak + order reSnapshot; /post/[id] SC guards + PostClient receipt + dual upload; vitest 142/0, tsc + build clean — see 03-04-SUMMARY.md)
 
 **UI hint**: yes
 
