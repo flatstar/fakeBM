@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Phase 4 context gathered
-last_updated: "2026-06-09T13:42:38.483Z"
+stopped_at: Phase 4 UI-SPEC approved
+last_updated: "2026-06-09T14:00:20.542Z"
 last_activity: 2026-06-09 -- 03-04 인증 slice complete (POST /api/posts + /post/[id])
 progress:
   total_phases: 6
@@ -122,6 +122,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T13:42:38.479Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-feed/04-CONTEXT.md
+Last session: 2026-06-09T14:00:20.538Z
+Stopped at: Phase 4 UI-SPEC approved
+Resume file: .planning/phases/04-feed/04-UI-SPEC.md
