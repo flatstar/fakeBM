@@ -23,11 +23,11 @@
  *     nothing on a re-submit → 409 already_posted (D-10), never inflating stats.
  */
 import { z } from 'zod';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { requireSession } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { orders, posts } from '@/db/schema';
-import { nextStreak } from '@/lib/streak';
+import { computeStreak } from '@/lib/stats';
 
 // Vercel Blob public host (A1): a client-supplied photo URL must resolve to a
 // Blob public URL — never an arbitrary attacker-controlled host (T-3-15).
@@ -55,21 +55,9 @@ function notFoundJson() {
   return Response.json({ error: 'not_found' }, { status: 404 });
 }
 
-/**
- * computeStreak — the DB-touching streak wrapper (kept out of lib/streak so that
- * module stays pure). Selects this owner's latest endured post and applies the
- * pure nextStreak (KST, D-16/17). A skipped (endured=false) arrival yields 0.
- */
-async function computeStreak(tgId: number, thisEndured: boolean): Promise<number> {
-  if (!thisEndured) return 0; // short-circuit (nextStreak would also return 0).
-  const prev = await db
-    .select({ createdAt: posts.createdAt, streakDay: posts.streakDay })
-    .from(posts)
-    .where(and(eq(posts.tgId, tgId), eq(posts.endured, true)))
-    .orderBy(desc(posts.createdAt))
-    .limit(1);
-  return nextStreak(new Date(), prev[0] ?? null, thisEndured);
-}
+// computeStreak — the DB-touching streak wrapper — now lives in lib/stats.ts
+// (D-04: lifted so the proof route and the live stats display share ONE streak
+// definition). Imported above; no local duplicate.
 
 export async function POST(req: Request): Promise<Response> {
   // Auth gate first — no DB work for an unauthenticated caller (T-3-17).
