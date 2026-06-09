@@ -26,18 +26,18 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 03 (대기 → 인증 (코어 루프 완성)) — EXECUTING
-Plan: 3 of 4
-Status: Ready to execute
-Last activity: 2026-06-09 -- Phase 03 execution started
+Plan: 4 of 4
+Status: Ready to execute (03-01, 03-02, 03-03 complete; 03-04 remaining)
+Last activity: 2026-06-09 -- 03-02 wait slice complete (/wait/[id] + arrive/start routes)
 
-Progress: [████░░░░░░] 44%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 10
-- Average duration: 7.5 min
+- Total plans completed: 11
+- Average duration: 8 min
 - Total execution time: ~0.25 hours
 
 **By Phase:**
@@ -59,6 +59,7 @@ Progress: [████░░░░░░] 44%
 | Phase 02 P04 | 5m | 2 tasks | 5 files |
 | Phase 03 P01 | 20 min | 2 tasks | 5 files |
 | Phase 03 P03-03 | 11 | 2 tasks | 5 files |
+| Phase 03 P02 | ~18 min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,9 @@ Recent decisions affecting current work:
 - [Phase ?]: 02-04: /order/[id] read is owner-scoped (and(eq id, eq tgId)) → notFound on mismatch — IDOR-safe (T-03)
 - [Phase ?]: [03-01]: orders +4 nullable 대기/도착 컬럼 + posts(order_id UNIQUE 멱등) 라이브 Neon push — Phase 3 두 슬라이스 공유 substrate
 - [Phase ?]: [03-01]: lib/streak는 순수함수만(import 0); DB 래퍼는 04 소유. KST +09:00 고정(DST 없음)
+- [03-02]: 대기 서버 권위 트라이어드 — SC가 deadline ensure(isNull 가드), CC는 deadlineMs prop으로 표시 전용 카운트다운, arrive 라우트가 now()>=deadline 재판정. 스킵=도착이되 endured=false (D-04/05/09)
+- [03-02]: arrive/start 라우트는 POST /api/orders 인증게이트+헬퍼 스켈레톤 복제, 모두 owner-scope and(eq id, eq tgId); arrive는 arrivedAt 멱등
+- [03-02]: Rider getPointAtLength 직접 사용(프로토타입 `getPointAt ? null` 오타 분기 제거, WAIT-02)
 
 ### Pending Todos
 
@@ -117,6 +121,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-09T11:18:59.958Z
-Stopped at: 03-01 Task 1 committed (197a02d); paused at Task 2 [BLOCKING] checkpoint — db:push to live Neon awaits human approval
-Resume file: .planning/phases/03-wait-proof/03-01-PLAN.md (Task 2 only)
+Last session: 2026-06-09T11:25:00.000Z
+Stopped at: Completed 03-02-PLAN.md (commits bf60905, 740d10c) — /wait/[id] wait slice live; 03-04 (PROOF) remains
+Resume file: None

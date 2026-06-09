@@ -107,7 +107,7 @@ Plans:
 
 **Wave 2** *(blocked on 03-01)*
 
-- [ ] 03-02-PLAN.md — /wait/[id] 대기 슬라이스: server-deadline 스텝퍼·라이더·게이지·응원 + arrive 서버 판정 (WAIT-01~04)
+- [x] 03-02-PLAN.md — /wait/[id] 대기 슬라이스: server-deadline 스텝퍼·라이더·게이지·응원 + arrive 서버 판정 (WAIT-01~04)
 
 **Wave 3** *(blocked on 03-01 + 03-03)*
 
