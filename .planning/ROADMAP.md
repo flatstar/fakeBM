@@ -128,7 +128,24 @@ Plans:
   3. 사용자가 좋아요를 토글할 수 있고 좋아요 수가 공용 DB에 멱등하게 반영된다(더블탭·재시도 안전)
   4. 사용자가 포스트를 신고하면 즉시 숨겨지고, 운영자가 신고/숨김 포스트를 검토해 soft delete 할 수 있다
 
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+**Wave 1** *(substrate)*
+
+- [ ] 04-01-PLAN.md — likes/reports 테이블 + posts.hiddenAt/deletedAt + 복합 (createdAt,id) 인덱스 + lib/handle(익명 핸들)·lib/admin(허용목록) + [BLOCKING] db:push (FEED-01..06 substrate)
+
+**Wave 2** *(blocked on 04-01)*
+
+- [ ] 04-02-PLAN.md — 피드 읽기 슬라이스: lib/feed 공유 키셋 쿼리 + GET /api/feed + /feed RSC 페이지 + FeedCard/FeedList/LikeButton/ReportMenu (FEED-01/02/04)
+
+**Wave 3** *(blocked on 04-01 + 04-02; 04-03·04-04 병렬 — disjoint 라우트 파일)*
+
+- [ ] 04-03-PLAN.md — 좋아요 토글 API: POST /api/posts/[id]/like 멱등 + 서버 권위 {liked,count} (FEED-03)
+- [ ] 04-04-PLAN.md — 신고 API: POST /api/posts/[id]/report 본인글 차단 + 멱등 + 즉시 숨김 (FEED-05)
+
+**Wave 4** *(blocked on 04-01 + 04-02 + 04-04)*
+
+- [ ] 04-05-PLAN.md — 운영자 모더레이션: /admin 가드 라우트 + /api/admin/delete·restore (isAdmin 재검증) (FEED-06)
 **UI hint**: yes
 
 ### Phase 5: 통계 & MY
@@ -175,6 +192,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. 기반 — 미니앱 셸·디자인·인증/DB | 4/4 | Complete    | 2026-06-08 |
 | 2. 가짜 주문 루프 | 4/4 | Complete    | 2026-06-08 |
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
-| 4. 명예의 전당 피드 + 모더레이션 | 0/TBD | Not started | - |
+| 4. 명예의 전당 피드 + 모더레이션 | 0/5 | Planned | - |
 | 5. 통계 & MY | 0/TBD | Not started | - |
 | 6. 공유 카드 & OG | 0/TBD | Not started | - |
