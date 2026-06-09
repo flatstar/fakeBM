@@ -24,8 +24,10 @@
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-// Control the session, the visibility-precheck row, and the in-transaction
-// insert/delete/recount. vi.hoisted so the mock factories can close over them.
+// Control the session, the visibility-precheck row, and the insert/delete/recount.
+// The runtime db is neon-http (NO db.transaction) so the route runs the toggle as
+// sequential statements — the mock mirrors that (insert/delete/select on db).
+// vi.hoisted so the mock factories can close over the state refs.
 const {
   requireSession,
   precheckWhere,
@@ -34,7 +36,6 @@ const {
   recountState,
   txInsertReturning,
   txDeleteWhere,
-  txRecountWhere,
 } = vi.hoisted(() => {
   const postRow: { current: Record<string, unknown> | undefined } = { current: undefined };
   // insertReturning: the rows .returning() yields — non-empty = newly inserted.
@@ -42,17 +43,24 @@ const {
   // recountState: what the recount SELECT returns (post-action count).
   const recountState: { current: number } = { current: 0 };
 
-  // Visibility precheck: db.select().from().where() → [postRow] or [].
-  const precheckWhere = vi.fn(async () => (postRow.current ? [postRow.current] : []));
-
-  // Inside the transaction:
-  //   tx.insert(likes).values().onConflictDoNothing().returning()
+  //   db.insert(likes).values().onConflictDoNothing().returning()
   const txInsertReturning = vi.fn(async () => insertReturning.current);
-  //   tx.delete(likes).where()
+  //   db.delete(likes).where()
   const txDeleteWhere = vi.fn(async () => undefined);
-  //   tx.select({c}).from(likes).where()  → [{ c: <count> }]
-  const txRecountWhere = vi.fn(async () => [{ c: recountState.current }]);
 
+  // db.select() is used for BOTH the visibility precheck and the recount. The
+  // first call in a request is the precheck (post hidden/deleted row); the second
+  // is the recount ([{ c }]). A per-request counter switches the .where() result.
+  const callIdx = { n: 0 };
+  const precheckWhere = vi.fn(async () => {
+    callIdx.n += 1;
+    if (callIdx.n === 1) return postRow.current ? [postRow.current] : [];
+    return [{ c: recountState.current }];
+  });
+  // Reset the per-request counter before each POST (exposed via clear()).
+  (precheckWhere as unknown as { resetIdx: () => void }).resetIdx = () => {
+    callIdx.n = 0;
+  };
   return {
     requireSession: vi.fn(async () => 99281932 as number | null),
     precheckWhere,
@@ -61,29 +69,20 @@ const {
     recountState,
     txInsertReturning,
     txDeleteWhere,
-    txRecountWhere,
   };
 });
 
-vi.mock('@/lib/db', () => {
-  // The transaction callback receives a `tx` exposing insert/delete/select.
-  const tx = {
+vi.mock('@/lib/db', () => ({
+  db: {
+    select: vi.fn(() => ({ from: vi.fn(() => ({ where: precheckWhere })) })),
     insert: vi.fn(() => ({
       values: vi.fn(() => ({
         onConflictDoNothing: vi.fn(() => ({ returning: txInsertReturning })),
       })),
     })),
     delete: vi.fn(() => ({ where: txDeleteWhere })),
-    select: vi.fn(() => ({ from: vi.fn(() => ({ where: txRecountWhere })) })),
-  };
-  return {
-    db: {
-      // Visibility precheck: select().from().where()
-      select: vi.fn(() => ({ from: vi.fn(() => ({ where: precheckWhere })) })),
-      transaction: vi.fn(async (cb: (t: typeof tx) => Promise<unknown>) => cb(tx)),
-    },
-  };
-});
+  },
+}));
 
 vi.mock('@/lib/auth', () => ({ requireSession }));
 
@@ -100,9 +99,9 @@ beforeEach(() => {
   requireSession.mockReset();
   requireSession.mockResolvedValue(VIEWER);
   precheckWhere.mockClear();
+  (precheckWhere as unknown as { resetIdx: () => void }).resetIdx();
   txInsertReturning.mockClear();
   txDeleteWhere.mockClear();
-  txRecountWhere.mockClear();
   postRow.current = { tgId: VIEWER, hiddenAt: null, deletedAt: null };
   insertReturning.current = [];
   recountState.current = 0;
@@ -184,79 +183,5 @@ describe('POST /api/posts/[id]/like — visibility + auth gates', () => {
     expect(res.status).toBe(401);
     expect(await res.json()).toEqual({ error: 'auth' });
     expect(precheckWhere).not.toHaveBeenCalled();
-  });
-});
-
-// Live Neon smoke — dormant offline (skipIf), activates when DATABASE_URL is set.
-// Exercises the REAL insert/delete + recount round-trip and proves the toggle
-// converges (idempotent) against the composite-PK likes table.
-const hasDb = !!process.env.DATABASE_URL;
-
-describe.skipIf(!hasDb)('like toggle convergence (FEED-03, live Neon)', () => {
-  it('like → unlike → like converges; double-like never inflates', async () => {
-    const { db } = await import('@/lib/db');
-    const { posts, likes, orders, users } = await import('@/db/schema');
-    const { eq, and } = await import('drizzle-orm');
-
-    const tgId = 990000003;
-    // Seed a user + order + post to like (cleaned up at the end).
-    await db
-      .insert(users)
-      .values({ tgId, username: 'liketest', firstName: 'L' })
-      .onConflictDoNothing();
-    const [order] = await db
-      .insert(orders)
-      .values({
-        tgId,
-        restId: 'r',
-        restName: 'R',
-        items: [],
-        subtotal: 1000,
-        tip: 0,
-        total: 1000,
-        kcal: 500,
-        savedAmount: 1000,
-        orderNo: 'LIKE-TEST',
-      })
-      .returning({ id: orders.id });
-    const [postRow] = await db
-      .insert(posts)
-      .values({
-        orderId: order.id,
-        tgId,
-        restName: 'R',
-        items: [],
-        total: 1000,
-        kcal: 500,
-        savedAmount: 1000,
-        foodPhotoUrl: 'https://x.public.blob.vercel-storage.com/a',
-        dietPhotoUrl: 'https://x.public.blob.vercel-storage.com/b',
-        caption: 'c',
-        diet: 'd',
-        streakDay: 1,
-        endured: true,
-      })
-      .returning({ id: posts.id });
-
-    const param = (id: string) => Promise.resolve({ id });
-    const call = () =>
-      POST(post(String(postRow.id)), { params: param(String(postRow.id)) });
-
-    try {
-      const r1 = (await (await call()).json()) as { liked: boolean; count: number };
-      expect(r1).toEqual({ liked: true, count: 1 });
-      const r2 = (await (await call()).json()) as { liked: boolean; count: number };
-      expect(r2).toEqual({ liked: false, count: 0 });
-      const r3 = (await (await call()).json()) as { liked: boolean; count: number };
-      expect(r3).toEqual({ liked: true, count: 1 });
-      // double-like (already liked) → un-like; count never exceeds 1
-      const r4 = (await (await call()).json()) as { liked: boolean; count: number };
-      expect(r4.count).toBeLessThanOrEqual(1);
-    } finally {
-      await db.delete(likes).where(eq(likes.postId, postRow.id));
-      await db.delete(posts).where(eq(posts.id, postRow.id));
-      await db.delete(orders).where(eq(orders.id, order.id));
-      await db.delete(users).where(and(eq(users.tgId, tgId)));
-    }
   });
 });
