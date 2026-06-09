@@ -1,10 +1,11 @@
 ---
 phase: 5
 slug: my
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-06-10
+reviewed_at: 2026-06-10
 ---
 
 # Phase 5 — UI Design Contract (통계 & MY)
