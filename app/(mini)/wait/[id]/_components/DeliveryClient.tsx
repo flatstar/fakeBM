@@ -100,11 +100,22 @@ export function DeliveryClient({
   // response — on failure keep the user on the wait screen so the deadline
   // re-tick (or the skip button) can retry, instead of falsely showing
   // "참기 성공!" while the server never recorded arrival (WR-01).
-  async function callArrive(): Promise<void> {
+  // `intent: 'skip'` (WR-05) tells the server this arrival is the demo skip path
+  // (D-04) — it can only force endured:false, never grant success. A natural
+  // deadline arrival sends no body and is judged purely by the server clock.
+  async function callArrive(intent?: 'skip'): Promise<void> {
     if (arrived || posting) return;
     setPosting(true);
     try {
-      const res = await fetch(`/api/wait/${orderId}/arrive`, { method: 'POST' });
+      const res = await fetch(`/api/wait/${orderId}/arrive`, {
+        method: 'POST',
+        ...(intent
+          ? {
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ intent }),
+            }
+          : {}),
+      });
       if (!res.ok) return; // do NOT mark arrived; ticker / skip button will retry.
       setArrived(true);
     } catch {
@@ -114,7 +125,8 @@ export function DeliveryClient({
     }
   }
 
-  // Natural arrival: once the server deadline passes, finalize via the server.
+  // Natural arrival: once the server deadline passes, finalize via the server
+  // with NO skip intent — the server clock alone decides endured.
   useEffect(() => {
     if (!arrived && reachedDeadline) void callArrive();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -369,10 +381,11 @@ export function DeliveryClient({
             </div>
             <div style={{ height: 8 }} />
 
-            {/* demo skip (D-04) — always available; server judges endured=false */}
+            {/* demo skip (D-04) — always available; posts intent:'skip' so the
+                server records endured=false even at the deadline edge (WR-05). */}
             <button
               type="button"
-              onClick={() => void callArrive()}
+              onClick={() => void callArrive('skip')}
               disabled={posting}
               style={{
                 width: '100%',

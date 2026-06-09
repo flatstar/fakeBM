@@ -46,8 +46,13 @@ vi.mock('@/lib/auth', () => ({ requireSession }));
 
 import { POST } from '@/app/api/wait/[id]/arrive/route';
 
-function post(id: string): Request {
-  return new Request(`http://localhost/api/wait/${id}/arrive`, { method: 'POST' });
+function post(id: string, body?: unknown): Request {
+  return new Request(`http://localhost/api/wait/${id}/arrive`, {
+    method: 'POST',
+    ...(body === undefined
+      ? {}
+      : { headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }),
+  });
 }
 const params = (id: string) => Promise.resolve({ id });
 
@@ -92,6 +97,38 @@ describe('POST /api/wait/[id]/arrive — server-judged arrival (T-3-04/05)', () 
     expect(await res.json()).toEqual({ arrived: true, endured: false });
     const setArg = updateSet.mock.calls[0]![0] as Record<string, unknown>;
     expect(setArg.endured).toBe(false);
+  });
+
+  it('explicit intent:skip → endured:false even past the deadline (WR-05 edge)', async () => {
+    // The demo skip button posts {intent:'skip'}; the server must record a skip
+    // as endured:false regardless of wall-clock — closing the "late skip counts
+    // as endured" edge. The intent bit can only subtract, never grant.
+    orderRow.current = {
+      id: 7,
+      tgId: 99281932,
+      waitDeadline: new Date(Date.now() - 60_000), // already past
+      arrivedAt: null,
+      endured: null,
+    };
+    const res = await POST(post('7', { intent: 'skip' }), { params: params('7') });
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ arrived: true, endured: false });
+    const setArg = updateSet.mock.calls[0]![0] as Record<string, unknown>;
+    expect(setArg.endured).toBe(false);
+  });
+
+  it('a forged non-skip intent cannot GRANT endured before the deadline (WR-05)', async () => {
+    orderRow.current = {
+      id: 7,
+      tgId: 99281932,
+      waitDeadline: new Date(Date.now() + 10 * 60_000), // future
+      arrivedAt: null,
+      endured: null,
+    };
+    const res = await POST(post('7', { intent: 'complete' }), { params: params('7') });
+    expect(res.status).toBe(200);
+    // server clock still governs — premature arrival is endured:false.
+    expect(await res.json()).toEqual({ arrived: true, endured: false });
   });
 
   it('already arrived → idempotent: returns stored endured, no re-write', async () => {
