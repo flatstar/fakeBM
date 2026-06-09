@@ -54,9 +54,21 @@ export interface FeedCardProps {
   viewerTgId: number;
   /** Called when the viewer reports this card (removes it from the list). */
   onHide?: (postId: number) => void;
+  /**
+   * Read-only mode (D-11): suppresses BOTH the LikeButton and the ReportMenu,
+   * so the card renders the record only (no interactive actions). Used by the
+   * /my own-records list. Defaults falsy → the feed's interactive behavior is
+   * unchanged (backward-compatible — feed/api surfaces never pass it).
+   */
+  readOnly?: boolean;
 }
 
-export function FeedCard({ post, viewerTgId, onHide }: FeedCardProps): ReactElement {
+export function FeedCard({
+  post,
+  viewerTgId,
+  onHide,
+  readOnly = false,
+}: FeedCardProps): ReactElement {
   const handle = handleFor(post.tgId);
   const isOwn = post.tgId === viewerTgId;
 
@@ -172,24 +184,28 @@ export function FeedCard({ post, viewerTgId, onHide }: FeedCardProps): ReactElem
         <span>{post.diet}</span>
       </div>
 
-      {/* action bar: like + (report only when not own — D-13) */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 18,
-          borderTop: '1px solid var(--color-line)',
-          paddingTop: 11,
-        }}
-      >
-        <LikeButton
-          postId={post.id}
-          initialLiked={post.liked}
-          initialCount={post.likeCount}
-        />
-        <div style={{ flex: 1 }} />
-        {!isOwn && <ReportMenu postId={post.id} onHide={onHide} />}
-      </div>
+      {/* action bar: like + (report only when not own — D-13). In readOnly mode
+          (D-11, /my own-records) BOTH actions are suppressed — the whole bar is
+          omitted so the read-only card shows the record only. */}
+      {!readOnly && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 18,
+            borderTop: '1px solid var(--color-line)',
+            paddingTop: 11,
+          }}
+        >
+          <LikeButton
+            postId={post.id}
+            initialLiked={post.liked}
+            initialCount={post.likeCount}
+          />
+          <div style={{ flex: 1 }} />
+          {!isOwn && <ReportMenu postId={post.id} onHide={onHide} />}
+        </div>
+      )}
     </Card>
   );
 }

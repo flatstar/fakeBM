@@ -24,10 +24,18 @@
  * computeStreak is LIFTED here from app/api/posts/route.ts so the proof route and
  * the live stats display share ONE streak definition (D-04).
  */
-import { and, desc, eq, gte, lt, sql } from 'drizzle-orm';
+import { and, desc, eq, gte, isNull, lt, or, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
-import { posts } from '@/db/schema';
+import { posts, likes } from '@/db/schema';
 import { kstDateKey, nextStreak } from '@/lib/streak';
+import {
+  decodeCursor,
+  encodeCursor,
+  PAGE_SIZE,
+  type FeedCursor,
+  type FeedPageResult,
+  type FeedPost,
+} from '@/lib/feed';
 
 const KST_OFFSET_MS = 9 * 60 * 60_000; // +09:00 fixed (no DST in Korea) — mirrors lib/streak.
 
@@ -300,4 +308,98 @@ export async function currentStreak(uid: number, now: Date = new Date()): Promis
     .orderBy(desc(posts.createdAt))
     .limit(1);
   return recomputeCurrentStreak(now, prev[0] ?? null);
+}
+
+/**
+ * ownerRecordsPage — the owner-scoped per-user 인증 records page (STATS-05 / D-11).
+ *
+ * A `feedPage` VARIANT for the /my own-records list: it returns the SAME
+ * FeedPost/FeedPageResult shape lib/feed.ts feedPage returns, so the existing
+ * FeedCard renders the rows unchanged (in readOnly mode). Three differences from
+ * the public feed read, all deliberate:
+ *
+ *  1. OWNER-SCOPE (T-05-06, the dominant /my threat): the WHERE adds
+ *     `eq(posts.tgId, uid)` so the page only ever returns THIS user's posts — no
+ *     user-supplied id selects another user's records (IDOR control). `uid` is
+ *     the session tgId from requireSession(), never a request param.
+ *  2. CENTRALIZED VISIBILITY (Pitfall 5, consistent with userTotals): exclude
+ *     operator soft-deleted (`deletedAt is null`) but INCLUDE report-hidden
+ *     (`hiddenAt`) — a hidden post is still the OWNER'S own restraint record on
+ *     their private screen. This intentionally differs from the public feed gate
+ *     (which also excludes hiddenAt) and matches the stats visibility predicate.
+ *  3. CURSOR REUSE (T-05-08): the keyset codec is REUSED from lib/feed
+ *     (decode/encodeCursor) — NOT duplicated — so a forged cursor degrades to
+ *     "first page" (decodeCursor → null, never throws) and the bound is always
+ *     Drizzle-parameterized. This read targets `posts_tg_created_idx` (schema).
+ *
+ * The cursor argument is the opaque string (decoded here via decodeCursor); the
+ * `liked`/`likeCount` fields are still computed (cheap LEFT JOINs) so the
+ * FeedPost type holds and the readOnly card — which renders neither — is fed a
+ * well-typed row.
+ *
+ * @param uid    the owner's Telegram id (session-derived — owner scope)
+ * @param cursor the opaque next-page cursor (undefined/null/garbage = first page)
+ */
+export async function ownerRecordsPage(
+  uid: number,
+  cursor?: string | null,
+): Promise<FeedPageResult> {
+  const decoded: FeedCursor | null = decodeCursor(cursor);
+
+  // Like count, grouped once (mirrors feedPage) — NOT N correlated subqueries.
+  const likeCount = db
+    .select({ postId: likes.postId, c: sql<number>`count(*)::int`.as('c') })
+    .from(likes)
+    .groupBy(likes.postId)
+    .as('like_count');
+
+  // The owner's own likes on their own posts (the viewer === the owner here).
+  const viewerLike = db
+    .select({ postId: likes.postId })
+    .from(likes)
+    .where(eq(likes.tgId, uid))
+    .as('viewer_like');
+
+  // Composite (createdAt, id) keyset predicate — omitted on the first page.
+  const keyset = decoded
+    ? or(
+        lt(posts.createdAt, decoded.createdAt),
+        and(eq(posts.createdAt, decoded.createdAt), lt(posts.id, decoded.id)),
+      )
+    : undefined;
+
+  const rows = await db
+    .select({
+      id: posts.id,
+      tgId: posts.tgId,
+      restName: posts.restName,
+      items: posts.items,
+      total: posts.total,
+      kcal: posts.kcal,
+      savedAmount: posts.savedAmount,
+      foodPhotoUrl: posts.foodPhotoUrl,
+      dietPhotoUrl: posts.dietPhotoUrl,
+      caption: posts.caption,
+      diet: posts.diet,
+      streakDay: posts.streakDay,
+      createdAt: posts.createdAt,
+      likeCount: sql<number>`coalesce(${likeCount.c}, 0)`,
+      liked: sql<boolean>`(${viewerLike.postId} is not null)`,
+    })
+    .from(posts)
+    .leftJoin(likeCount, eq(likeCount.postId, posts.id))
+    .leftJoin(viewerLike, eq(viewerLike.postId, posts.id))
+    // OWNER-SCOPE (eq(posts.tgId, uid)) + the centralized visibility predicate
+    // (exclude deletedAt, INCLUDE hiddenAt — same as userTotals/visibleOwned).
+    .where(and(eq(posts.tgId, uid), isNull(posts.deletedAt), keyset))
+    .orderBy(desc(posts.createdAt), desc(posts.id))
+    .limit(PAGE_SIZE + 1); // N+1 probe: an extra row ⇒ a further page exists.
+
+  const hasMore = rows.length > PAGE_SIZE;
+  const page = rows.slice(0, PAGE_SIZE) as FeedPost[];
+  const last = page[page.length - 1];
+  const nextCursor =
+    hasMore && last ? encodeCursor({ createdAt: last.createdAt, id: last.id }) : null;
+
+  return { posts: page, nextCursor };
 }
