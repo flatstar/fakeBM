@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 07-01-PLAN.md
-last_updated: "2026-06-10T15:55:28.504Z"
+status: verifying
+stopped_at: Completed 07-04-PLAN.md
+last_updated: "2026-06-10T16:05:43.800Z"
 last_activity: 2026-06-10 -- Phase 07 execution started
 progress:
   total_phases: 7
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 
 Phase: 07 (ios) — EXECUTING
 Plan: 5 of 5
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-06-10 -- Phase 07 execution started
 
 Progress: [██████████] 100%
@@ -77,6 +77,7 @@ Progress: [██████████] 100%
 | Phase 07-ios P02 | 2 min | 2 tasks | 2 files |
 | Phase 07-ios P05 | 2 min | 2 tasks | 9 files |
 | Phase 07-ios P03 | 9 min | 2 tasks | 3 files |
+| Phase 07-ios P04 | ~7 min | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -133,6 +134,9 @@ Recent decisions affecting current work:
 - [06-03]: OG unknown-id renders a minimal blank wordmark card (image/png, no throw) — the S3 page owns the 404; a crawler hitting a stale og:image just gets a blank frame. Blob cache (D-05) deferred per RESEARCH O-3; shares.ogUrl stays null (column exists, no later migration)
 - [06-04]: ShareSheet share chain guards EVERY call — shareURL.isAvailable() → navigator.share → clipboard (Pitfall 7); 저장 is a real <a download> (role=link, always available, independent of the chain); share URL always same-origin ${origin}/share/${id} (T-06-07), text PII-free (T-06-11)
 - [06-04]: kstMonthLabel lifted into lib/stats — ONE KST YYYY.MM source for POST /api/shares (persisted) + the /stats·/my sheet preview, so the in-app preview matches the frozen card (D-01); ShareEntryButton opens the sheet in place from the live snapshot (no extra fetch, no /share/[id] navigate)
+- [Phase ?]: [07-04]: 죽은 FAB(D-04) 해소 — BottomNav onCenter 기본값 = haptic.impact('medium')+router.push('/home'); 탭은 selection(); (mini)/layout는 prop 없이 렌더
+- [Phase ?]: [07-04]: 네이티브/DOM 경계(D-08) — NativeMainButton 호스트+useNativeMainButtonActive 게이트로 label-only CTA(시작하기·피드에 올리기·장바구니 보기)는 네이티브+DOM 억제(1 CTA), sub/커스텀색 CTA는 DOM 유지+haptic.impact
+- [Phase ?]: [07-04]: order/[id]는 async RSC라 OrderBackButton client island(useNativeBackButton만, null 렌더, 데이터 미접근)로 BackButton 마운트 — owner-scope IDOR SELECT(T-03) 불변; D-09 5라우트(store/post/wait/cart/order) 전부 채택
 
 ### Pending Todos
 
@@ -161,6 +165,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-10T15:55:22.667Z
-Stopped at: Completed 07-01-PLAN.md
+Last session: 2026-06-10T16:05:43.795Z
+Stopped at: Completed 07-04-PLAN.md
 Resume file: None
