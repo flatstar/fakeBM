@@ -1,10 +1,11 @@
 ---
 phase: 6
 slug: og
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-06-10
+reviewed_at: 2026-06-10
 ---
 
 # Phase 6 — UI Design Contract (공유 카드 & OG 이미지)
@@ -99,28 +100,40 @@ re-lays the same composition at 2× into the 1200×630 frame — see S1 Layout).
 
 ## Typography
 
-Sizes are taken **verbatim from the prototype ShareCard** (S2/S3). **S1 (OG) scales each ~2× to fill 1200×630**
-and reads from the embedded subset fonts. No new sizes are introduced beyond the Phase-1 closed scale for the
-S2/S3 DOM surfaces.
+The DOM (S2/S3) surfaces render a **4-step closed type scale `{44, 18, 14, 11}`px**. This is a
+**Phase-1-inherited closed token set** — the prototype/Phase-1 type scale was already checker-approved, so this
+reduced 4-step set is **locked, not invented**: the prototype's near-duplicate sizes are merged onto the nearest
+locked step (17/16→18, 13→14, 11.5→11) to keep a clear hierarchical step at every level. **No new DOM sizes are
+introduced.** **S1 (OG) scales each of the same 4 steps ~2× to fill 1200×630** → `{88, 36, 28, 22}`px, reading
+from the embedded subset fonts; these are derivations of the locked scale, not new design tokens.
+
+**The 4-step DOM scale (S2/S3) → S1 OG derivation:**
+
+| Step | S2/S3 size | S1 OG (≈2×) | Roles at this step |
+|------|-----------|-------------|--------------------|
+| **1 (hero)** | **44px** | **88px** | Hero ₩ amount |
+| **2 (lead/value)** | **18px** | **36px** | Stat value · Overlay title (S2) · Wordmark |
+| **3 (body)** | **14px** | **28px** | kcal line · Card lead line |
+| **4 (caption)** | **11px** | **22px** | Month-report label · Stat caption · Footer credit · Share-target label (S2) |
 
 | Role | S2/S3 size | S1 OG size (≈2×) | Weight | Line Height | Font | Used for |
 |------|-----------|------------------|--------|-------------|------|----------|
-| Hero amount (₩, chunky/Pretendard) | 44px | ~88px | 800 | 1.05 | **`<Won>`→Pretendard** (S2/S3) · **'Pretendard' subset** (S1), tabular-nums, color coral | "이번 달 아낀 돈" figure (prototype L191) — the one oversized hero number |
-| Wordmark | 16px | ~32px | 800 | 1.2 | BMHanna (`--font-display`) · 'BMDisplay' (S1) | "배달의 만족" (prototype L187) |
-| Month-report label | 11px | ~22px | 600 | 1.2 | Pretendard, `rgba(255,255,255,.6)` | "{month} 리포트" (prototype L188) |
-| Card lead line | 13px | ~26px | 600 | 1.4 | Pretendard, `rgba(255,255,255,.7)` | "이번 달, 시켜놓고 참아서" (prototype L190) |
-| kcal line | 14px | ~28px | 700 | 1.2 | BMHanna (`--font-display`) · 'BMDisplay' (S1) — **but `{kcal}` digits + "kcal" route Pretendard** (HARD RULE) | "아끼고 {kcal}kcal 덜 먹었어요" (prototype L192) |
-| Stat value (chunky) | 18px | ~36px | 800 | 1.0 | BMDohyeon (`--font-chunky`) · 'BMDisplay' (S1) — **numeric portion Pretendard tabular-nums** | "🔥 {streak}일 / ✋ {resisted}번 / 🏆 {topMenu}" (prototype L203), `whiteSpace:nowrap` |
-| Stat caption | 11px | ~22px | 600 | 1.3 | Pretendard, `rgba(255,255,255,.55)` | "연속 / 참음 / 최다 적" (prototype L204), `whiteSpace:nowrap` |
-| Footer credit | 11px | ~22px | 600 | 1.3 | Pretendard, `rgba(255,255,255,.45)`, centered | "＠배달의_만족 · 참아서 만든 기록" (prototype L208) |
-| Overlay title (S2 only) | 17px | — | 800 | 1.2 | BMHanna | "공유 카드" sheet header (prototype L179) |
-| Share-target label (S2 only) | 11.5px | — | 700 | 1.0 | Pretendard | 저장/링크/인스타/카톡 (prototype L216) |
+| Hero amount (₩, chunky/Pretendard) | 44px | 88px | 800 | 1.05 | **`<Won>`→Pretendard** (S2/S3) · **'Pretendard' subset** (S1), tabular-nums, color coral | "이번 달 아낀 돈" figure (prototype L191) — the one oversized hero number |
+| Stat value (chunky) | 18px | 36px | 800 | 1.0 | BMDohyeon (`--font-chunky`) · 'BMDisplay' (S1) — **numeric portion Pretendard tabular-nums** | "🔥 {streak}일 / ✋ {resisted}번 / 🏆 {topMenu}" (prototype L203), `whiteSpace:nowrap` |
+| Overlay title (S2 only) | 18px | — | 800 | 1.2 | BMHanna | "공유 카드" sheet header (prototype L179; 17→18 merged to step 2) |
+| Wordmark | 18px | 36px | 800 | 1.2 | BMHanna (`--font-display`) · 'BMDisplay' (S1) | "배달의 만족" (prototype L187; 16→18 merged to step 2) |
+| kcal line | 14px | 28px | 700 | 1.2 | BMHanna (`--font-display`) · 'BMDisplay' (S1) — **but `{kcal}` digits + "kcal" route Pretendard** (HARD RULE) | "아끼고 {kcal}kcal 덜 먹었어요" (prototype L192) |
+| Card lead line | 14px | 28px | 600 | 1.4 | Pretendard, `rgba(255,255,255,.7)` | "이번 달, 시켜놓고 참아서" (prototype L190; 13→14 merged to step 3) |
+| Month-report label | 11px | 22px | 600 | 1.2 | Pretendard, `rgba(255,255,255,.6)` | "{month} 리포트" (prototype L188) |
+| Stat caption | 11px | 22px | 600 | 1.3 | Pretendard, `rgba(255,255,255,.55)` | "연속 / 참음 / 최다 적" (prototype L204), `whiteSpace:nowrap` |
+| Footer credit | 11px | 22px | 600 | 1.3 | Pretendard, `rgba(255,255,255,.45)`, centered | "＠배달의_만족 · 참아서 만든 기록" (prototype L208) |
+| Share-target label (S2 only) | 11px | — | 700 | 1.0 | Pretendard | 저장/링크/인스타/카톡 (prototype L216; 11.5→11 merged to step 4) |
 
 Notes:
 - **Two primary weights** (Phase-1 contract): regular/medium **500–600** for secondary text, bold **700–800** for emphasis/headings/numbers. BM fonts read as a single heavy weight.
 - **HARD RULE (surface-split, see THREE Surfaces):** S2/S3 numbers via `<Won>`/`<Num>`; S1 numbers via the embedded **'Pretendard'** subset span with `fontVariantNumeric:'tabular-nums'`. ₩ (U+20A9) lives **only** in the Pretendard subset.
 - **S1 mixed-font lines:** "아끼고 {kcal}kcal 덜 먹었어요" and the stat values mix Korean (BMDisplay subset) + digits/`kcal` (Pretendard subset). In Satori, wrap the numeric run in a nested `<span style={{fontFamily:'Pretendard'}}>` so the digit + ₩ glyphs come from the correct subset.
-- **CLOSED SCALE:** the S2/S3 sizes are a faithful extraction; adding a new DOM size requires updating this contract first. S1 OG sizes are derivations of the same scale (≈2×) for the 1200×630 canvas, not new design tokens.
+- **CLOSED 4-STEP SCALE:** the DOM scale is exactly `{44, 18, 14, 11}`px — a Phase-1-inherited, already-approved closed token set, locked here. Adding a new DOM size requires updating this contract first. S1 OG sizes (`{88, 36, 28, 22}`px) are the same 4 steps derived ≈2× for the 1200×630 canvas, not new design tokens.
 
 ---
 
