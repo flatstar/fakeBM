@@ -32,10 +32,12 @@ import {
   allItemsRows,
   bucketWeekByKstWeekday,
   currentStreak,
+  kstMonthLabel,
   topMenuName,
   userTotals,
   weekRows,
 } from '@/lib/stats';
+import { ShareEntryButton } from '../_components/ShareEntryButton';
 import { ConversionCards } from './_components/ConversionCards';
 import { WeeklyChart } from './_components/WeeklyChart';
 
@@ -51,6 +53,24 @@ export default async function StatsPage(): Promise<ReactElement> {
   const streak = await currentStreak(tgId, now);
 
   const isEmpty = resisted === 0;
+
+  // The sheet-preview snapshot — the SAME values POST /api/shares recomputes &
+  // persists (D-01), so the in-app preview matches the frozen card. id/createdAt
+  // are placeholders (ShareEntryButton swaps in the real id on a 200).
+  const snapshotForPreview = {
+    id: '',
+    tgId,
+    monthLabel: kstMonthLabel(now),
+    savedMonth,
+    savedTotal,
+    kcalTotal,
+    resisted,
+    streak,
+    byDay,
+    topMenu,
+    ogUrl: null,
+    createdAt: now,
+  };
 
   return (
     <Body style={{ background: 'var(--color-bg)' }}>
@@ -136,7 +156,8 @@ export default async function StatsPage(): Promise<ReactElement> {
 
         <div style={{ height: 6 }} />
       </div>
-      {/* "공유 카드 만들기" TgMainButton OMITTED (D-12 — Phase 6). */}
+      {/* "공유 카드 만들기" entry CTA — D-12 re-enabled (Phase 6, SHARE-01). */}
+      <ShareEntryButton disabled={isEmpty} snapshotForPreview={snapshotForPreview} />
     </Body>
   );
 }

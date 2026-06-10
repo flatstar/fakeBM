@@ -37,7 +37,17 @@ import { db } from '@/lib/db';
 import { users } from '@/db/schema';
 import { requireSession } from '@/lib/auth';
 import { handleFor } from '@/lib/handle';
-import { currentStreak, ownerRecordsPage, userTotals } from '@/lib/stats';
+import {
+  allItemsRows,
+  bucketWeekByKstWeekday,
+  currentStreak,
+  kstMonthLabel,
+  ownerRecordsPage,
+  topMenuName,
+  userTotals,
+  weekRows,
+} from '@/lib/stats';
+import { ShareEntryButton } from '../_components/ShareEntryButton';
 import { FeedCard } from '../feed/_components/FeedCard';
 
 export default async function MyPage(): Promise<ReactElement> {
@@ -47,12 +57,32 @@ export default async function MyPage(): Promise<ReactElement> {
   const now = new Date();
   // Owner-scoped reads (T-05-06): every read keyed to the session tgId.
   const [u] = await db.select().from(users).where(eq(users.tgId, tgId));
-  const { savedTotal, kcalTotal } = await userTotals(tgId, now);
+  const { savedTotal, kcalTotal, resisted, savedMonth } = await userTotals(tgId, now);
   const streak = await currentStreak(tgId, now);
+  const byDay = bucketWeekByKstWeekday(await weekRows(tgId), now);
+  const topMenu = topMenuName(await allItemsRows(tgId));
   const { posts } = await ownerRecordsPage(tgId);
 
   const displayName = u?.firstName?.trim() || '나';
   const handle = handleFor(tgId);
+
+  const isEmpty = resisted === 0;
+
+  // Sheet-preview snapshot — same values POST /api/shares recomputes (D-01).
+  const snapshotForPreview = {
+    id: '',
+    tgId,
+    monthLabel: kstMonthLabel(now),
+    savedMonth,
+    savedTotal,
+    kcalTotal,
+    resisted,
+    streak,
+    byDay,
+    topMenu,
+    ogUrl: null,
+    createdAt: now,
+  };
 
   return (
     <Body style={{ background: 'var(--color-bg)' }}>
@@ -165,6 +195,8 @@ export default async function MyPage(): Promise<ReactElement> {
           배달의 만족 · 시켜놓고, 참는다
         </div>
       </div>
+      {/* "공유 카드 만들기" entry CTA — D-12 re-enabled (Phase 6, SHARE-01). */}
+      <ShareEntryButton disabled={isEmpty} snapshotForPreview={snapshotForPreview} />
     </Body>
   );
 }

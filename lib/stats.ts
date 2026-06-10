@@ -88,6 +88,21 @@ export function kstMonthBounds(now: Date): { startUtc: Date; endUtc: Date } {
 }
 
 /**
+ * kstMonthLabel — the KST calendar-month `YYYY.MM` label (O-2). Reads the month
+ * off the KST month-start instant (kstMonthBounds), shifted by +09:00, NOT the
+ * raw UTC getMonth(): an instant in the first 9h of a KST month would otherwise
+ * be mislabelled as the previous month. Single-sourced here so POST /api/shares
+ * (the persisted snapshot) and the /stats·/my sheet preview agree (D-01).
+ */
+export function kstMonthLabel(now: Date): string {
+  const { startUtc } = kstMonthBounds(now);
+  const kst = new Date(startUtc.getTime() + KST_OFFSET_MS);
+  const y = kst.getUTCFullYear();
+  const m = String(kst.getUTCMonth() + 1).padStart(2, '0');
+  return `${y}.${m}`;
+}
+
+/**
  * KST weekday index, Mon-first: 0=월 … 6=일 (Pitfall 2). Derived from the KST
  * calendar date string (single-sourced via kstDateKey), NOT raw getDay() on the
  * UTC instant. `Date.UTC` of the KST date gives the weekday with JS 0=Sun, which

@@ -36,24 +36,8 @@ import {
   allItemsRows,
   topMenuName,
   currentStreak,
-  kstMonthBounds,
+  kstMonthLabel,
 } from '@/lib/stats';
-
-const KST_OFFSET_MS = 9 * 60 * 60_000; // +09:00 fixed (no DST) — mirrors lib/stats.
-
-/**
- * kstMonthLabel — the KST calendar-month `YYYY.MM` label (O-2). Reads the month
- * off the KST month-start instant (kstMonthBounds), shifted by +09:00, NOT the
- * raw UTC getMonth() — an instant in the first 9h of a KST month would otherwise
- * be mislabelled as the previous month.
- */
-function kstMonthLabel(now: Date): string {
-  const { startUtc } = kstMonthBounds(now);
-  const kst = new Date(startUtc.getTime() + KST_OFFSET_MS);
-  const y = kst.getUTCFullYear();
-  const m = String(kst.getUTCMonth() + 1).padStart(2, '0');
-  return `${y}.${m}`;
-}
 
 export async function POST(): Promise<Response> {
   // T-06-05 auth gate first — no DB work for an unauthenticated caller. The body
