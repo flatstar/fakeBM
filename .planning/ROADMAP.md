@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: 대기 → 인증 (코어 루프 완성)** - 가짜 배달 대기 연출 + 듀얼 사진 업로드 + 가짜 영수증 + 인증 포스트 저장 (completed 2026-06-09)
 - [x] **Phase 4: 명예의 전당 피드 (+ 좋아요 + 모더레이션)** - 공용 피드·커서 페이지네이션·멱등 좋아요 + 신고/숨김/검토 큐
 - [ ] **Phase 5: 통계 & MY** - 누적 절약/kcal/스트릭 실시간 집계 + 주간 차트 + 환산 비유 + 내 기록
-- [ ] **Phase 6: 공유 카드 & OG 이미지** - 공개 SSR 공유 링크 + next/og 한글 카드 + 저장/복사/외부 공유
+- [x] **Phase 6: 공유 카드 & OG 이미지** - 공개 SSR 공유 링크 + next/og 한글 카드 + 저장/복사/외부 공유 (completed 2026-06-10)
 
 ## Phase Details
 
@@ -207,7 +207,7 @@ Plans:
 
 **Wave 4** *(blocked on 06-02 + 06-03)*
 
-- [ ] 06-04-PLAN.md — ShareSheet 클라이언트 아일랜드(4타깃 저장/링크/인스타/카톡 + shareURL→Web Share→clipboard 폴백) + /stats·/my "공유 카드 만들기" 진입 버튼(D-12 재활성) (SHARE-01/04)
+- [x] 06-04-PLAN.md — ShareSheet 클라이언트 아일랜드(4타깃 저장/링크/인스타/카톡 + shareURL→Web Share→clipboard 폴백) + /stats·/my "공유 카드 만들기" 진입 버튼(D-12 재활성) (SHARE-01/04) (DONE — ShareSheet S2 오버레이(ShareCard 프리뷰 + 4타깃, 각 호출 .isAvailable() 가드, Pitfall 7); 저장 <a download> OG PNG, 링크 same-origin clipboard+toast, 카톡 shareURL→navigator.share→clipboard; ShareEntryButton POST /api/shares→시트 오픈, resisted 0 disabled+헬퍼+400/401 토스트; kstMonthLabel을 lib/stats로 단일화(라우트+프리뷰 D-01); RTL 12/12, vitest 278/0, tsc·build clean — see 06-04-SUMMARY.md)
 
 **UI hint**: yes
 
@@ -225,4 +225,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
 | 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
 | 5. 통계 & MY | 3/3 | Complete    | 2026-06-10 |
-| 6. 공유 카드 & OG | 3/4 | In Progress|  |
+| 6. 공유 카드 & OG | 4/4 | Complete    | 2026-06-10 |

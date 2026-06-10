@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 06-03-PLAN.md (OG Satori PNG + public /share/[id] SSR page)
-last_updated: "2026-06-10T20:28:00.000Z"
-last_activity: 2026-06-10 -- Completed 06-03 (OG image + public share page)
+stopped_at: Completed 06-04-PLAN.md (ShareSheet + /stats·/my entry buttons)
+last_updated: "2026-06-10T20:37:00.000Z"
+last_activity: 2026-06-10 -- Completed 06-04 (ShareSheet client island + share actions)
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 24
-  completed_plans: 23
-  percent: 92
+  completed_plans: 24
+  percent: 100
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 
 ## Current Position
 
-Phase: 06 (og) — EXECUTING
-Plan: 4 of 4
-Status: Ready to execute (06-03 complete)
-Last activity: 2026-06-10 -- Completed 06-03 (OG image + public share page)
+Phase: 06 (og) — COMPLETE
+Plan: 4 of 4 (all complete)
+Status: Phase 6 complete — all 24 plans done
+Last activity: 2026-06-10 -- Completed 06-04 (ShareSheet client island + share actions)
 
-Progress: [█████████░] 92%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -72,6 +72,7 @@ Progress: [█████████░] 92%
 | Phase 06 P01 | 8min | 3 tasks | 4 files |
 | Phase 06 P02 | ~3 min | 1 task | 2 files |
 | Phase 06 P03 | ~9 min | 3 tasks | 7 files |
+| Phase 06 P04 | ~6 min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -126,6 +127,8 @@ Recent decisions affecting current work:
 - [06-03]: getShare(id) is the SINGLE shares read shared by both public surfaces (OG route + /share/[id] page) — parameterized Drizzle eq, null on miss; keeps the [id] param off any SQL/fs path (T-06-08), so the two surfaces can never diverge
 - [06-03]: ShareCard accepts the Share snapshot directly as props ({...share}) — ONE DOM card body for S3 (this plan) + S2 sheet (06-04); the S1 OG re-implements the same composition for Satori (a React component can't be hosted inside ImageResponse)
 - [06-03]: OG unknown-id renders a minimal blank wordmark card (image/png, no throw) — the S3 page owns the 404; a crawler hitting a stale og:image just gets a blank frame. Blob cache (D-05) deferred per RESEARCH O-3; shares.ogUrl stays null (column exists, no later migration)
+- [06-04]: ShareSheet share chain guards EVERY call — shareURL.isAvailable() → navigator.share → clipboard (Pitfall 7); 저장 is a real <a download> (role=link, always available, independent of the chain); share URL always same-origin ${origin}/share/${id} (T-06-07), text PII-free (T-06-11)
+- [06-04]: kstMonthLabel lifted into lib/stats — ONE KST YYYY.MM source for POST /api/shares (persisted) + the /stats·/my sheet preview, so the in-app preview matches the frozen card (D-01); ShareEntryButton opens the sheet in place from the live snapshot (no extra fetch, no /share/[id] navigate)
 
 ### Pending Todos
 
@@ -154,6 +157,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-10T20:28:00.000Z
-Stopped at: Completed 06-03-PLAN.md (OG Satori PNG + public /share/[id] SSR page)
+Last session: 2026-06-10T20:37:00.000Z
+Stopped at: Completed 06-04-PLAN.md (ShareSheet + /stats·/my entry buttons)
 Resume file: None

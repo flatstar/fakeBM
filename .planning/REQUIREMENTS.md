@@ -59,7 +59,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SHARE-01**: 사용자는 통계로 공유 카드(인포그래픽)를 생성할 수 있다
 - [x] **SHARE-02**: 공유 카드는 서버에서 OG 이미지로 생성되며 한글이 깨지지 않는다 (subset 폰트 임베드)
 - [x] **SHARE-03**: 공유 카드는 공개 웹 링크(`/share/[id]`)로 텔레그램 밖(인스타/카톡/링크)에서도 SSR로 열린다
-- [ ] **SHARE-04**: 사용자는 저장/링크 복사/외부 공유 액션을 사용할 수 있다
+- [x] **SHARE-04**: 사용자는 저장/링크 복사/외부 공유 액션을 사용할 수 있다
 
 ## v2 Requirements
 
@@ -135,7 +135,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHARE-01 | Phase 6 | Complete |
 | SHARE-02 | Phase 6 | Complete |
 | SHARE-03 | Phase 6 | Complete |
-| SHARE-04 | Phase 6 | Pending |
+| SHARE-04 | Phase 6 | Complete |
 
 **Coverage:**
 
