@@ -33,6 +33,7 @@ export async function initTelegram(): Promise<void> {
     init: initSDK,
     miniApp,
     viewport,
+    expandViewport,
     themeParams,
     initData,
     backButton,
@@ -53,6 +54,9 @@ export async function initTelegram(): Promise<void> {
 
   try {
     initSDK(); // wire SDK to the Telegram event bus
+    // D-03: iOS Telegram may open at partial height — expand to full height.
+    // SafeWrapped + isAvailable() guard → no-op (no throw) on SSR / non-TMA.
+    expandViewport.isAvailable() && expandViewport();
     backButton.mount();
     try {
       miniApp.mount(); // unsupported on some platforms → swallow

@@ -56,6 +56,11 @@
     from { opacity: 0; }
     to { opacity: 1; }
   }
+  /* Skeleton shimmer (NATIVE-05, consumed by Plan 05 loading.tsx). */
+  @keyframes pulse {
+    0%, 100% { opacity: .55; }
+    50% { opacity: 1; }
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -74,6 +79,16 @@
    the --font-pretendard variable the @theme inline chain expects. */
 :root {
   --font-pretendard: "Pretendard";
+
+  /* Bottom safe-area inset (NATIVE-01, D-02). Prefers the SDK-bound
+     content-safe-area inset (excludes Telegram chrome; viewport.bindCssVars()
+     in lib/telegram.ts sets it) and falls back to the device env() inset for
+     non-Telegram browsers. iOS Telegram returns 0 for bare env(), so every
+     bottom-fixed surface composes calc(Xpx + var(--safe-b)) instead. */
+  --safe-b: max(
+    var(--tg-viewport-content-safe-area-inset-bottom, 0px),
+    env(safe-area-inset-bottom, 0px)
+  );
 }
 
 /* ---------------------------------------------------------------------------
