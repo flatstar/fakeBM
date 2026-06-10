@@ -203,7 +203,7 @@ Plans:
 
 **Wave 3** *(blocked on 06-01 + 06-02)*
 
-- [ ] 06-03-PLAN.md — OG/공개 라우트 슬라이스: ShareCard DOM 본문 + 공개 SSR /share/[id] + generateMetadata og:image + opengraph-image.tsx(next/og Satori, Node, subset 폰트, flex-only) + lib/share (SHARE-02/03)
+- [x] 06-03-PLAN.md — OG/공개 라우트 슬라이스: ShareCard DOM 본문 + 공개 SSR /share/[id] + generateMetadata og:image + opengraph-image.tsx(next/og Satori, Node, subset 폰트, flex-only) + lib/share (SHARE-02/03) (DONE — getShare 단일 스냅샷 리더(parameterized eq), 재사용 ShareCard(wordmark-only, <Won>/<Num> HARD RULE), 공개 SSR /share/[id](no requireSession/(mini), await params, notFound), generateMetadata og:image, next/og Satori PNG(runtime nodejs, subset TTF 임베드, flex-only, ₩ via Pretendard span); 둘 다 frozen snapshot; vitest 266/0, tsc·build clean; 한글/₩ 시각 검증은 배포 후 수동 — see 06-03-SUMMARY.md)
 
 **Wave 4** *(blocked on 06-02 + 06-03)*
 
@@ -225,4 +225,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
 | 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
 | 5. 통계 & MY | 3/3 | Complete    | 2026-06-10 |
-| 6. 공유 카드 & OG | 2/4 | In Progress|  |
+| 6. 공유 카드 & OG | 3/4 | In Progress|  |

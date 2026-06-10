@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 06-02-PLAN.md (POST /api/shares server-authority snapshot)
-last_updated: "2026-06-10T11:19:30.000Z"
-last_activity: 2026-06-10 -- Completed 06-02 (POST /api/shares)
+stopped_at: Completed 06-03-PLAN.md (OG Satori PNG + public /share/[id] SSR page)
+last_updated: "2026-06-10T20:28:00.000Z"
+last_activity: 2026-06-10 -- Completed 06-03 (OG image + public share page)
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 24
-  completed_plans: 22
-  percent: 87
+  completed_plans: 23
+  percent: 92
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 06 (og) — EXECUTING
-Plan: 3 of 4
-Status: Ready to execute (06-02 complete)
-Last activity: 2026-06-10 -- Completed 06-02 (POST /api/shares)
+Plan: 4 of 4
+Status: Ready to execute (06-03 complete)
+Last activity: 2026-06-10 -- Completed 06-03 (OG image + public share page)
 
-Progress: [████████░░] 87%
+Progress: [█████████░] 92%
 
 ## Performance Metrics
 
@@ -71,6 +71,7 @@ Progress: [████████░░] 87%
 | Phase 05-my P03 | 3m | 3 tasks | 4 files |
 | Phase 06 P01 | 8min | 3 tasks | 4 files |
 | Phase 06 P02 | ~3 min | 1 task | 2 files |
+| Phase 06 P03 | ~9 min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -122,6 +123,9 @@ Recent decisions affecting current work:
 - [Phase ?]: OG subset fonts committed under assets/og/ via pyftsubset; ₩ confined to Pretendard subset, kept out of BM
 - [06-02]: POST /api/shares takes NO argument — body never read; server-authority is STRUCTURAL (handler cannot access any client stat), strictly stronger than parse-and-discard. Full snapshot recomputed from lib/stats (same wiring as stats/page.tsx); tgId only from requireSession (T-06-03/04)
 - [06-02]: monthLabel via kstMonthLabel = kstMonthBounds(now) shifted +09:00 → YYYY.MM (O-2), never raw getMonth(); empty guard (resisted===0 → 400) runs BEFORE crypto.randomUUID/insert so no opaque id is minted for a degenerate card
+- [06-03]: getShare(id) is the SINGLE shares read shared by both public surfaces (OG route + /share/[id] page) — parameterized Drizzle eq, null on miss; keeps the [id] param off any SQL/fs path (T-06-08), so the two surfaces can never diverge
+- [06-03]: ShareCard accepts the Share snapshot directly as props ({...share}) — ONE DOM card body for S3 (this plan) + S2 sheet (06-04); the S1 OG re-implements the same composition for Satori (a React component can't be hosted inside ImageResponse)
+- [06-03]: OG unknown-id renders a minimal blank wordmark card (image/png, no throw) — the S3 page owns the 404; a crawler hitting a stale og:image just gets a blank frame. Blob cache (D-05) deferred per RESEARCH O-3; shares.ogUrl stays null (column exists, no later migration)
 
 ### Pending Todos
 
@@ -150,6 +154,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-10T11:19:30.000Z
-Stopped at: Completed 06-02-PLAN.md (POST /api/shares server-authority snapshot)
+Last session: 2026-06-10T20:28:00.000Z
+Stopped at: Completed 06-03-PLAN.md (OG Satori PNG + public /share/[id] SSR page)
 Resume file: None
