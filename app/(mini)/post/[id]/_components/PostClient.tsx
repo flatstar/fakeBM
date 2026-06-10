@@ -30,6 +30,7 @@ import {
   NativeMainButton,
   useNativeMainButtonActive,
 } from '@/hooks/useNativeMainButton';
+import { useNativeBackButton } from '@/hooks/useNativeBackButton';
 import { haptic } from '@/lib/haptics';
 import type { OrderItemSnapshot } from '@/db/schema';
 import { PhotoUploadSlot } from './PhotoUploadSlot';
@@ -74,6 +75,8 @@ export function PostClient({
   kcal,
 }: PostClientProps): ReactElement {
   const router = useRouter();
+  // D-09: post/[id] (인증 작성) is a detail route → expose the native BackButton.
+  useNativeBackButton();
   const nativeActive = useNativeMainButtonActive();
   const [foodPhotoUrl, setFoodPhotoUrl] = useState<string | null>(null);
   const [dietPhotoUrl, setDietPhotoUrl] = useState<string | null>(null);

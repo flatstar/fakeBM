@@ -25,6 +25,7 @@ import { useState, type ReactElement } from 'react';
 import type { Share } from '@/db/schema';
 import { TgMainButton } from '@/components/TgMainButton';
 import { ShareSheet } from '@/app/share/[id]/_components/ShareSheet';
+import { haptic } from '@/lib/haptics';
 
 export interface ShareEntryButtonProps {
   /** Disabled when the owner has 0 인증 (resisted === 0). */
@@ -47,6 +48,7 @@ export function ShareEntryButton({
     if (disabled || submitting) return; // the D-10 create→share entry (guarded)
     setSubmitting(true);
     setToast(null);
+    haptic.impact('medium'); // D-06 primary CTA press (DOM-stay, sub-line per D-08)
     try {
       // Empty body — server recomputes the snapshot (server-authority, T-06-10).
       const res = await fetch('/api/shares', {
@@ -55,20 +57,25 @@ export function ShareEntryButton({
         body: JSON.stringify({}),
       });
       if (res.status === 400) {
+        haptic.notify('error'); // D-06 공유 생성 실패 (empty)
         setToast('먼저 인증하세요 🙏'); // empty guard (defense in depth)
         return;
       }
       if (res.status === 401) {
+        haptic.notify('error');
         setToast('로그인이 필요해요. 텔레그램에서 다시 열어주세요.');
         return;
       }
       if (!res.ok) {
+        haptic.notify('error');
         setToast('카드를 만들지 못했어요. 다시 시도해 주세요.');
         return;
       }
       const { id } = (await res.json()) as { id: string };
+      haptic.notify('success'); // D-06 공유 카드 생성 성공
       setSharingId(id); // open the sheet
     } catch {
+      haptic.notify('error');
       setToast('네트워크 오류예요. 다시 시도해 주세요.');
     } finally {
       setSubmitting(false);

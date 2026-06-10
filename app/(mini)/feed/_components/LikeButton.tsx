@@ -18,6 +18,7 @@
 import { useState, type ReactElement } from 'react';
 import { Icon } from '@/components/Icon';
 import { Num } from '@/components/Money';
+import { haptic } from '@/lib/haptics';
 
 export interface LikeButtonProps {
   postId: number;
@@ -37,6 +38,7 @@ export function LikeButton({
 
   const onTap = async (): Promise<void> => {
     if (pending) return;
+    haptic.selection(); // D-06: like-toggle selection tick (optimistic logic untouched)
     // Snapshot for revert; optimistic flip (display-only delta).
     const prevLiked = liked;
     const prevCount = count;

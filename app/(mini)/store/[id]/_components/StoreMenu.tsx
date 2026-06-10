@@ -23,6 +23,12 @@ import { FoodTile } from '@/components/FoodTile';
 import { Icon } from '@/components/Icon';
 import { Won, Num } from '@/components/Money';
 import { TgMainButton } from '@/components/TgMainButton';
+import {
+  NativeMainButton,
+  useNativeMainButtonActive,
+} from '@/hooks/useNativeMainButton';
+import { useNativeBackButton } from '@/hooks/useNativeBackButton';
+import { haptic } from '@/lib/haptics';
 import type { Restaurant } from '@/lib/catalog';
 import { useCart } from '@/lib/cart';
 import { fmtWon } from '@/lib/format';
@@ -31,7 +37,15 @@ import { ClearCartModal } from './ClearCartModal';
 
 export function StoreMenu({ rest }: { rest: Restaurant }): ReactElement {
   const router = useRouter();
+  // D-09: store/[id] is a detail route → expose the native BackButton.
+  useNativeBackButton();
+  const nativeActive = useNativeMainButtonActive();
   const { cart, ready, count, addItem, removeItem, needsClear, replaceCart } = useCart();
+
+  const goCart = () => {
+    haptic.impact('medium'); // D-06 primary CTA press
+    router.push('/cart');
+  };
 
   // D-09 gate: while non-null, a confirm modal is open for this pending menu id.
   const [pendingId, setPendingId] = useState<string | null>(null);
@@ -189,12 +203,20 @@ export function StoreMenu({ rest }: { rest: Restaurant }): ReactElement {
           Pretendard --font-body context inside TgMainButton, never a BM display
           font — the HARD RULE holds, Pitfall 7). */}
       {ready && count > 0 && (
-        <TgMainButton
-          label="장바구니 보기"
-          sub={`${count}개 담음 · ${fmtWon(subtotal)} 아끼는 중`}
-          icon="bag"
-          onClick={() => router.push('/cart')}
-        />
+        <>
+          {/* Native MainButton (label-only, D-08) drives the primary CTA inside
+              Telegram; the DOM TgMainButton carries the sub copy as the
+              suppressed-when-native fallback. */}
+          <NativeMainButton text="장바구니 보기" onClick={goCart} />
+          {!nativeActive && (
+            <TgMainButton
+              label="장바구니 보기"
+              sub={`${count}개 담음 · ${fmtWon(subtotal)} 아끼는 중`}
+              icon="bag"
+              onClick={goCart}
+            />
+          )}
+        </>
       )}
 
       {/* D-09 store-switch confirm gate */}

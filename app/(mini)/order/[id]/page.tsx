@@ -27,6 +27,7 @@ import { SubBar } from '@/components/SubBar';
 import { requireSession } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { orders } from '@/db/schema';
+import { OrderBackButton } from './_components/OrderBackButton';
 
 export default async function OrderPage({
   params,
@@ -51,6 +52,8 @@ export default async function OrderPage({
 
   return (
     <>
+      {/* D-09: UI-only native BackButton island (no data/param access, T-07-10). */}
+      <OrderBackButton />
       <SubBar title="주문 완료" />
       <Body style={{ padding: '14px 16px 0', background: 'var(--color-bg)' }}>
         {/* hero confirmation */}

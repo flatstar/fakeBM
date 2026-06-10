@@ -26,6 +26,8 @@ import { Icon } from '@/components/Icon';
 import { Won, Num } from '@/components/Money';
 import { SubBar } from '@/components/SubBar';
 import { TgMainButton } from '@/components/TgMainButton';
+import { useNativeBackButton } from '@/hooks/useNativeBackButton';
+import { haptic } from '@/lib/haptics';
 import { Rider } from './Rider';
 import { CancelModal } from './CancelModal';
 
@@ -68,6 +70,9 @@ export function DeliveryClient({
   arrived: arrivedInitial,
 }: DeliveryClientProps): ReactElement {
   const router = useRouter();
+  // D-09: wait/[id] is a detail route → expose the native BackButton. The DOM
+  // SubBar back (which opens CancelModal) stays as the non-Telegram affordance.
+  useNativeBackButton();
   const [now, setNow] = useState(() => Date.now());
   const [cheer, setCheer] = useState(0);
   const [arrived, setArrived] = useState(arrivedInitial);
@@ -117,6 +122,7 @@ export function DeliveryClient({
           : {}),
       });
       if (!res.ok) return; // do NOT mark arrived; ticker / skip button will retry.
+      haptic.notify('success'); // D-06: 참기 성공 (arrival recorded by the server)
       setArrived(true);
     } catch {
       // network failure: leave the screen as-is; the deadline re-tick will retry.
@@ -406,11 +412,15 @@ export function DeliveryClient({
       </Body>
 
       {arrived && (
+        // sub-line CTA (D-08) → stays DOM TgMainButton; D-06 press haptic.
         <TgMainButton
           label="인증하러 가기"
           sub="가짜 영수증 + 내 식단 올리기"
           icon="camera"
-          onClick={() => router.push(`/post/${orderId}`)}
+          onClick={() => {
+            haptic.impact('medium');
+            router.push(`/post/${orderId}`);
+          }}
         />
       )}
 

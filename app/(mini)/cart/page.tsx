@@ -27,12 +27,17 @@ import { Icon } from '@/components/Icon';
 import { Won, Num } from '@/components/Money';
 import { SubBar } from '@/components/SubBar';
 import { TgMainButton } from '@/components/TgMainButton';
+import { useNativeBackButton } from '@/hooks/useNativeBackButton';
+import { haptic } from '@/lib/haptics';
 import { RESTAURANTS } from '@/lib/catalog';
 import { useCart } from '@/lib/cart';
 import { computeOrderTotals } from '@/lib/order';
 
 export default function CartPage(): ReactElement {
   const router = useRouter();
+  // D-09: cart is a sub route → expose the native BackButton directly (this page
+  // is already a client component). The DOM SubBar back stays as the fallback.
+  useNativeBackButton();
   const { cart, addItem, removeItem, clear } = useCart();
   const [submitting, setSubmitting] = useState(false);
 
@@ -74,6 +79,7 @@ export default function CartPage(): ReactElement {
   const submit = async () => {
     if (submitting) return;
     setSubmitting(true);
+    haptic.impact('medium'); // D-06 primary CTA press
     try {
       const res = await fetch('/api/orders', {
         method: 'POST',
@@ -81,13 +87,16 @@ export default function CartPage(): ReactElement {
         body: JSON.stringify({ restId: rest.id, items: cart.items }),
       });
       if (!res.ok) {
+        haptic.notify('error'); // D-06 주문 생성 실패
         setSubmitting(false);
         return;
       }
       const { orderId } = (await res.json()) as { orderId: number };
+      haptic.notify('success'); // D-06 주문 생성 성공 (참기 진입)
       clear();
       router.push('/order/' + orderId);
     } catch {
+      haptic.notify('error');
       setSubmitting(false);
     }
   };

@@ -12,6 +12,7 @@
 
 import type { ReactElement } from 'react';
 import { TgMainButton } from '@/components/TgMainButton';
+import { haptic } from '@/lib/haptics';
 
 export interface CancelModalProps {
   onConfirm: () => void;
@@ -87,7 +88,15 @@ export function CancelModal({ onConfirm, onCancel }: CancelModalProps): ReactEle
           계속 참을게요
         </button>
       </div>
-      <TgMainButton label="그만 참을래요" color="#8a5a3a" onClick={onConfirm} />
+      {/* D-08: custom color (#8a5a3a) → stays DOM TgMainButton; D-06 press haptic. */}
+      <TgMainButton
+        label="그만 참을래요"
+        color="#8a5a3a"
+        onClick={() => {
+          haptic.impact('medium');
+          onConfirm();
+        }}
+      />
     </div>
   );
 }
