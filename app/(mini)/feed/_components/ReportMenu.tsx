@@ -106,7 +106,7 @@ export function ReportMenu({ postId, onHide }: ReportMenuProps): ReactElement {
             style={{
               background: 'var(--color-surface)',
               borderRadius: '20px 20px 0 0',
-              padding: '20px 18px calc(20px + env(safe-area-inset-bottom))',
+              padding: '20px 18px calc(20px + var(--safe-b))',
               boxShadow: '0 -10px 40px rgba(20,12,8,.25)',
             }}
           >
@@ -174,7 +174,7 @@ export function ReportMenu({ postId, onHide }: ReportMenuProps): ReactElement {
           style={{
             position: 'fixed',
             left: '50%',
-            bottom: 'calc(90px + env(safe-area-inset-bottom))',
+            bottom: 'calc(90px + var(--safe-b))',
             transform: 'translateX(-50%)',
             zIndex: 95,
             background: 'rgba(20,12,8,.9)',

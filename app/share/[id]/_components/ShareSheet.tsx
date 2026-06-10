@@ -206,7 +206,7 @@ export function ShareSheet({ id, snapshot, ogUrl, onClose }: ShareSheetProps): R
           style={{
             position: 'absolute',
             left: '50%',
-            bottom: 'calc(28px + env(safe-area-inset-bottom))',
+            bottom: 'calc(28px + var(--safe-b))',
             transform: 'translateX(-50%)',
             zIndex: 95,
             background: 'rgba(20,12,8,.92)',

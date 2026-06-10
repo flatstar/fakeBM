@@ -3,7 +3,7 @@
  * design-reference/ui.jsx TgMainButton, lines 37–60). Full-width radius 16,
  * min-height 54, coral fill, label 17/800 --font-display + optional sub 12/500
  * Pretendard, disabled bg #E3D8CE (no shadow), press scale(.98), safe-area bottom
- * padding calc(14px + env(safe-area-inset-bottom)), top gradient fade over --bg.
+ * padding calc(14px + var(--safe-b)), top gradient fade over --bg.
  * This is the welcome-intro "시작하기" CTA.
  */
 'use client';
@@ -31,7 +31,7 @@ export function TgMainButton({
   return (
     <div
       style={{
-        padding: '10px 14px calc(14px + env(safe-area-inset-bottom))',
+        padding: '10px 14px calc(14px + var(--safe-b))',
         flexShrink: 0,
         background: 'linear-gradient(to top, var(--color-bg) 62%, transparent)',
       }}

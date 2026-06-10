@@ -161,7 +161,7 @@ export default async function OrderPage({
           TgMainButton visuals via an anchor so SSR works without a client island. */}
       <div
         style={{
-          padding: '10px 14px calc(14px + env(safe-area-inset-bottom))',
+          padding: '10px 14px calc(14px + var(--safe-b))',
           flexShrink: 0,
           background: 'linear-gradient(to top, var(--color-bg) 62%, transparent)',
         }}

@@ -46,7 +46,7 @@ export function BottomNav({ onCenter }: BottomNavProps): ReactElement {
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'space-around',
-        padding: '8px 8px calc(22px + env(safe-area-inset-bottom))',
+        padding: '8px 8px calc(22px + var(--safe-b))',
         background: 'var(--color-surface)',
         borderTop: '1px solid var(--color-line)',
         position: 'relative',

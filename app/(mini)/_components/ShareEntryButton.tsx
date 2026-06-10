@@ -115,7 +115,7 @@ export function ShareEntryButton({
           style={{
             position: 'fixed',
             left: '50%',
-            bottom: 'calc(90px + env(safe-area-inset-bottom))',
+            bottom: 'calc(90px + var(--safe-b))',
             transform: 'translateX(-50%)',
             zIndex: 95,
             background: 'rgba(20,12,8,.9)',
