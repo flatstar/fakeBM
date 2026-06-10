@@ -251,7 +251,7 @@ Plans:
 
 **Wave 2** *(blocked on 07-01)*
 
-- [ ] 07-02-PLAN.md — lib/haptics.ts ifAvailable-가드 안전 래퍼(impact/notify/selection, SSR/비텔레그램 no-op) + Wave-0 가용/미가용 테스트 (NATIVE-03)
+- [x] 07-02-PLAN.md — lib/haptics.ts ifAvailable-가드 안전 래퍼(impact/notify/selection, SSR/비텔레그램 no-op) + Wave-0 가용/미가용 테스트 (NATIVE-03)
 
 **Wave 3** *(blocked on 07-02)*
 
