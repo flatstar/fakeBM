@@ -484,7 +484,7 @@ expandViewport.isAvailable() && expandViewport();   // or expandViewport.ifAvail
 
 **Everything in the Verified SDK API Reference, Safe-Area var names, enums, and lifecycle facts is `[VERIFIED: installed .d.ts]` — not assumed.**
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Does iOS Telegram fire native haptics reliably for `impact`/`notification`/`selection` in WebView?**
    - What we know: API is supported v6.1+; `ifAvailable()` gates correctly.
