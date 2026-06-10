@@ -44,8 +44,14 @@ const {
   const backOffSpy = vi.fn();
   const backHandlerRef: { current: (() => void) | null } = { current: null };
 
+  // Mirror the real SafeWrapped shape: both `isAvailable()` and `ifAvailable()`
+  // (the latter calls through only when available, returning [called, data]).
   const wrap = <T extends (...a: never[]) => unknown>(fn: T) =>
-    Object.assign(fn, { isAvailable: () => state.available });
+    Object.assign(fn, {
+      isAvailable: () => state.available,
+      ifAvailable: (...args: never[]) =>
+        state.available ? [true, (fn as (...a: never[]) => unknown)(...args)] : [false],
+    });
 
   const mountMainButton = wrap(
     vi.fn(() => {
