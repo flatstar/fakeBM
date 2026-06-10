@@ -241,9 +241,26 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
   4. 하단 고정 주요 CTA가 네이티브 텔레그램 MainButton으로, 뒤로가기가 네이티브 BackButton으로 동작한다 (DOM 모조 대체)
   5. 화면 전환 시 로딩 스켈레톤(loading.tsx)이 즉시 표시되어 RSC 네비게이션이 끊김 없이 이어진다
 
-**Plans**: TBD
+**Plans**: 5 plans
 **UI hint**: yes
 
 Plans:
+**Wave 1** *(safe-area 토큰 + boot)*
 
-- [ ] TBD (run /gsd-plan-phase 7 to break down)
+- [ ] 07-01-PLAN.md — --safe-b 토큰(content-safe-area inset 우선) + pulse 키프레임 + 6개 하단 고정 파일 env()→var(--safe-b) 스왑 + boot expandViewport() + Wave-0 회귀 (NATIVE-01)
+
+**Wave 2** *(blocked on 07-01)*
+
+- [ ] 07-02-PLAN.md — lib/haptics.ts ifAvailable-가드 안전 래퍼(impact/notify/selection, SSR/비텔레그램 no-op) + Wave-0 가용/미가용 테스트 (NATIVE-03)
+
+**Wave 3** *(blocked on 07-02)*
+
+- [ ] 07-03-PLAN.md — useNativeMainButton/useNativeBackButton 훅(cleanup-via-VoidFunction 유령버튼 방지, isAvailable 가드 no-op) + Wave-0 라이프사이클 테스트 (NATIVE-04)
+
+**Wave 4** *(blocked on 07-01 + 07-02 + 07-03)*
+
+- [ ] 07-04-PLAN.md — FAB onCenter→/home+haptic 배선 + 탭 selection 햅틱 + label-only CTA 네이티브화(DOM fallback 억제) + sub/커스텀색 CTA DOM+haptic + 상세 라우트 BackButton 채택 + Wave-0 FAB 테스트 (NATIVE-02/03/04)
+
+**Wave 5** *(blocked on 07-01)*
+
+- [ ] 07-05-PLAN.md — Skeleton 프리미티브 + 7개 route-segment loading.tsx(코랄-소프트 펄스 형상-에코) + Wave-0 렌더 테스트 (NATIVE-05)
