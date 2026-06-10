@@ -226,3 +226,24 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
 | 5. 통계 & MY | 3/3 | Complete    | 2026-06-10 |
 | 6. 공유 카드 & OG | 4/4 | Complete    | 2026-06-10 |
+
+### Phase 7: iOS·텔레그램 네이티브 폴리시
+
+**Goal**: 사용자가 iOS 텔레그램 미니앱에서 하단 네비/CTA를 안정적으로 탭할 수 있고(safe-area 보정), 모든 주요 액션이 네이티브 텔레그램 MainButton/BackButton + HapticFeedback으로 즉각적인 촉각·시각 피드백을 주며, 화면 전환이 로딩 스켈레톤으로 끊김 없이 이어진다.
+**Mode:** mvp
+**Depends on**: Phase 6
+**Requirements**: NATIVE-01, NATIVE-02, NATIVE-03, NATIVE-04, NATIVE-05
+**Success Criteria** (what must be TRUE):
+
+  1. 하단 네비게이션과 하단 고정 CTA가 iOS 텔레그램에서 홈 인디케이터/드래그 영역에 가리지 않고 안정적으로 탭된다 (텔레그램 content-safe-area inset 반영)
+  2. 중앙 "참기" FAB가 실제로 주문(참기) 플로우로 진입한다 (현재 무반응 버그 해소)
+  3. 주요 탭/CTA/액션에 HapticFeedback(impact/notification/selection)이 발생해 즉각적 촉각 피드백을 준다
+  4. 하단 고정 주요 CTA가 네이티브 텔레그램 MainButton으로, 뒤로가기가 네이티브 BackButton으로 동작한다 (DOM 모조 대체)
+  5. 화면 전환 시 로딩 스켈레톤(loading.tsx)이 즉시 표시되어 RSC 네비게이션이 끊김 없이 이어진다
+
+**Plans**: TBD
+**UI hint**: yes
+
+Plans:
+
+- [ ] TBD (run /gsd-plan-phase 7 to break down)

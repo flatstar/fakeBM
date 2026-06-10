@@ -61,6 +61,16 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SHARE-03**: 공유 카드는 공개 웹 링크(`/share/[id]`)로 텔레그램 밖(인스타/카톡/링크)에서도 SSR로 열린다
 - [x] **SHARE-04**: 사용자는 저장/링크 복사/외부 공유 액션을 사용할 수 있다
 
+### Native polish (NATIVE)
+
+> Phase 7 — iOS 라이브 테스트 피드백에서 파생된 네이티브/UX 폴리시 요구사항.
+
+- [ ] **NATIVE-01**: 하단 네비게이션과 하단 고정 CTA가 iOS 텔레그램 WebView에서 텔레그램 content-safe-area inset을 반영해 홈 인디케이터/드래그 영역에 가리지 않고 안정적으로 탭된다
+- [ ] **NATIVE-02**: 중앙 "참기" FAB가 실제로 주문(참기) 플로우로 진입한다 (현재 onClick 미배선 무반응 버그 해소)
+- [ ] **NATIVE-03**: 주요 탭/CTA/액션에 HapticFeedback(impact/notification/selection)이 발생해 즉각적 촉각 피드백을 준다
+- [ ] **NATIVE-04**: 하단 고정 주요 CTA가 네이티브 텔레그램 MainButton으로, 뒤로가기가 네이티브 BackButton으로 동작한다 (DOM 모조 TgMainButton 대체/보강)
+- [ ] **NATIVE-05**: 화면 전환 시 로딩 스켈레톤(route segment loading.tsx)이 즉시 표시되어 RSC 네비게이션이 끊김 없이 이어진다
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -136,6 +146,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHARE-02 | Phase 6 | Complete |
 | SHARE-03 | Phase 6 | Complete |
 | SHARE-04 | Phase 6 | Complete |
+| NATIVE-01 | Phase 7 | Pending |
+| NATIVE-02 | Phase 7 | Pending |
+| NATIVE-03 | Phase 7 | Pending |
+| NATIVE-04 | Phase 7 | Pending |
+| NATIVE-05 | Phase 7 | Pending |
 
 **Coverage:**
 
