@@ -195,7 +195,7 @@ Plans:
 Plans:
 **Wave 1** *(substrate)*
 
-- [ ] 06-01-PLAN.md — shares 테이블(opaque text PK, frozen snapshot) + [BLOCKING] db:push + OG subset 폰트 빌드(assets/og/*.ttf, pyftsubset) + Wave-0 schema test (SHARE-01/02 substrate)
+- [x] 06-01-PLAN.md — shares 테이블(opaque text PK, frozen snapshot) + [BLOCKING] db:push + OG subset 폰트 빌드(assets/og/*.ttf, pyftsubset) + Wave-0 schema test (SHARE-01/02 substrate)
 
 **Wave 2** *(blocked on 06-01)*
 
@@ -225,4 +225,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
 | 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
 | 5. 통계 & MY | 3/3 | Complete    | 2026-06-10 |
-| 6. 공유 카드 & OG | 0/4 | Not started | - |
+| 6. 공유 카드 & OG | 1/4 | In Progress|  |

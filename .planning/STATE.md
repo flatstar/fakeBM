@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 6 UI-SPEC approved
-last_updated: "2026-06-10T11:09:28.719Z"
-last_activity: 2026-06-10 -- Completed Phase 05 Plan 03 (/my self-view slice)
+last_updated: "2026-06-10T11:15:43.666Z"
+last_activity: 2026-06-10 -- Phase 06 execution started
 progress:
   total_phases: 6
   completed_phases: 5
-  total_plans: 20
-  completed_plans: 20
+  total_plans: 24
+  completed_plans: 21
   percent: 83
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-08)
 
 **Core value:** 가짜 주문→대기→인증 루프의 재미와 누적되는 절약/칼로리 통계·공유가 한 몸으로 작동한다.
-**Current focus:** Phase 05 — my
+**Current focus:** Phase 06 — og
 
 ## Current Position
 
-Phase: 05 (my) — COMPLETE (3/3 plans)
-Plan: 3 of 3 — done
+Phase: 06 (og) — EXECUTING
+Plan: 2 of 4
 Status: Ready to execute
-Last activity: 2026-06-10 -- Completed Phase 05 Plan 03 (/my self-view slice)
+Last activity: 2026-06-10 -- Phase 06 execution started
 
 Progress: [███████░░░] 70%
 
@@ -69,6 +69,7 @@ Progress: [███████░░░] 70%
 | Phase 05 P01 | 4 min | 3 tasks | 4 files |
 | Phase 05-my P02 | 2m | 2 tasks | 3 files |
 | Phase 05-my P03 | 3m | 3 tasks | 4 files |
+| Phase 06 P01 | 8min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -116,6 +117,8 @@ Recent decisions affecting current work:
 - [Phase 05-01]: live display streak = recomputeCurrentStreak — a chain 2+ KST days stale shows 0 (not the frozen streakDay); topMenuName counts items[].name not category (D-08); ONE centralized visibility predicate (exclude deletedAt, include hiddenAt) across all stats reads
 - [05-03]: FeedCard gains a backward-compatible readOnly prop (default falsy) — suppresses BOTH LikeButton + ReportMenu for the /my own-records list; feed/api surfaces unchanged (D-11)
 - [05-03]: ownerRecordsPage is a feedPage VARIANT — owner-scoped eq(posts.tgId,uid) + REUSES decodeCursor/encodeCursor from lib/feed (no duplicate codec); visibility matches userTotals (exclude deletedAt, INCLUDE hiddenAt) so a report-hidden post still shows on the owner's own /my (differs from public feed which also excludes hiddenAt)
+- [Phase ?]: shares.id is an opaque text PK (crypto.randomUUID) not a sequential int — public /share/[id] read is enumeration-safe (D-03/T-06-01)
+- [Phase ?]: OG subset fonts committed under assets/og/ via pyftsubset; ₩ confined to Pretendard subset, kept out of BM
 
 ### Pending Todos
 
@@ -144,6 +147,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-10T10:55:16.488Z
+Last session: 2026-06-10T11:15:20.762Z
 Stopped at: Phase 6 UI-SPEC approved
 Resume file: .planning/phases/06-og/06-UI-SPEC.md
