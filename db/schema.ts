@@ -211,3 +211,46 @@ export const reports = pgTable(
 
 export type Report = typeof reports.$inferSelect;
 export type NewReport = typeof reports.$inferInsert;
+
+/**
+ * shares — a frozen stats snapshot for the public OG share card (SHARE-01/02).
+ *
+ * D-01/02 frozen snapshot: every stat scalar (savedMonth/savedTotal/kcalTotal/
+ *   resisted/streak), the length-7 byDay array, monthLabel and topMenu are
+ *   copied from lib/stats at creation time and NEVER re-aggregated — the OG
+ *   image and /share/[id] page are deterministic and Blob-cacheable, immune to
+ *   later post hide/delete.
+ * D-03 / T-06-01 opaque id: the PK is `text('id').primaryKey()` filled by
+ *   `crypto.randomUUID()` in the API — NOT `generatedAlwaysAsIdentity()`. The
+ *   public un-authed read at /share/[id] makes the id the only key into the
+ *   row, so a sequential int would be enumeration-unsafe. The column type is
+ *   locked to text here so a sequential int can never be reintroduced.
+ * D-09 no PII: there is intentionally NO firstName/username column — the card
+ *   is wordmark-only, so a name leak via the snapshot is structurally impossible.
+ * D-05 ogUrl: nullable Blob cache URL, kept now so no later migration is needed
+ *   when the OG result is cached.
+ */
+export const shares = pgTable('shares', {
+  // D-03 / T-06-01 — opaque crypto.randomUUID() text PK (NOT a sequential int).
+  id: text('id').primaryKey(),
+  // Owner — bigint mode:number to match users.tgId for the FK.
+  tgId: bigint('tg_id', { mode: 'number' })
+    .notNull()
+    .references(() => users.tgId),
+  // Frozen snapshot (D-01/02) — copied from lib/stats at creation, never re-aggregated.
+  monthLabel: text('month_label').notNull(), // "2026.06"
+  savedMonth: integer('saved_month').notNull(),
+  savedTotal: integer('saved_total').notNull(),
+  kcalTotal: integer('kcal_total').notNull(),
+  resisted: integer('resisted').notNull(),
+  streak: integer('streak').notNull(),
+  byDay: jsonb('by_day').$type<number[]>().notNull(), // length-7 int[]
+  topMenu: text('top_menu'), // nullable (topMenuName → null)
+  ogUrl: text('og_url'), // nullable Blob cache URL (D-05)
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export type Share = typeof shares.$inferSelect;
+export type NewShare = typeof shares.$inferInsert;
