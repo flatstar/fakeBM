@@ -17,7 +17,7 @@
  * invariant: the segment renders a pulse placeholder, never an empty frame.
  */
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import { describe, it, expect } from 'vitest';
 import { render, cleanup } from '@testing-library/react';
 
@@ -29,7 +29,8 @@ import PostLoading from '@/app/(mini)/post/[id]/loading';
 import OrderLoading from '@/app/(mini)/order/[id]/loading';
 import WaitLoading from '@/app/(mini)/wait/[id]/loading';
 
-const root = fileURLToPath(new URL('../../', import.meta.url));
+// Vitest runs with cwd at the repo root; loading.tsx sources live under it.
+const root = process.cwd();
 
 const SEGMENTS: ReadonlyArray<{
   name: string;
@@ -72,7 +73,7 @@ describe('route-segment loading skeletons (NATIVE-05)', () => {
       });
 
       it('is a pure server file (no SDK import, no "use client")', () => {
-        const source = readFileSync(root + src, 'utf8');
+        const source = readFileSync(join(root, src), 'utf8');
         expect(source).not.toMatch(/['"]use client['"]/);
         expect(source).not.toMatch(/@telegram-apps/);
         expect(source).not.toMatch(/useEffect|useState/);
