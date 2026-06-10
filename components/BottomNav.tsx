@@ -15,7 +15,8 @@
 
 import type { ReactElement } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { haptic } from '@/lib/haptics';
 import { Icon, type IconName } from './Icon';
 
 interface NavSlot {
@@ -39,6 +40,15 @@ export interface BottomNavProps {
 
 export function BottomNav({ onCenter }: BottomNavProps): ReactElement {
   const pathname = usePathname();
+  const router = useRouter();
+  // D-04: a prop-less FAB is NOT inert — it enters the order flow at /home with
+  // a medium impact tap. An explicit onCenter (Phase 2+ flows) overrides this.
+  const handleCenter =
+    onCenter ??
+    (() => {
+      haptic.impact('medium');
+      router.push('/home');
+    });
   return (
     <nav
       style={{
@@ -59,7 +69,7 @@ export function BottomNav({ onCenter }: BottomNavProps): ReactElement {
             <div key="center" style={{ width: 56, position: 'relative' }}>
               <button
                 type="button"
-                onClick={onCenter}
+                onClick={handleCenter}
                 aria-label="참기"
                 style={{
                   position: 'absolute',
@@ -92,6 +102,7 @@ export function BottomNav({ onCenter }: BottomNavProps): ReactElement {
           <Link
             key={slot.href}
             href={slot.href}
+            onClick={() => haptic.selection()}
             aria-current={active ? 'page' : undefined}
             style={{
               flex: 1,
