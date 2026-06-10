@@ -69,7 +69,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **NATIVE-02**: 중앙 "참기" FAB가 실제로 주문(참기) 플로우로 진입한다 (현재 onClick 미배선 무반응 버그 해소)
 - [x] **NATIVE-03**: 주요 탭/CTA/액션에 HapticFeedback(impact/notification/selection)이 발생해 즉각적 촉각 피드백을 준다
 - [ ] **NATIVE-04**: 하단 고정 주요 CTA가 네이티브 텔레그램 MainButton으로, 뒤로가기가 네이티브 BackButton으로 동작한다 (DOM 모조 TgMainButton 대체/보강)
-- [ ] **NATIVE-05**: 화면 전환 시 로딩 스켈레톤(route segment loading.tsx)이 즉시 표시되어 RSC 네비게이션이 끊김 없이 이어진다
+- [x] **NATIVE-05**: 화면 전환 시 로딩 스켈레톤(route segment loading.tsx)이 즉시 표시되어 RSC 네비게이션이 끊김 없이 이어진다
 
 ## v2 Requirements
 
@@ -150,7 +150,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | NATIVE-02 | Phase 7 | Pending |
 | NATIVE-03 | Phase 7 | Complete |
 | NATIVE-04 | Phase 7 | Pending |
-| NATIVE-05 | Phase 7 | Pending |
+| NATIVE-05 | Phase 7 | Complete |
 
 **Coverage:**
 

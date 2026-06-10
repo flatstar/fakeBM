@@ -263,4 +263,4 @@ Plans:
 
 **Wave 5** *(blocked on 07-01)*
 
-- [ ] 07-05-PLAN.md — Skeleton 프리미티브 + 7개 route-segment loading.tsx(코랄-소프트 펄스 형상-에코) + Wave-0 렌더 테스트 (NATIVE-05)
+- [x] 07-05-PLAN.md — Skeleton 프리미티브 + 7개 route-segment loading.tsx(코랄-소프트 펄스 형상-에코) + Wave-0 렌더 테스트 (NATIVE-05)
