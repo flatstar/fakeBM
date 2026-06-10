@@ -77,12 +77,14 @@ import { kstMonthBounds } from '@/lib/stats';
 
 const UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
-function postJson(body: unknown = {}): Request {
-  return new Request('http://localhost/api/shares', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+// The route handler takes NO argument — server-authority means it NEVER reads
+// the request body (T-06-03). The strongest possible proof that a forged body is
+// ignored is that the handler's signature gives it no access to one at all: the
+// snapshot can only come from lib/stats + the session. The forged-body assertions
+// below therefore assert the persisted row equals the lib/stats values regardless
+// of what a caller might attempt to smuggle.
+function callPost(): Promise<Response> {
+  return POST();
 }
 
 beforeEach(() => {
@@ -104,7 +106,7 @@ beforeEach(() => {
 describe('POST /api/shares', () => {
   it('no session → 401 {error:auth} and never inserts (T-06-05)', async () => {
     requireSession.mockResolvedValue(null);
-    const res = await POST(postJson());
+    const res = await callPost();
     expect(res.status).toBe(401);
     expect(await res.json()).toEqual({ error: 'auth' });
     expect(insertValues).not.toHaveBeenCalled();
@@ -117,14 +119,14 @@ describe('POST /api/shares', () => {
       resisted: 0,
       savedMonth: 0,
     });
-    const res = await POST(postJson());
+    const res = await callPost();
     expect(res.status).toBe(400);
     expect(await res.json()).toEqual({ error: 'empty' });
     expect(insertValues).not.toHaveBeenCalled();
   });
 
   it('authed + non-empty → 200 {id} with an opaque UUID v4 id (D-03)', async () => {
-    const res = await POST(postJson());
+    const res = await callPost();
     expect(res.status).toBe(200);
     const body = (await res.json()) as { id: string };
     expect(body.id).toMatch(UUID_V4);
@@ -135,7 +137,7 @@ describe('POST /api/shares', () => {
   });
 
   it('inserts the server-recomputed snapshot from lib/stats (owner-scoped)', async () => {
-    await POST(postJson());
+    await callPost();
     const row = insertValues.mock.calls[0][0] as Record<string, unknown>;
     expect(row).toMatchObject({
       tgId: 99281932,
@@ -150,19 +152,13 @@ describe('POST /api/shares', () => {
   });
 
   it('IGNORES forged stat values in the request body (T-06-03 server-authority)', async () => {
-    // A malicious client smuggles huge stat values in the body — they must be ignored;
-    // the persisted snapshot is whatever lib/stats returned.
-    const forged = {
-      savedTotal: 999999999,
-      kcalTotal: 888888888,
-      resisted: 777,
-      savedMonth: 666666666,
-      streak: 999,
-      byDay: [9, 9, 9, 9, 9, 9, 9],
-      topMenu: 'FORGED',
-      tgId: 1, // try to forge the owner too
-    };
-    const res = await POST(postJson(forged));
+    // A malicious client smuggles huge stat values in the body. Server-authority
+    // here is structural: POST() takes NO argument, so a forged body is not even
+    // accessible to the handler — the snapshot can ONLY come from lib/stats + the
+    // session. We assert the persisted row equals the lib/stats values (and the
+    // owner is the session tgId, never a body-supplied one), which holds no matter
+    // what a caller attempts to send.
+    const res = await callPost();
     expect(res.status).toBe(200);
     const row = insertValues.mock.calls[0][0] as Record<string, unknown>;
     // Owner comes from the session, never the body.
@@ -178,7 +174,7 @@ describe('POST /api/shares', () => {
   });
 
   it('derives monthLabel from the KST month (O-2), not raw getMonth()', async () => {
-    await POST(postJson());
+    await callPost();
     const row = insertValues.mock.calls[0][0] as Record<string, unknown>;
     // Build the expected KST `YYYY.MM` from the same real helper the route uses.
     const { startUtc } = kstMonthBounds(new Date());
@@ -189,7 +185,9 @@ describe('POST /api/shares', () => {
   });
 
   it('stores NO PII — only stats, never firstName/username (D-09)', async () => {
-    await POST(postJson({ firstName: 'Hong', username: 'hgd' }));
+    // No body is read (POST takes no arg), and the snapshot the route builds from
+    // lib/stats has no name fields — so firstName/username can never be persisted.
+    await callPost();
     const row = insertValues.mock.calls[0][0] as Record<string, unknown>;
     expect(row).not.toHaveProperty('firstName');
     expect(row).not.toHaveProperty('username');
