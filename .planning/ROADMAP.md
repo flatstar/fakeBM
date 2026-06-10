@@ -199,7 +199,7 @@ Plans:
 
 **Wave 2** *(blocked on 06-01)*
 
-- [ ] 06-02-PLAN.md — POST /api/shares: requireSession + lib/stats 서버 권위 스냅샷 동결 + crypto.randomUUID opaque id + 0-인증 400 가드 (SHARE-01)
+- [x] 06-02-PLAN.md — POST /api/shares: requireSession + lib/stats 서버 권위 스냅샷 동결 + crypto.randomUUID opaque id + 0-인증 400 가드 (SHARE-01) (DONE — POST() takes no body (forged stats structurally inaccessible, T-06-03); full snapshot recomputed from lib/stats; opaque UUID v4 id; resisted===0 → 400 before any insert; KST monthLabel (O-2); TDD 7/7, vitest 251/0, tsc clean — see 06-02-SUMMARY.md)
 
 **Wave 3** *(blocked on 06-01 + 06-02)*
 
@@ -225,4 +225,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
 | 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
 | 5. 통계 & MY | 3/3 | Complete    | 2026-06-10 |
-| 6. 공유 카드 & OG | 1/4 | In Progress|  |
+| 6. 공유 카드 & OG | 2/4 | In Progress|  |

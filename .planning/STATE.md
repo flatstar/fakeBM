@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 6 UI-SPEC approved
-last_updated: "2026-06-10T11:15:43.666Z"
-last_activity: 2026-06-10 -- Phase 06 execution started
+stopped_at: Completed 06-02-PLAN.md (POST /api/shares server-authority snapshot)
+last_updated: "2026-06-10T11:19:30.000Z"
+last_activity: 2026-06-10 -- Completed 06-02 (POST /api/shares)
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 24
-  completed_plans: 21
-  percent: 83
+  completed_plans: 22
+  percent: 87
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 ## Current Position
 
 Phase: 06 (og) — EXECUTING
-Plan: 2 of 4
-Status: Ready to execute
-Last activity: 2026-06-10 -- Phase 06 execution started
+Plan: 3 of 4
+Status: Ready to execute (06-02 complete)
+Last activity: 2026-06-10 -- Completed 06-02 (POST /api/shares)
 
-Progress: [███████░░░] 70%
+Progress: [████████░░] 87%
 
 ## Performance Metrics
 
@@ -70,6 +70,7 @@ Progress: [███████░░░] 70%
 | Phase 05-my P02 | 2m | 2 tasks | 3 files |
 | Phase 05-my P03 | 3m | 3 tasks | 4 files |
 | Phase 06 P01 | 8min | 3 tasks | 4 files |
+| Phase 06 P02 | ~3 min | 1 task | 2 files |
 
 ## Accumulated Context
 
@@ -119,6 +120,8 @@ Recent decisions affecting current work:
 - [05-03]: ownerRecordsPage is a feedPage VARIANT — owner-scoped eq(posts.tgId,uid) + REUSES decodeCursor/encodeCursor from lib/feed (no duplicate codec); visibility matches userTotals (exclude deletedAt, INCLUDE hiddenAt) so a report-hidden post still shows on the owner's own /my (differs from public feed which also excludes hiddenAt)
 - [Phase ?]: shares.id is an opaque text PK (crypto.randomUUID) not a sequential int — public /share/[id] read is enumeration-safe (D-03/T-06-01)
 - [Phase ?]: OG subset fonts committed under assets/og/ via pyftsubset; ₩ confined to Pretendard subset, kept out of BM
+- [06-02]: POST /api/shares takes NO argument — body never read; server-authority is STRUCTURAL (handler cannot access any client stat), strictly stronger than parse-and-discard. Full snapshot recomputed from lib/stats (same wiring as stats/page.tsx); tgId only from requireSession (T-06-03/04)
+- [06-02]: monthLabel via kstMonthLabel = kstMonthBounds(now) shifted +09:00 → YYYY.MM (O-2), never raw getMonth(); empty guard (resisted===0 → 400) runs BEFORE crypto.randomUUID/insert so no opaque id is minted for a degenerate card
 
 ### Pending Todos
 
@@ -147,6 +150,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-10T11:15:20.762Z
-Stopped at: Phase 6 UI-SPEC approved
-Resume file: .planning/phases/06-og/06-UI-SPEC.md
+Last session: 2026-06-10T11:19:30.000Z
+Stopped at: Completed 06-02-PLAN.md (POST /api/shares server-authority snapshot)
+Resume file: None
