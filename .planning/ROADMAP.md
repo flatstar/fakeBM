@@ -255,7 +255,7 @@ Plans:
 
 **Wave 3** *(blocked on 07-02)*
 
-- [ ] 07-03-PLAN.md — useNativeMainButton/useNativeBackButton 훅(cleanup-via-VoidFunction 유령버튼 방지, isAvailable 가드 no-op) + Wave-0 라이프사이클 테스트 (NATIVE-04)
+- [x] 07-03-PLAN.md — useNativeMainButton/useNativeBackButton 훅(cleanup-via-VoidFunction 유령버튼 방지, isAvailable 가드 no-op) + Wave-0 라이프사이클 테스트 (NATIVE-04)
 
 **Wave 4** *(blocked on 07-01 + 07-02 + 07-03)*
 
