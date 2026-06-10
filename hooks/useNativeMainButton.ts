@@ -22,13 +22,24 @@
  */
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import {
   mountMainButton,
   setMainButtonParams,
   onMainButtonClick,
   isMainButtonMounted,
 } from '@telegram-apps/sdk-react';
+import { subscribeTelegramReady, getTelegramReady } from '@/lib/telegram';
+
+/**
+ * Reactive SDK-readiness (WR-03). The async boot may finish AFTER a CTA's effect
+ * has already run; subscribing here re-runs the effect / re-evaluates the active
+ * gate the instant boot completes, so the native button is adopted rather than
+ * latched to the DOM fallback. SSR snapshot is always `false`.
+ */
+function useTelegramReady(): boolean {
+  return useSyncExternalStore(subscribeTelegramReady, getTelegramReady, () => false);
+}
 
 export interface UseNativeMainButtonOptions {
   text: string;
@@ -39,9 +50,11 @@ export interface UseNativeMainButtonOptions {
 
 export function useNativeMainButton(opts: UseNativeMainButtonOptions): void {
   const { text, onClick, disabled = false, loading = false } = opts;
+  const ready = useTelegramReady();
 
   useEffect(() => {
     // non-TMA / SSR / SDK-uninit → no-op; the DOM TgMainButton fallback renders.
+    // `ready` is a dep so the effect re-runs once the async boot completes.
     if (!setMainButtonParams.isAvailable()) return;
 
     if (!isMainButtonMounted()) mountMainButton();
@@ -60,7 +73,7 @@ export function useNativeMainButton(opts: UseNativeMainButtonOptions): void {
       off();
       setMainButtonParams({ isVisible: false });
     };
-  }, [text, onClick, disabled, loading]);
+  }, [text, onClick, disabled, loading, ready]);
 }
 
 /**
@@ -73,10 +86,14 @@ export function useNativeMainButton(opts: UseNativeMainButtonOptions): void {
  * availability signal `useNativeMainButton` gates on — one source of truth.
  */
 export function useNativeMainButtonActive(): boolean {
+  const ready = useTelegramReady();
   const [active, setActive] = useState(false);
   useEffect(() => {
+    // Re-evaluate when the async boot completes (`ready`) — not latched once at
+    // mount, which could permanently suppress the native CTA if the SDK booted
+    // after first paint (WR-03).
     setActive(setMainButtonParams.isAvailable());
-  }, []);
+  }, [ready]);
   return active;
 }
 

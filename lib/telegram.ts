@@ -22,6 +22,37 @@
 let booted = false;
 
 /**
+ * Readiness store (WR-01/WR-03 fix). `initTelegram()` is async (dynamic import +
+ * mounts) and can be triggered from EITHER the (boot) SessionBoot or — for a
+ * returning user landing directly on a (mini) route with a live session — the
+ * (mini) SdkBoot leaf. Native-feature hooks decide native-vs-DOM by reading
+ * `setMainButtonParams.isAvailable()` in an effect; if that effect runs BEFORE
+ * the async boot finishes it latches the DOM fallback forever. This module-scope
+ * store (plain JS — no `window`, SSR-safe to import into client hooks) lets those
+ * hooks subscribe and re-evaluate the instant boot completes.
+ * `getTelegramReady` is the `useSyncExternalStore` client snapshot.
+ */
+let ready = false;
+const readyListeners = new Set<() => void>();
+
+function markTelegramReady(): void {
+  if (ready) return;
+  ready = true;
+  readyListeners.forEach((l) => l());
+}
+
+export function getTelegramReady(): boolean {
+  return ready;
+}
+
+export function subscribeTelegramReady(cb: () => void): () => void {
+  readyListeners.add(cb);
+  return () => {
+    readyListeners.delete(cb);
+  };
+}
+
+/**
  * initTelegram — idempotent SDK boot in the verified order. Client-only:
  * no-ops on the server and after the first successful call.
  */
@@ -69,6 +100,10 @@ export async function initTelegram(): Promise<void> {
       .mount()
       .then(() => viewport.bindCssVars()) // safe-area CSS vars
       .catch(() => {});
+    // SDK is now initialized + components mounted → native-feature hooks can
+    // activate. Notify subscribers so a hook whose effect already ran (before
+    // this async boot finished) re-evaluates and switches to the native path.
+    markTelegramReady();
   } catch {
     // SDK boot failed (not in a Telegram context and no mock) — SessionBoot's
     // missing-raw guard keeps the splash visible.

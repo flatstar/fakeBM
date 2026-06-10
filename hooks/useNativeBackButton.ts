@@ -18,16 +18,20 @@
  */
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   showBackButton,
   hideBackButton,
   onBackButtonClick,
 } from '@telegram-apps/sdk-react';
+import { subscribeTelegramReady, getTelegramReady } from '@/lib/telegram';
 
 export function useNativeBackButton(): void {
   const router = useRouter();
+  // Re-run once the async SDK boot completes (WR-03) — a returning user's
+  // session-restore entry boots the SDK after this effect first runs.
+  const ready = useSyncExternalStore(subscribeTelegramReady, getTelegramReady, () => false);
 
   useEffect(() => {
     // non-TMA / SSR / SDK-uninit → no-op; DOM back affordance stays.
@@ -41,5 +45,5 @@ export function useNativeBackButton(): void {
       off();
       hideBackButton.ifAvailable();
     };
-  }, [router]);
+  }, [router, ready]);
 }

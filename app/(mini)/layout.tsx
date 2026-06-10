@@ -17,6 +17,7 @@ import { requireSession } from '@/lib/auth';
 import { TgHeader } from '@/components/TgHeader';
 import { BottomNav } from '@/components/BottomNav';
 import { CartProvider } from '@/lib/cart';
+import SdkBoot from './_components/SdkBoot';
 
 export default async function MiniLayout({
   children,
@@ -50,6 +51,9 @@ export default async function MiniLayout({
       {/* CartProvider wraps the whole authenticated shell so /home, /store and
           /cart share one localStorage-backed cart instance (D-08). */}
       <CartProvider>
+        {/* WR-01: idempotent SDK boot so native features work on session-restore
+            entry to a (mini) route (returning user never hits the (boot) SessionBoot). */}
+        <SdkBoot />
         <TgHeader title="배달의 만족" />
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
           {children}
