@@ -49,16 +49,25 @@ export default async function Image({ params }: { params: Promise<{ id: string }
   const share = await getShare(id);
 
   // Pitfall 5 — always process.cwd() (project root). The subset TTFs are
-  // committed under assets/og/ (06-01).
-  const [display, num] = await Promise.all([
-    readFile(join(process.cwd(), 'assets/og/BMDohyeon-ogsubset.ttf')),
-    readFile(join(process.cwd(), 'assets/og/Pretendard-ogsubset.ttf')),
-  ]);
-
-  const fonts = [
-    { name: 'BMDisplay', data: display, weight: 800 as const, style: 'normal' as const },
-    { name: 'Pretendard', data: num, weight: 700 as const, style: 'normal' as const },
-  ];
+  // committed under assets/og/ (06-01). WR-03: a Vercel bundle-tracing miss on
+  // the font files must DEGRADE (blank gradient frame, 200) rather than 500 the
+  // public crawler route — a 500 og:image breaks every external preview.
+  let fonts;
+  try {
+    const [display, num] = await Promise.all([
+      readFile(join(process.cwd(), 'assets/og/BMDohyeon-ogsubset.ttf')),
+      readFile(join(process.cwd(), 'assets/og/Pretendard-ogsubset.ttf')),
+    ]);
+    fonts = [
+      { name: 'BMDisplay', data: display, weight: 800 as const, style: 'normal' as const },
+      { name: 'Pretendard', data: num, weight: 700 as const, style: 'normal' as const },
+    ];
+  } catch {
+    return new ImageResponse(
+      <div style={{ display: 'flex', width: '100%', height: '100%', background: GRADIENT }} />,
+      { ...size },
+    );
+  }
 
   // Unknown id → a minimal empty card rather than a throw (the S3 page already
   // 404s; a crawler hitting a stale og:image just gets a blank frame).
@@ -172,8 +181,8 @@ export default async function Image({ params }: { params: Promise<{ id: string }
             paddingTop: 32,
           }}
         >
-          <OgStat emoji="🔥" caption="연속" value={<><NumSpan>{streak}</NumSpan>일</>} />
-          <OgStat emoji="✋" caption="참음" value={<><NumSpan>{resisted}</NumSpan>번</>} />
+          <OgStat emoji="🔥" caption="연속" value={<><NumSpan>{fmtNum(streak)}</NumSpan>일</>} />
+          <OgStat emoji="✋" caption="참음" value={<><NumSpan>{fmtNum(resisted)}</NumSpan>번</>} />
           <OgStat emoji="🏆" caption="최다 적" value={topMenu ?? '—'} />
         </div>
 
