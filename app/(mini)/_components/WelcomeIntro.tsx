@@ -13,6 +13,10 @@
 
 import { useEffect, useState } from 'react';
 import { TgMainButton } from '@/components/TgMainButton';
+import {
+  NativeMainButton,
+  useNativeMainButtonActive,
+} from '@/hooks/useNativeMainButton';
 
 const SEEN_KEY = 'manjok:welcome-seen';
 
@@ -21,6 +25,7 @@ export function WelcomeIntro(): React.ReactElement | null {
   // users; the effect flips it on only when the flag is absent.
   const [show, setShow] = useState(false);
   const [ready, setReady] = useState(false);
+  const nativeActive = useNativeMainButtonActive();
 
   useEffect(() => {
     try {
@@ -31,8 +36,6 @@ export function WelcomeIntro(): React.ReactElement | null {
     setReady(true);
   }, []);
 
-  if (!ready || !show) return null;
-
   const dismiss = () => {
     try {
       localStorage.setItem(SEEN_KEY, '1');
@@ -41,6 +44,12 @@ export function WelcomeIntro(): React.ReactElement | null {
     }
     setShow(false);
   };
+
+  if (!ready || !show) return null;
+
+  // The native MainButton (mounted only while the intro is up) drives the
+  // label-only "시작하기" CTA; when it is active the DOM TgMainButton is
+  // suppressed so exactly ONE primary CTA shows (UI-SPEC progressive enhancement).
 
   return (
     <div
@@ -95,7 +104,10 @@ export function WelcomeIntro(): React.ReactElement | null {
           진짜로 시키는 대신 장바구니까지만. 아낀 돈과 덜 먹은 칼로리가 차곡차곡 쌓여요.
         </p>
       </div>
-      <TgMainButton label="시작하기" onClick={dismiss} />
+      {/* Native CTA drives the label-only "시작하기" inside Telegram; the DOM
+          TgMainButton is the pixel-identical fallback when native is inactive. */}
+      <NativeMainButton text="시작하기" onClick={dismiss} />
+      {!nativeActive && <TgMainButton label="시작하기" onClick={dismiss} />}
     </div>
   );
 }

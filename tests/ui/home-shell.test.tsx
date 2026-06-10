@@ -8,10 +8,34 @@ import { CartProvider } from '@/lib/cart';
 import HomePage from '@/app/(mini)/home/page';
 
 // BottomNav uses next/navigation usePathname for route-based active state; pin a
-// stable route so the home tab is active in the offline render.
+// stable route so the home tab is active in the offline render. The FAB default
+// (NATIVE-02) also reads useRouter().push, so provide a push spy.
 vi.mock('next/navigation', () => ({
   usePathname: () => '/home',
+  useRouter: () => ({ push: vi.fn(), back: vi.fn() }),
 }));
+
+// WelcomeIntro now reads the native MainButton availability signal (NATIVE-04);
+// outside Telegram it must be a no-op so the DOM fallback renders. Mock the SDK
+// fns as unavailable SafeWrapped stubs.
+vi.mock('@telegram-apps/sdk-react', () => {
+  const unavailable = Object.assign(() => {}, {
+    isAvailable: () => false,
+    ifAvailable: () => [false] as const,
+  });
+  return {
+    mountMainButton: unavailable,
+    setMainButtonParams: unavailable,
+    onMainButtonClick: unavailable,
+    isMainButtonMounted: () => false,
+    showBackButton: unavailable,
+    hideBackButton: unavailable,
+    onBackButtonClick: unavailable,
+    hapticFeedbackImpactOccurred: unavailable,
+    hapticFeedbackNotificationOccurred: unavailable,
+    hapticFeedbackSelectionChanged: unavailable,
+  };
+});
 
 // jsdom's localStorage is not reliably writable across vitest/jsdom versions;
 // install a minimal in-memory polyfill so the welcome first-visit flag (D-09)

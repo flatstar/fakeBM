@@ -26,6 +26,11 @@ import { Body } from '@/components/Body';
 import { Won, Num } from '@/components/Money';
 import { StatBadge, TINT } from '@/components/StatBadge';
 import { TgMainButton } from '@/components/TgMainButton';
+import {
+  NativeMainButton,
+  useNativeMainButtonActive,
+} from '@/hooks/useNativeMainButton';
+import { haptic } from '@/lib/haptics';
 import type { OrderItemSnapshot } from '@/db/schema';
 import { PhotoUploadSlot } from './PhotoUploadSlot';
 
@@ -69,6 +74,7 @@ export function PostClient({
   kcal,
 }: PostClientProps): ReactElement {
   const router = useRouter();
+  const nativeActive = useNativeMainButtonActive();
   const [foodPhotoUrl, setFoodPhotoUrl] = useState<string | null>(null);
   const [dietPhotoUrl, setDietPhotoUrl] = useState<string | null>(null);
   const [diet, setDiet] = useState('');
@@ -91,6 +97,7 @@ export function PostClient({
     if (!ready || submitting) return;
     setSubmitting(true);
     setError(null);
+    haptic.impact('medium'); // D-06: primary CTA press
     try {
       const res = await fetch('/api/posts', {
         method: 'POST',
@@ -109,13 +116,16 @@ export function PostClient({
         return;
       }
       if (!res.ok) {
+        haptic.notify('error'); // D-06: 인증 업로드 실패
         setError('인증 저장에 실패했어요. 다시 시도해 주세요.');
         setSubmitting(false);
         return;
       }
       // success → feed (명예의 전당). Phase 4 wires /post result; home for now.
+      haptic.notify('success'); // D-06: 인증 업로드 성공
       router.push('/');
     } catch {
+      haptic.notify('error'); // D-06: network failure
       setError('네트워크 오류예요. 다시 시도해 주세요.');
       setSubmitting(false);
     }
@@ -308,13 +318,24 @@ export function PostClient({
         <div style={{ height: 10 }} />
       </Body>
 
-      <TgMainButton
-        label="피드에 올리기"
-        sub={ready ? '명예의 전당에 인증이 박제돼요 🏆' : '두 사진을 모두 올려주세요'}
-        icon="share"
-        disabled={!ready || submitting}
+      {/* Native MainButton drives the label-only primary CTA inside Telegram
+          (sub-line is DOM-only, D-08); the DOM TgMainButton is the suppressed-
+          when-native fallback that also carries the sub copy off-platform. */}
+      <NativeMainButton
+        text="피드에 올리기"
         onClick={onSubmit}
+        disabled={!ready || submitting}
+        loading={submitting}
       />
+      {!nativeActive && (
+        <TgMainButton
+          label="피드에 올리기"
+          sub={ready ? '명예의 전당에 인증이 박제돼요 🏆' : '두 사진을 모두 올려주세요'}
+          icon="share"
+          disabled={!ready || submitting}
+          onClick={onSubmit}
+        />
+      )}
     </>
   );
 }

@@ -22,7 +22,7 @@
  */
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   mountMainButton,
   setMainButtonParams,
@@ -61,4 +61,34 @@ export function useNativeMainButton(opts: UseNativeMainButtonOptions): void {
       setMainButtonParams({ isVisible: false });
     };
   }, [text, onClick, disabled, loading]);
+}
+
+/**
+ * `useNativeMainButtonActive` — SSR-safe boolean telling a call-site whether the
+ * native MainButton is driving the primary CTA, so it can SUPPRESS its DOM
+ * `TgMainButton` fallback (UI-SPEC progressive-enhancement contract: exactly ONE
+ * primary CTA visible). Initial value is `false` so the server render and first
+ * client paint always show the DOM fallback; the effect flips it to true only
+ * inside Telegram where `setMainButtonParams.isAvailable()` holds. Reads the SAME
+ * availability signal `useNativeMainButton` gates on — one source of truth.
+ */
+export function useNativeMainButtonActive(): boolean {
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    setActive(setMainButtonParams.isAvailable());
+  }, []);
+  return active;
+}
+
+/**
+ * `<NativeMainButton>` — a render-null host that drives the native MainButton via
+ * `useNativeMainButton`. Mounting it conditionally (only when the CTA should be
+ * visible) keeps the singleton clean: unmounting hides the button and removes the
+ * listener (the hook's cleanup), so it never lingers as a disabled/ghost button
+ * on the next screen. Outside Telegram the hook no-ops, so callers still render
+ * their DOM `TgMainButton` fallback (suppressed only when `useNativeMainButtonActive`).
+ */
+export function NativeMainButton(opts: UseNativeMainButtonOptions): null {
+  useNativeMainButton(opts);
+  return null;
 }
