@@ -247,7 +247,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 Plans:
 **Wave 1** *(safe-area 토큰 + boot)*
 
-- [ ] 07-01-PLAN.md — --safe-b 토큰(content-safe-area inset 우선) + pulse 키프레임 + 6개 하단 고정 파일 env()→var(--safe-b) 스왑 + boot expandViewport() + Wave-0 회귀 (NATIVE-01)
+- [x] 07-01-PLAN.md — --safe-b 토큰(content-safe-area inset 우선) + pulse 키프레임 + 6개 하단 고정 파일 env()→var(--safe-b) 스왑 + boot expandViewport() + Wave-0 회귀 (NATIVE-01)
 
 **Wave 2** *(blocked on 07-01)*
 
