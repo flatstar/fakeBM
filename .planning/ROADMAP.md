@@ -191,7 +191,24 @@ Plans:
   3. 공유 카드가 공개 웹 링크(`/share/[id]`)로 텔레그램 밖에서도 SSR로 열린다(크롤러 미리보기 정상)
   4. 사용자가 저장 / 링크 복사 / 외부 공유 액션을 사용할 수 있다
 
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+**Wave 1** *(substrate)*
+
+- [ ] 06-01-PLAN.md — shares 테이블(opaque text PK, frozen snapshot) + [BLOCKING] db:push + OG subset 폰트 빌드(assets/og/*.ttf, pyftsubset) + Wave-0 schema test (SHARE-01/02 substrate)
+
+**Wave 2** *(blocked on 06-01)*
+
+- [ ] 06-02-PLAN.md — POST /api/shares: requireSession + lib/stats 서버 권위 스냅샷 동결 + crypto.randomUUID opaque id + 0-인증 400 가드 (SHARE-01)
+
+**Wave 3** *(blocked on 06-01 + 06-02)*
+
+- [ ] 06-03-PLAN.md — OG/공개 라우트 슬라이스: ShareCard DOM 본문 + 공개 SSR /share/[id] + generateMetadata og:image + opengraph-image.tsx(next/og Satori, Node, subset 폰트, flex-only) + lib/share (SHARE-02/03)
+
+**Wave 4** *(blocked on 06-02 + 06-03)*
+
+- [ ] 06-04-PLAN.md — ShareSheet 클라이언트 아일랜드(4타깃 저장/링크/인스타/카톡 + shareURL→Web Share→clipboard 폴백) + /stats·/my "공유 카드 만들기" 진입 버튼(D-12 재활성) (SHARE-01/04)
+
 **UI hint**: yes
 
 ## Progress
@@ -208,4 +225,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. 대기 → 인증 (코어 루프) | 4/4 | Complete    | 2026-06-09 |
 | 4. 명예의 전당 피드 + 모더레이션 | 3/5 | In Progress|  |
 | 5. 통계 & MY | 3/3 | Complete    | 2026-06-10 |
-| 6. 공유 카드 & OG | 0/TBD | Not started | - |
+| 6. 공유 카드 & OG | 0/4 | Not started | - |
