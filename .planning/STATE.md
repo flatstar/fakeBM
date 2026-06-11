@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 Phase: 07 (ios) — EXECUTING
 Plan: 5 of 5
 Status: Phase complete — ready for verification
-Last activity: 2026-06-10 -- Phase 07 execution started
+Last activity: 2026-06-11 - Completed quick task 260611-o3w: 전체 프로젝트 OOUX 문서 작성 + MVP 출시 전 갭 분석 리뷰
 
 Progress: [██████████] 100%
 
@@ -154,6 +154,12 @@ None yet.
 - [Phase 6]: OG 한글 subset 500KB 내 구성 가능 여부 — 페이즈 시작 시 확인 (research flag)
 - [Phase 5]: 스트릭 "끊김" 정의(자정 기준/타임존) 결정 필요 (리텐션 직결)
 - [Requirements]: REQUIREMENTS.md는 v1 총계를 31로 표기하나 실제 열거된 ID는 33개(AUTH5+ORDER5+WAIT4+PROOF4+FEED6+STATS5+SHARE4) — 33개 전부 매핑함, 총계 표기 정정 권장
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260611-o3w | 전체 프로젝트 OOUX 문서 작성 + MVP 출시 전 갭 분석 리뷰 | 2026-06-11 | 64f378b | [260611-o3w-ooux-mvp](./quick/260611-o3w-ooux-mvp/) |
 
 ## Deferred Items
 
