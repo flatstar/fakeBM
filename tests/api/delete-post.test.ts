@@ -132,7 +132,7 @@ describe('POST /api/posts/[id]/delete — owner-scoped soft delete', () => {
     // because it never touches the body.
     const req = post('7');
     const trap = new Proxy(req, {
-      get(target, prop, receiver) {
+      get(target, prop) {
         if (prop === 'json' || prop === 'text' || prop === 'body') {
           throw new Error('handler must not read the body');
         }

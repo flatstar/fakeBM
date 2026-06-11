@@ -14,6 +14,8 @@
  * Composition: the card body is a presentational unit; the interactive bits are
  * client islands — <LikeButton> (optimistic + reconcile) and, ONLY when the post
  * is NOT the viewer's own (D-13 self-report hidden client-side), <ReportMenu>.
+ * The viewer's OWN post swaps the ⋯ slot to <DeleteMenu> (owner-scoped soft
+ * delete, QUICK-260611-RI9) — D-13 self-report hide stays intact.
  */
 import type { ReactElement } from 'react';
 import { Card } from '@/components/Card';
@@ -25,6 +27,7 @@ import { handleFor } from '@/lib/handle';
 import type { FeedPost } from '@/lib/feed';
 import { LikeButton } from './LikeButton';
 import { ReportMenu } from './ReportMenu';
+import { DeleteMenu } from './DeleteMenu';
 
 /** Short Korean relative time ("3분 전" / "2시간 전" / "어제" / "06.07"). */
 function relativeTime(createdAt: Date): string {
@@ -55,9 +58,11 @@ export interface FeedCardProps {
   /** Called when the viewer reports this card (removes it from the list). */
   onHide?: (postId: number) => void;
   /**
-   * Read-only mode (D-11): suppresses BOTH the LikeButton and the ReportMenu,
-   * so the card renders the record only (no interactive actions). Used by the
-   * /my own-records list. Defaults falsy → the feed's interactive behavior is
+   * Read-only mode (D-11): suppresses BOTH the LikeButton and the ReportMenu
+   * (no SOCIAL actions). Used by the /my own-records list. When the post is
+   * also the viewer's OWN, a slim bar with only the DeleteMenu ⋯ renders —
+   * record-MANAGEMENT, not a social action, so D-11's intent holds
+   * (QUICK-260611-RI9). Defaults falsy → the feed's interactive behavior is
    * unchanged (backward-compatible — feed/api surfaces never pass it).
    */
   readOnly?: boolean;
@@ -184,9 +189,10 @@ export function FeedCard({
         <span>{post.diet}</span>
       </div>
 
-      {/* action bar: like + (report only when not own — D-13). In readOnly mode
-          (D-11, /my own-records) BOTH actions are suppressed — the whole bar is
-          omitted so the read-only card shows the record only. */}
+      {/* action bar: like + (report when not own — D-13 / delete when own,
+          QUICK-260611-RI9). In readOnly mode (D-11, /my own-records) the SOCIAL
+          actions stay suppressed — but an own post gets a slim bar with ONLY
+          the DeleteMenu ⋯ (record management, not a social action). */}
       {!readOnly && (
         <div
           style={{
@@ -204,6 +210,21 @@ export function FeedCard({
           />
           <div style={{ flex: 1 }} />
           {!isOwn && <ReportMenu postId={post.id} onHide={onHide} />}
+          {isOwn && <DeleteMenu postId={post.id} onDeleted={onHide} />}
+        </div>
+      )}
+      {readOnly && isOwn && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            borderTop: '1px solid var(--color-line)',
+            paddingTop: 2,
+          }}
+        >
+          {/* /my passes no onHide → DeleteMenu falls back to router.refresh(). */}
+          <DeleteMenu postId={post.id} onDeleted={onHide} />
         </div>
       )}
     </Card>
