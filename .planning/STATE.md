@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-06-08)
 Phase: 07 (ios) — EXECUTING
 Plan: 5 of 5
 Status: Phase complete — ready for verification
-Last activity: 2026-06-11 - Completed quick task 260611-o3w: 전체 프로젝트 OOUX 문서 작성 + MVP 출시 전 갭 분석 리뷰
+Last activity: 2026-06-11 - Completed quick task 260611-ri9: 본인 인증 글 owner-scoped soft delete API + /feed·/my 삭제 UI
 
 Progress: [██████████] 100%
 
@@ -160,6 +160,7 @@ None yet.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260611-o3w | 전체 프로젝트 OOUX 문서 작성 + MVP 출시 전 갭 분석 리뷰 | 2026-06-11 | 64f378b | [260611-o3w-ooux-mvp](./quick/260611-o3w-ooux-mvp/) |
+| 260611-ri9 | 본인 인증 글 owner-scoped soft delete API + /feed·/my 삭제 UI | 2026-06-11 | 3ae967e | [260611-ri9-my-owner-scoped-soft-delete-api](./quick/260611-ri9-my-owner-scoped-soft-delete-api/) |
 
 ## Deferred Items
 
